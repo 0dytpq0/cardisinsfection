@@ -1,7 +1,3 @@
-.button {
-  background-color: "rgb(103,57,182)";
-  margin: 0px 2px;
-}
 .header {
   height: 30px;
   background-color: rgb(103, 57, 182);
@@ -19,4 +15,55 @@
   border: none;
   border-bottom: 1px solid black;
   border-radius: 0px;
+}
+
+.printinfo {
+  border: 2px solid black;
+  margin: 20px;
+  padding: 10px;
+  padding-bottom: 40px;
+}
+
+.innerinfo {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.font {
+  font-size: 10px;
+  font-weight: bold;
+}
+span {
+  font-size: 12px;
+  font-weight: bold;
+}
+.checkman {
+  font-weight: bold;
+  text-align: center;
+}
+.checkman__font {
+  font-weight: 500;
+  font-size: 11px;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.buttoncontainer {
+  margin-top: 0px;
+  margin-right: 15px;
+}
+.alert {
+  text-align: right;
+  direction: rtl;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+.hidden {
+  display: none;
+}
+.show {
+  display: block;
 }
