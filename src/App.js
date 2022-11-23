@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Col, Row } from "antd";
+import { Button, Alert, message, Col, Row } from "antd";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import carImg from "./image/disinfection.gif";
+import Printinfo from "./components/Printinfo";
 import { useInfo } from "./store";
 
 function App() {
-  const { carinfo } = useInfo((state) => state);
+  const { carinfo, success, error } = useInfo((state) => state);
+  const onClose = (e) => {
+    console.log(e, "I was closed.");
+  };
+  useEffect(() => {});
+
   return (
     <>
-      <Row wrap={false} style={{ height: "100vh" }} gutter={(8, 8)}>
+      {success && (
+        <Alert message="저장 성공" type="success" closable onClose={onClose} />
+      )}
+      {error && (
+        <Alert message="저장 실패" type="error" closable onClose={onClose} />
+      )}
+      <Row
+        wrap={false}
+        style={{ height: "100vh", overflow: "hidden" }}
+        gutter={(8, 8)}
+      >
         <Col style={{ width: "300px" }} flex={2}>
           <Container title={"소독필증"}>
-            <div>차량 번호 : {carinfo.carnum}</div>
-            <div>차량 목적 : {carinfo.purpose}</div>
+            <Printinfo />
           </Container>
           <Container title={"차량확인"}></Container>
         </Col>
