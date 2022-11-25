@@ -67,3 +67,6 @@ span {
 .show {
   display: block;
 }
+.active {
+  background-color: aquamarine;
+}

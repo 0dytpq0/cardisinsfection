@@ -25,13 +25,11 @@ const ButtonContainerArea = () => {
         changeAreaInfo(parsedValue);
       });
   }, []);
-  console.log("areainfo", areainfo);
   const onChangeOrigin = (e) => {
     setOrigin(true);
     setProtect(false);
     setQuarantine(false);
     setWildAnimal(false);
-    console.log("origin", origin);
   };
   const onChangeProtect = (e) => {
     setOrigin(false);

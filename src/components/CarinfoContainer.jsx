@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Alert, message, Modal, Button, Input, Col, Row } from "antd";
-import { useInfo, useSuccess } from "../store";
+import React, { useState } from "react";
+import { Modal, Button, Input, Col, Row } from "antd";
+import { useInfo } from "../store";
 import ButtonContainer from "./ButtonContainer";
 import ButtonContainerArea from "./ButtonContainerArea";
 import ButtonContainerChecker from "./ButtonContainerChecker";
@@ -8,49 +8,38 @@ import ButtonContainerActor from "./ButtonContainerActor";
 import axios from "axios";
 
 export default function CarinfoContainer() {
-  const { changeCarInfo, carinfo, areainfo, changeAreaInfo } = useInfo(
+  const { changeCarInfo, carinfo, areainfo, checkerinfo, actorinfo } = useInfo(
     (state) => state
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
 
-  // const [messageApi, contextHolder] = message.useMessage();
-
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carinfo, carnum: e.target.value });
-    changeAreaInfo({ ...areainfo, carnum: e.target.value });
   };
   const onChangePurpose = (e) => {
     changeCarInfo({ ...carinfo, purpose: e.target.value });
-    changeAreaInfo({ ...areainfo, purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
-    changeAreaInfo({ ...areainfo, regnum: e.target.value });
     changeCarInfo({ ...carinfo, regnum: e.target.value });
   };
   const onChangeGpsnum = (e) => {
-    changeAreaInfo({ ...areainfo, gpsnum: e.target.value });
     changeCarInfo({ ...carinfo, gpsnum: e.target.value });
   };
   const onChangeOwner = (e) => {
-    changeAreaInfo({ ...areainfo, owner: e.target.value });
     changeCarInfo({ ...carinfo, owner: e.target.value });
   };
   const onChangeAddr = (e) => {
-    changeAreaInfo({ ...areainfo, addr: e.target.value });
     changeCarInfo({ ...carinfo, addr: e.target.value });
   };
   const onChangePhone = (e) => {
-    changeAreaInfo({ ...areainfo, phone: e.target.value });
     changeCarInfo({ ...carinfo, phone: e.target.value });
   };
   const onChangeFrom = (e) => {
-    changeAreaInfo({ ...areainfo, from: e.target.value });
     changeCarInfo({ ...carinfo, from: e.target.value });
   };
   const onChangeTo = (e) => {
-    changeAreaInfo({ ...areainfo, to: e.target.value });
     changeCarInfo({ ...carinfo, to: e.target.value });
   };
 
@@ -89,9 +78,59 @@ export default function CarinfoContainer() {
   const showModalchecker = () => {
     setIsModalOpenChecker(true);
   };
-  const handleOkchecker = () => {
+  const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
+    let checkerValue = JSON.stringify(checkerinfo);
+    checkerValue = checkerValue.replaceAll('"', "`");
+    console.log("checkerValue :>> ", checkerValue);
+    let rt1 = false;
+    let rt2 = false;
+    await axios
+      .put("http://localhost:4000/settingitems/", {
+        Name: "COperator",
+        Value: checkerValue,
+      })
+      .then((res) => {
+        console.log("res", res.statusText);
+
+        if (res.statusText === "OK") {
+          rt1 = true;
+        } else {
+          rt1 = false;
+        }
+      });
+
+    checkerValue = checkerValue.replaceAll("`", '"');
+    checkerValue = JSON.parse(checkerValue);
+
+    await axios
+      .post("http://localhost:4000/operatoritems/", {
+        Name: checkerValue.Name,
+        Phone: checkerValue.Phone,
+        Type: checkerValue.Type,
+        Position: checkerValue.Position,
+        Attached: checkerValue.Attached,
+      })
+      .then((res) => {
+        console.log("res", res.statusText);
+        if (res.statusText === "OK") {
+          rt2 = true;
+        } else {
+          rt2 = false;
+        }
+      });
+    console.log("rt1,rt2", rt1, rt2);
+    if (rt1 === true && rt2 === true) {
+      Modal.success({
+        content: `저장 성공!`,
+      });
+    } else {
+      Modal.error({
+        content: `저장 실패!`,
+      });
+    }
   };
+
   const handleCancelchecker = () => {
     setIsModalOpenChecker(false);
   };
@@ -99,8 +138,56 @@ export default function CarinfoContainer() {
   const showModalActor = () => {
     setIsModalOpenActor(true);
   };
-  const handleOkActor = () => {
+  const handleOkActor = async () => {
     setIsModalOpenActor(false);
+    let actorValue = JSON.stringify(actorinfo);
+    actorValue = actorValue.replaceAll('"', "`");
+    let rt1 = false;
+    let rt2 = false;
+    axios
+      .put("http://localhost:4000/settingitems/", {
+        Name: "EOperator",
+        Value: actorValue,
+      })
+      .then((res) => {
+        console.log("res", res.statusText);
+
+        if (res.statusText === "OK") {
+          rt1 = true;
+        } else {
+          rt1 = false;
+        }
+      });
+
+    actorValue = actorValue.replaceAll("`", '"');
+    actorValue = JSON.parse(actorValue);
+
+    await axios
+      .post("http://localhost:4000/operatoritems/", {
+        Name: actorValue.Name,
+        Phone: actorValue.Phone,
+        Type: actorValue.Type,
+        Position: actorValue.Position,
+        Attached: actorValue.Attached,
+      })
+      .then((res) => {
+        console.log("res", res.statusText);
+        if (res.statusText === "OK") {
+          rt2 = true;
+        } else {
+          rt2 = false;
+        }
+      });
+    console.log("rt1,rt2", rt1, rt2);
+    if (rt1 === true && rt2 === true) {
+      Modal.success({
+        content: `저장 성공!`,
+      });
+    } else {
+      Modal.error({
+        content: `저장 실패!`,
+      });
+    }
   };
   const handleCancelActor = () => {
     setIsModalOpenActor(false);
@@ -170,9 +257,7 @@ export default function CarinfoContainer() {
             onOk={handleOkchecker}
             onCancel={handleCancelchecker}
           >
-            <ButtonContainer title={"확인자 정보"}>
-              <ButtonContainerChecker />
-            </ButtonContainer>
+            <ButtonContainerChecker />
           </Modal>
         </Col>
         <Col>
@@ -183,9 +268,7 @@ export default function CarinfoContainer() {
             onOk={handleOkActor}
             onCancel={handleCancelActor}
           >
-            <ButtonContainer title={"실시자 정보"}>
-              <ButtonContainerActor />
-            </ButtonContainer>
+            <ButtonContainerActor />
           </Modal>
         </Col>
       </Row>

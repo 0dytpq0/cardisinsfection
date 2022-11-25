@@ -13,5 +13,15 @@ export const useInfo = create(
       set((state) => ({
         areainfo: newData,
       })),
+    checkerinfo: {},
+    changeCheckerInfo: (newData) =>
+      set((state) => ({
+        checkerinfo: newData,
+      })),
+    actorinfo: {},
+    changeActorInfo: (newData) =>
+      set((state) => ({
+        actorinfo: newData,
+      })),
   }))
 );

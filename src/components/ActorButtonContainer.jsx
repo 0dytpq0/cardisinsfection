@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import { Col, Row, Layout, Button, Modal, List } from "antd";
 import axios from "axios";
-import ReferButtonContainer from "./ReferButtonContainer";
+import ActorReferButtonContainer from "./ActorReferButtonContainer";
 
-function ButtonContainer({ title, children }) {
+function ActorButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,7 +31,7 @@ function ButtonContainer({ title, children }) {
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <ReferButtonContainer />
+            <ActorReferButtonContainer />
           </Modal>
         </Header>
         <Col>{children}</Col>
@@ -40,4 +40,4 @@ function ButtonContainer({ title, children }) {
   );
 }
 
-export default ButtonContainer;
+export default ActorButtonContainer;

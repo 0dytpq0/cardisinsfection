@@ -8,20 +8,10 @@ import Printinfo from "./components/Printinfo";
 import { useInfo } from "./store";
 
 function App() {
-  const { carinfo, success, error } = useInfo((state) => state);
-  const onClose = (e) => {
-    console.log(e, "I was closed.");
-  };
-  useEffect(() => {});
+  const { carinfo } = useInfo((state) => state);
 
   return (
     <>
-      {success && (
-        <Alert message="저장 성공" type="success" closable onClose={onClose} />
-      )}
-      {error && (
-        <Alert message="저장 실패" type="error" closable onClose={onClose} />
-      )}
       <Row
         wrap={false}
         style={{ height: "100vh", overflow: "hidden" }}

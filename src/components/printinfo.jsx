@@ -2,10 +2,10 @@ import React from "react";
 import "../App.css";
 import { Row, Col, Divider } from "antd";
 import { useInfo } from "../store";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, NotificationTwoTone } from "@ant-design/icons";
 
 export default function Printinfo() {
-  const { carinfo } = useInfo();
+  const { carinfo, areainfo, actorinfo, checkerinfo } = useInfo();
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function Printinfo() {
           <div className="innerinfo">
             <Row>
               <Col className="font">소독일시 :</Col>
-              <Col className="font">date</Col>
+              <Col className="font">{Date.now()}</Col>
             </Row>
             <Row>
               <Col className="font">이동경로 :</Col>
@@ -70,10 +70,7 @@ export default function Printinfo() {
             </Row>
             <Row>
               <Col className="font">소독내용 :</Col>
-              <Col className="font">
-                {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}
-              </Col>
-              <Col className="font">{carinfo.disinfection}</Col>
+              <Col className="font">{areainfo.DContent}</Col>
             </Row>
           </div>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
@@ -81,23 +78,23 @@ export default function Printinfo() {
           <div className="innerinfo">
             <Row>
               <Col className="font">소독 지역</Col>
-              <Col className="font">{carinfo.area}</Col>
+              <Col className="font">{areainfo.Area}</Col>
             </Row>
             <Row>
               <Col className="font">소독 장소명</Col>
-              <Col className="font">{carinfo.place}</Col>
+              <Col className="font">{areainfo.PointName}</Col>
             </Row>
             <Row>
               <Col className="font">소속</Col>
-              <Col className="font">{carinfo.Actorteam}</Col>
+              <Col className="font">{actorinfo.Attached}</Col>
             </Row>
             <Row>
               <Col className="font">직급</Col>
-              <Col className="font">{carinfo.Actorrank}</Col>
+              <Col className="font">{actorinfo.Position}</Col>
             </Row>
             <Row>
               <Col className="font">성명</Col>
-              <Col className="font">{carinfo.Actorname}</Col>
+              <Col className="font">{actorinfo.Name}</Col>
             </Row>
           </div>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
@@ -108,9 +105,9 @@ export default function Printinfo() {
           <div className="checkman">
             소독 실시 확인자
             <Row className="checkman__font">
-              <Col className="font">소속 - {carinfo.checkerteam}</Col>
-              <Col className="font">직급 - {carinfo.checkerrank}</Col>
-              <Col className="font">성명 - {carinfo.checkername}</Col>
+              <Col className="font">소속 - {checkerinfo.Attached}</Col>
+              <Col className="font">직급 - {checkerinfo.Position}</Col>
+              <Col className="font">성명 - {checkerinfo.Name}</Col>
             </Row>
           </div>
         </div>
