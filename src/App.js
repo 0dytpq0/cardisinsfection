@@ -5,6 +5,7 @@ import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import carImg from "./image/disinfection.gif";
 import Printinfo from "./components/Printinfo";
+import AutoSwitch from "./components/AutoSwitch";
 import { useInfo } from "./store";
 
 function App() {
@@ -37,9 +38,9 @@ function App() {
             </Row>
           </Col>
           <Col>
-            <Container title={"상태정보"}>
+            <AutoSwitch title={"상태정보"}>
               <img style={{ width: "99%", height: "50vh" }} src={carImg} />
-            </Container>
+            </AutoSwitch>
           </Col>
         </Col>
       </Row>

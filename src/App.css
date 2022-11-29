@@ -70,3 +70,18 @@ span {
 .active {
   background-color: aquamarine;
 }
+.buttons {
+  display: flex;
+  margin-top: 12px;
+}
+
+.auto {
+  display: flex;
+  flex-direction: column;
+}
+.auto_columns {
+  margin: 8px 0px;
+}
+.auto_button {
+  width: 100px;
+}

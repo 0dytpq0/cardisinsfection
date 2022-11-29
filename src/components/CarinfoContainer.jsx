@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Input, Col, Row } from "antd";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import { useInfo } from "../store";
 import ButtonContainer from "./ButtonContainer";
 import ButtonContainerArea from "./ButtonContainerArea";
@@ -11,8 +12,10 @@ import axios from "axios";
 export default function CarinfoContainer() {
   const {
     changeCarInfo,
+    carinfo,
     carmodalinfo,
     areainfo,
+    checkerinfo,
     actorinfo,
     checkermodalinfo,
     changeCheckerInfo,
@@ -26,45 +29,48 @@ export default function CarinfoContainer() {
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
 
   const onChangeCarNum = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, Number: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
   };
   const onChangePurpose = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, Purpose: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, RegNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, RegNumber: e.target.value });
   };
   const onChangeGpsnum = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, GpsNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, GpsNumber: e.target.value });
   };
   const onChangeOwner = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, Owner: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Owner: e.target.value });
   };
   const onChangeAddr = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({
+      ...carmodalinfo,
+      Address: e.target.value,
+    });
     changeCarModalInfo({ ...carmodalinfo, Address: e.target.value });
   };
   const onChangePhone = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, Phone: e.target.value });
     changeCarModalInfo({
       ...carmodalinfo,
       Phone: e.target.value,
     });
   };
   const onChangeFrom = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, SPoint: e.target.value });
     changeCarModalInfo({
       ...carmodalinfo,
       SPoint: e.target.value,
     });
   };
   const onChangeTo = (e) => {
-    changeCarInfo({ ...carmodalinfo });
+    changeCarInfo({ ...carmodalinfo, EPoint: e.target.value });
     changeCarModalInfo({
       ...carmodalinfo,
       EPoint: e.target.value,
@@ -77,6 +83,7 @@ export default function CarinfoContainer() {
 
   const carHandleOk = () => {
     setIsModalOpenCar(false);
+    changeCarInfo(carmodalinfo);
   };
 
   const carHandleCancel = () => {
@@ -253,7 +260,7 @@ export default function CarinfoContainer() {
         <Input
           className="input"
           placeholder="차량 번호"
-          value={carmodalinfo.Number}
+          value={carinfo.Number}
           onChange={onChangeCarNum}
         />
         <Button onClick={carShowModal}>조회</Button>
@@ -267,65 +274,65 @@ export default function CarinfoContainer() {
           <CarButtonViewContainer />
         </Modal>
 
-        <Button>삭제</Button>
+        {/* <Button>삭제</Button> */}
         <Button>N</Button>
       </div>
       <Input
         className="input"
         placeholder="차량 목적"
-        value={carmodalinfo.Purpose}
+        value={carinfo.Purpose}
         onChange={onChangePurpose}
       />
       <Input
         className="input"
         placeholder="등록 번호"
-        value={carmodalinfo.RegNum}
+        value={carinfo.RegNum}
         onChange={onChangeRegNum}
       />
       <Input
         className="input"
         placeholder="GPS 번호"
-        value={carmodalinfo.GpsNum}
+        value={carinfo.GpsNum}
         onChange={onChangeGpsnum}
       />
       <Input
         className="input"
         placeholder="차주 성명"
-        value={carmodalinfo.Owner}
+        value={carinfo.Owner}
         onChange={onChangeOwner}
       />
       <Input
         className="input"
         placeholder="주소"
-        value={carmodalinfo.Address}
+        value={carinfo.Address}
         onChange={onChangeAddr}
       />
       <Input
         className="input"
         placeholder="연락처"
-        value={carmodalinfo.Phone}
+        value={carinfo.Phone}
         onChange={onChangePhone}
       />
-      <Row>
+      <Row wrap={false} style={{ display: "flex", alignItems: "center" }}>
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
           <Input
             className="input"
-            value={carmodalinfo.SPoint}
+            value={carinfo.SPoint}
             placeholder="출발지"
             onChange={onChangeFrom}
           />
         </Col>
-
+        <ArrowRightOutlined />
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
           <Input
             className="input"
             placeholder="목적지"
-            value={carmodalinfo.EPoint}
+            value={carinfo.EPoint}
             onChange={onChangeTo}
           />
         </Col>
       </Row>
-      <Row justify={"center"} gutter={8} style={{ marginTop: "12px" }}>
+      <Row className="buttons" wrap={false} gutter={8}>
         <Col>
           <Button onClick={showModal}>지역 정보</Button>
           <Modal

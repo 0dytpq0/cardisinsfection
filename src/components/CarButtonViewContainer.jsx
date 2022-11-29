@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Input } from "antd";
 import { useInfo } from "../store";
-import axios from "axios";
 import CarButtonContainer from "./CarButtonContainer";
 
 const CarButtonViewContainer = () => {
-  const { carinfo, changeCarInfo, carmodalinfo, changeCarModalInfo } =
-    useInfo();
+  const { carmodalinfo, changeCarModalInfo } = useInfo();
   const onChangeCarNumber = (e) => {
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
   };

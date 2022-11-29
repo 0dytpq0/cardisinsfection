@@ -2,7 +2,7 @@ import React from "react";
 import "../App.css";
 import { Row, Col, Divider } from "antd";
 import { useInfo } from "../store";
-import { ArrowRightOutlined, NotificationTwoTone } from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 export default function Printinfo() {
   const { carinfo, areainfo, actorinfo, checkerinfo } = useInfo();

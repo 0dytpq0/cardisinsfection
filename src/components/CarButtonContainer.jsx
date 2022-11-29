@@ -22,8 +22,7 @@ function CarButtonContainer({ title, children }) {
         Owner: `${response.data[i].Owner}`,
         Address: `${response.data[i].Address}`,
         Phone: `${response.data[i].Phone}`,
-        EPoint: `${response.data[i].EPoint}`,
-        SPoint: `${response.data[i].SPoint}`,
+
         Selected: false,
         idx: i,
       }));

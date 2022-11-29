@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Input } from "antd";
 import { useInfo } from "../store";
 import axios from "axios";
 import ActorButtonContainer from "./ActorButtonContainer";
 
 const ActorButtonViewContainer = () => {
-  const { actorinfo, changeActorInfo, actormodalinfo, changeActorModalInfo } =
-    useInfo();
+  const { actormodalinfo, changeActorModalInfo } = useInfo();
 
   useEffect(() => {
     axios

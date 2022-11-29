@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import { Col, Row, Layout, Button, Modal, List } from "antd";
+import { Col, Layout, Button, Modal, List } from "antd";
 import axios from "axios";
 import { useInfo } from "../store";
 
@@ -8,7 +8,7 @@ function ActorButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [listData, setListData] = useState("");
-  const { changeActorInfo, changeActorModalInfo } = useInfo();
+  const { changeActorModalInfo } = useInfo();
 
   useEffect(() => {
     axios.get(`http://localhost:4000/OperatoritemsAllE`).then((response) => {

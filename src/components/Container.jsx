@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css";
 import { Col, Row, Layout } from "antd";
+import AutoButton from "./AutoSwitch";
 
 function Container({ title, children, span }) {
   const { Header } = Layout;

@@ -1,5 +1,5 @@
 import create from "zustand";
-import { persist, redux } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 export const useInfo = create(
   persist((set) => ({
