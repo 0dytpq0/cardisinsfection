@@ -8,6 +8,11 @@ export const useInfo = create(
       set((state) => ({
         carinfo: newData,
       })),
+    carmodalinfo: {},
+    changeCarModalInfo: (newData) =>
+      set((state) => ({
+        carmodalinfo: newData,
+      })),
     areainfo: {},
     changeAreaInfo: (newData) =>
       set((state) => ({

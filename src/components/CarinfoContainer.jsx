@@ -5,7 +5,7 @@ import ButtonContainer from "./ButtonContainer";
 import ButtonContainerArea from "./ButtonContainerArea";
 import CheckerButtonViewContainer from "./CheckerButtonViewContainer";
 import ActorButtonViewContainer from "./ActorButtonViewContainer";
-import CarbuttonViewContainer from "./CarbuttonViewContainer";
+import CarButtonContainer from "./CarButtonContainer";
 import axios from "axios";
 
 export default function CarinfoContainer() {
@@ -117,43 +117,46 @@ export default function CarinfoContainer() {
 
         if (res.statusText === "OK") {
           rt1 = true;
+          Modal.success({
+            content: `저장 성공!`,
+          });
         } else {
           rt1 = false;
+          Modal.error({
+            content: `저장 실패!`,
+          });
         }
       });
 
     checkerValue = checkerValue.replaceAll("`", '"');
     checkerValue = JSON.parse(checkerValue);
-    if (!checkerValue?.searched) {
-      {
-        await axios
-          .post("http://localhost:4000/operatoritems/", {
-            Name: checkerValue.Name,
-            Phone: checkerValue.Phone,
-            Type: checkerValue.Type,
-            Position: checkerValue.Position,
-            Attached: checkerValue.Attached,
-          })
-          .then((res) => {
-            console.log("res", res.statusText);
-            if (res.statusText === "OK") {
-              rt2 = true;
-            } else {
-              rt2 = false;
-            }
-          });
-        console.log("rt1,rt2", rt1, rt2);
-        if (rt1 === true && rt2 === true) {
-          Modal.success({
-            content: `저장 성공!`,
-          });
-        } else {
-          Modal.error({
-            content: `저장 실패!`,
-          });
-        }
-      }
-    }
+
+    //   await axios
+    //     .post("http://localhost:4000/operatoritems/", {
+    //       Name: checkerValue.Name,
+    //       Phone: checkerValue.Phone,
+    //       Type: checkerValue.Type,
+    //       Position: checkerValue.Position,
+    //       Attached: checkerValue.Attached,
+    //     })
+    //     .then((res) => {
+    //       console.log("res", res.statusText);
+    //       if (res.statusText === "OK") {
+    //         rt2 = true;
+    //       } else {
+    //         rt2 = false;
+    //       }
+    //     });
+    //   console.log("rt1,rt2", rt1, rt2);
+    //   if (rt1 === true && rt2 === true) {
+    //     Modal.success({
+    //       content: `저장 성공!`,
+    //     });
+    //   } else {
+    //     Modal.error({
+    //       content: `저장 실패!`,
+    //     });
+    //   }
   };
 
   const handleCancelchecker = () => {
@@ -180,40 +183,46 @@ export default function CarinfoContainer() {
 
         if (res.statusText === "OK") {
           rt1 = true;
+          Modal.success({
+            content: `저장 성공!`,
+          });
         } else {
           rt1 = false;
+          Modal.error({
+            content: `저장 실패!`,
+          });
         }
       });
 
     actorValue = actorValue.replaceAll("`", '"');
     actorValue = JSON.parse(actorValue);
 
-    await axios
-      .post("http://localhost:4000/operatoritems/", {
-        Name: actorValue.Name,
-        Phone: actorValue.Phone,
-        Type: actorValue.Type,
-        Position: actorValue.Position,
-        Attached: actorValue.Attached,
-      })
-      .then((res) => {
-        console.log("res", res.statusText);
-        if (res.statusText === "OK") {
-          rt2 = true;
-        } else {
-          rt2 = false;
-        }
-      });
-    console.log("rt1,rt2", rt1, rt2);
-    if (rt1 === true && rt2 === true) {
-      Modal.success({
-        content: `저장 성공!`,
-      });
-    } else {
-      Modal.error({
-        content: `저장 실패!`,
-      });
-    }
+    //   await axios
+    //     .post("http://localhost:4000/operatoritems/", {
+    //       Name: actorValue.Name,
+    //       Phone: actorValue.Phone,
+    //       Type: actorValue.Type,
+    //       Position: actorValue.Position,
+    //       Attached: actorValue.Attached,
+    //     })
+    //     .then((res) => {
+    //       console.log("res", res.statusText);
+    //       if (res.statusText === "OK") {
+    //         rt2 = true;
+    //       } else {
+    //         rt2 = false;
+    //       }
+    //     });
+    //   console.log("rt1,rt2", rt1, rt2);
+    //   if (rt1 === true && rt2 === true) {
+    //     Modal.success({
+    //       content: `저장 성공!`,
+    //     });
+    //   } else {
+    //     Modal.error({
+    //       content: `저장 실패!`,
+    //     });
+    //   }
   };
   const handleCancelActor = () => {
     setIsModalOpenActor(false);
@@ -229,12 +238,13 @@ export default function CarinfoContainer() {
         />
         <Button onClick={carShowModal}>조회</Button>
         <Modal
+          style={{ height: "300px" }}
           title=""
           open={isModalOpenCar}
           onOk={carHandleOk}
           onCancel={carHandleCancel}
         >
-          <CarbuttonViewContainer />
+          <CarButtonContainer title={"출입자 정보"} />
         </Modal>
 
         <Button>삭제</Button>

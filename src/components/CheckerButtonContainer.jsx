@@ -11,7 +11,7 @@ function CheckerButtonContainer({ title, children }) {
   const { changeCheckerInfo, changeCheckerModalInfo } = useInfo();
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/OperatoritemsAllE`).then((response) => {
+    axios.get(`http://localhost:4000/OperatoritemsAllC`).then((response) => {
       let data = response.data.map((_, i) => ({
         Name: `${response.data[i].Name}`,
         Attached: `${response.data[i].Attached}`,
@@ -41,12 +41,14 @@ function CheckerButtonContainer({ title, children }) {
   };
   const handleOk = (e) => {
     setIsModalOpen(false);
-    listData.map((item) => {
-      if (item.Selected === true) {
-        item.searched = true;
-        changeCheckerModalInfo(item);
-      }
-    }); //filter
+    // listData.map((item) => {
+    //   if (item.Selected === true) {
+    //     changeCheckerModalInfo(item);
+    //   }
+    // });
+
+    const filteredData = listData.filter((item) => item.Selected === true);
+    changeCheckerModalInfo(filteredData[0]);
   };
   const handleCancel = () => {
     setIsModalOpen(false);

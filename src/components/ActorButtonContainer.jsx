@@ -46,6 +46,8 @@ function ActorButtonContainer({ title, children }) {
         changeActorModalInfo(item);
       }
     });
+    const filteredData = listData.filter((item) => item.Selected === true);
+    changeActorModalInfo(filteredData[0]);
   };
   const handleCancel = () => {
     setIsModalOpen(false);

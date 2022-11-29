@@ -5,8 +5,7 @@ import { useInfo } from "../store";
 import { ArrowRightOutlined, NotificationTwoTone } from "@ant-design/icons";
 
 export default function Printinfo() {
-  const { carinfo, areainfo, actorinfo, checkerinfo, checkermodalinfo } =
-    useInfo();
+  const { carinfo, areainfo, actorinfo, checkerinfo } = useInfo();
 
   return (
     <>
