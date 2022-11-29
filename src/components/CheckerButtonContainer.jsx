@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import { Col, Row, Layout, Button, Modal, List } from "antd";
+import { Col, Layout, Button, Modal, List } from "antd";
 import axios from "axios";
 import { useInfo } from "../store";
 
-function ActorButtonContainer({ title, children }) {
+function CheckerButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [listData, setListData] = useState("");
-  const { changeActorInfo, changeActorModalInfo } = useInfo();
+  const { changeCheckerInfo, changeCheckerModalInfo } = useInfo();
 
   useEffect(() => {
     axios.get(`http://localhost:4000/OperatoritemsAllE`).then((response) => {
@@ -43,9 +43,10 @@ function ActorButtonContainer({ title, children }) {
     setIsModalOpen(false);
     listData.map((item) => {
       if (item.Selected === true) {
-        changeActorModalInfo(item);
+        item.searched = true;
+        changeCheckerModalInfo(item);
       }
-    });
+    }); //filter
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -103,4 +104,4 @@ function ActorButtonContainer({ title, children }) {
   );
 }
 
-export default ActorButtonContainer;
+export default CheckerButtonContainer;

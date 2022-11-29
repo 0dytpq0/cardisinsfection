@@ -18,10 +18,20 @@ export const useInfo = create(
       set((state) => ({
         checkerinfo: newData,
       })),
+    checkermodalinfo: {},
+    changeCheckerModalInfo: (newData) =>
+      set((state) => ({
+        checkermodalinfo: newData,
+      })),
     actorinfo: {},
     changeActorInfo: (newData) =>
       set((state) => ({
         actorinfo: newData,
+      })),
+    actormodalinfo: {},
+    changeActorModalInfo: (newData) =>
+      set((state) => ({
+        actormodalinfo: newData,
       })),
   }))
 );

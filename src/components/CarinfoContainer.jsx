@@ -3,14 +3,24 @@ import { Modal, Button, Input, Col, Row } from "antd";
 import { useInfo } from "../store";
 import ButtonContainer from "./ButtonContainer";
 import ButtonContainerArea from "./ButtonContainerArea";
-import ButtonContainerChecker from "./ButtonContainerChecker";
-import ButtonContainerActor from "./ButtonContainerActor";
+import CheckerButtonViewContainer from "./CheckerButtonViewContainer";
+import ActorButtonViewContainer from "./ActorButtonViewContainer";
+import CarbuttonViewContainer from "./CarbuttonViewContainer";
 import axios from "axios";
 
 export default function CarinfoContainer() {
-  const { changeCarInfo, carinfo, areainfo, checkerinfo, actorinfo } = useInfo(
-    (state) => state
-  );
+  const {
+    changeCarInfo,
+    carinfo,
+    areainfo,
+    checkerinfo,
+    actorinfo,
+    checkermodalinfo,
+    changeCheckerInfo,
+    actormodalinfo,
+    changeActorInfo,
+  } = useInfo((state) => state);
+  const [isModalOpenCar, setIsModalOpenCar] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
@@ -41,6 +51,17 @@ export default function CarinfoContainer() {
   };
   const onChangeTo = (e) => {
     changeCarInfo({ ...carinfo, to: e.target.value });
+  };
+  const carShowModal = () => {
+    setIsModalOpenCar(true);
+  };
+
+  const carHandleOk = () => {
+    setIsModalOpenCar(false);
+  };
+
+  const carHandleCancel = () => {
+    setIsModalOpenCar(false);
   };
 
   const showModal = () => {
@@ -80,7 +101,8 @@ export default function CarinfoContainer() {
   };
   const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
-    let checkerValue = JSON.stringify(checkerinfo);
+    changeCheckerInfo(checkermodalinfo);
+    let checkerValue = JSON.stringify(checkermodalinfo);
     checkerValue = checkerValue.replaceAll('"', "`");
     console.log("checkerValue :>> ", checkerValue);
     let rt1 = false;
@@ -102,32 +124,35 @@ export default function CarinfoContainer() {
 
     checkerValue = checkerValue.replaceAll("`", '"');
     checkerValue = JSON.parse(checkerValue);
-
-    await axios
-      .post("http://localhost:4000/operatoritems/", {
-        Name: checkerValue.Name,
-        Phone: checkerValue.Phone,
-        Type: checkerValue.Type,
-        Position: checkerValue.Position,
-        Attached: checkerValue.Attached,
-      })
-      .then((res) => {
-        console.log("res", res.statusText);
-        if (res.statusText === "OK") {
-          rt2 = true;
+    if (!checkerValue?.searched) {
+      {
+        await axios
+          .post("http://localhost:4000/operatoritems/", {
+            Name: checkerValue.Name,
+            Phone: checkerValue.Phone,
+            Type: checkerValue.Type,
+            Position: checkerValue.Position,
+            Attached: checkerValue.Attached,
+          })
+          .then((res) => {
+            console.log("res", res.statusText);
+            if (res.statusText === "OK") {
+              rt2 = true;
+            } else {
+              rt2 = false;
+            }
+          });
+        console.log("rt1,rt2", rt1, rt2);
+        if (rt1 === true && rt2 === true) {
+          Modal.success({
+            content: `저장 성공!`,
+          });
         } else {
-          rt2 = false;
+          Modal.error({
+            content: `저장 실패!`,
+          });
         }
-      });
-    console.log("rt1,rt2", rt1, rt2);
-    if (rt1 === true && rt2 === true) {
-      Modal.success({
-        content: `저장 성공!`,
-      });
-    } else {
-      Modal.error({
-        content: `저장 실패!`,
-      });
+      }
     }
   };
 
@@ -140,6 +165,7 @@ export default function CarinfoContainer() {
   };
   const handleOkActor = async () => {
     setIsModalOpenActor(false);
+    changeActorInfo(actormodalinfo);
     let actorValue = JSON.stringify(actorinfo);
     actorValue = actorValue.replaceAll('"', "`");
     let rt1 = false;
@@ -195,11 +221,25 @@ export default function CarinfoContainer() {
 
   return (
     <div>
-      <Input
-        className="input"
-        placeholder="차량 번호"
-        onChange={onChangeCarNum}
-      />
+      <div style={{ display: "flex", alignItems: "end" }}>
+        <Input
+          className="input"
+          placeholder="차량 번호"
+          onChange={onChangeCarNum}
+        />
+        <Button onClick={carShowModal}>조회</Button>
+        <Modal
+          title=""
+          open={isModalOpenCar}
+          onOk={carHandleOk}
+          onCancel={carHandleCancel}
+        >
+          <CarbuttonViewContainer />
+        </Modal>
+
+        <Button>삭제</Button>
+        <Button>N</Button>
+      </div>
       <Input
         className="input"
         placeholder="차량 목적"
@@ -257,7 +297,7 @@ export default function CarinfoContainer() {
             onOk={handleOkchecker}
             onCancel={handleCancelchecker}
           >
-            <ButtonContainerChecker />
+            <CheckerButtonViewContainer />
           </Modal>
         </Col>
         <Col>
@@ -268,7 +308,7 @@ export default function CarinfoContainer() {
             onOk={handleOkActor}
             onCancel={handleCancelActor}
           >
-            <ButtonContainerActor />
+            <ActorButtonViewContainer />
           </Modal>
         </Col>
       </Row>
