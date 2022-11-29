@@ -23,16 +23,16 @@ const CheckerButtonViewContainer = () => {
       });
   }, []);
   const onChangeAttached = (e) => {
-    changeCheckerModalInfo({ ...checkerinfo, Attached: e.target.value });
+    changeCheckerModalInfo({ ...checkermodalinfo, Attached: e.target.value });
   };
   const onChangecheckerPosition = (e) => {
-    changeCheckerModalInfo({ ...checkerinfo, Position: e.target.value });
+    changeCheckerModalInfo({ ...checkermodalinfo, Position: e.target.value });
   };
   const onChangeCheckerName = (e) => {
-    changeCheckerModalInfo({ ...checkerinfo, Name: e.target.value });
+    changeCheckerModalInfo({ ...checkermodalinfo, Name: e.target.value });
   };
   const onChangecheckerPhone = (e) => {
-    changeCheckerModalInfo({ ...checkerinfo, Phone: e.target.value });
+    changeCheckerModalInfo({ ...checkermodalinfo, Phone: e.target.value });
   };
 
   return (

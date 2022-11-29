@@ -23,32 +23,32 @@ export default function Printinfo() {
           <Row className="innerinfo">
             <Row>
               <Col className="font">성명 :</Col>
-              <Col className="font">{carinfo.owner}</Col>
+              <Col className="font">{carinfo.Owner}</Col>
             </Row>
             <Row>
               <Col className="font">차량 번호 :</Col>
-              <Col className="font">{carinfo.carnum}</Col>
+              <Col className="font">{carinfo.Number}</Col>
             </Row>
             <Row>
               <Col className="font"> 등록 번호 :</Col>
-              <Col className="font">{carinfo.regnum}</Col>
+              <Col className="font">{carinfo.RegNumber}</Col>
             </Row>
             <Row>
               <Col className="font"> GPS 번호 :</Col>
-              <Col className="font">{carinfo.gpsnum}</Col>
+              <Col className="font">{carinfo.GpsNumber}</Col>
             </Row>
 
             <Row>
               <Col className="font">주소 :</Col>
-              <Col className="font">{carinfo.addr}</Col>
+              <Col className="font">{carinfo.Address}</Col>
             </Row>
             <Row>
               <Col className="font">연락처 :</Col>
-              <Col className="font">{carinfo.phone}</Col>
+              <Col className="font">{carinfo.Phone}</Col>
             </Row>
             <Row>
               <Col className="font">차량 목적 :</Col>
-              <Col className="font">{carinfo.purpose}</Col>
+              <Col className="font">{carinfo.Purpose}</Col>
             </Row>
           </Row>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
@@ -61,11 +61,11 @@ export default function Printinfo() {
             <Row>
               <Col className="font">이동경로 :</Col>
               <Col className="font">
-                {carinfo.from
-                  ? carinfo.from
+                {carinfo.SPoint
+                  ? carinfo.SPoint
                   : "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}
                 <ArrowRightOutlined />
-                {carinfo.to}
+                {carinfo.EPoint}
               </Col>
             </Row>
             <Row>

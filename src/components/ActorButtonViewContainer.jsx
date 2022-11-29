@@ -20,16 +20,17 @@ const ActorButtonViewContainer = () => {
   }, []);
 
   const onChangeActorAttached = (e) => {
-    changeActorInfo({ ...actorinfo, Attached: e.target.value });
+    changeActorModalInfo({ ...actormodalinfo, Attached: e.target.value });
+    console.log("actorinfo :>> ", actormodalinfo);
   };
   const onChangeActorPosition = (e) => {
-    changeActorInfo({ ...actorinfo, Position: e.target.value });
+    changeActorModalInfo({ ...actormodalinfo, Position: e.target.value });
   };
   const onChangeActorName = (e) => {
-    changeActorInfo({ ...actorinfo, Name: e.target.value });
+    changeActorModalInfo({ ...actormodalinfo, Name: e.target.value });
   };
   const onChangeActorPhone = (e) => {
-    changeActorInfo({ ...actorinfo, Phone: e.target.value });
+    changeActorModalInfo({ ...actormodalinfo, Phone: e.target.value });
   };
 
   return (
