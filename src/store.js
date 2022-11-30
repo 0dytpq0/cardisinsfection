@@ -40,3 +40,38 @@ export const useInfo = create(
       })),
   }))
 );
+
+export const useMqtt = create(
+  persist((set) => ({
+    client: null,
+    changeClient: (newData) =>
+      set((state) => ({
+        client: newData,
+      })),
+    connectstatus: "",
+    changeConnectStatus: (newData) =>
+      set((state) => ({
+        connectstatus: newData,
+      })),
+    payload: [],
+    changePayload: (newData) =>
+      set((state) => ({
+        payload: newData,
+      })),
+    options: {
+      keepalive: 3000,
+      protocolId: "MQTT",
+      protocolVersion: 4,
+      clean: true,
+      reconnectPeriod: 1000,
+      connectTimeout: 10 * 60 * 1000,
+      will: {
+        topic: "WillMsg",
+        payload: "Connection Closed abnormally..!",
+        qos: 0,
+        retain: false,
+      },
+      rejectUnauthorized: false,
+    },
+  }))
+);
