@@ -6,7 +6,10 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 
 export default function Printinfo() {
   const { carinfo, areainfo, actorinfo, checkerinfo } = useInfo();
-
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth();
+  let date = today.getDate();
   return (
     <>
       <div
@@ -56,7 +59,9 @@ export default function Printinfo() {
           <div className="innerinfo">
             <Row>
               <Col className="font">소독일시 :</Col>
-              <Col className="font">{Date.now()}</Col>
+              <Col className="font">
+                {year}/{month}/{date}
+              </Col>
             </Row>
             <Row>
               <Col className="font">이동경로 :</Col>

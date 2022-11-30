@@ -6,11 +6,65 @@ import CarinfoContainer from "./components/CarinfoContainer";
 import carImg from "./image/disinfection.gif";
 import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
+import * as mqtt from "mqtt/dist/mqtt.min";
 import { useInfo } from "./store";
+// import { useMqtt } from "./store";
+export let client = null;
 
 function App() {
   const { carinfo } = useInfo((state) => state);
+  // const {client,changeClient,connectstatus,changeConnectStatus,payload, }
+  // const [client, setClient] = useState(null);
+  const [connectstatus, setConnectStatus] = useState("");
+  const [payload, setPayload] = useState([]);
+  const options = {
+    keepalive: 3000,
+    protocolId: "MQTT",
+    protocolVersion: 4,
+    clean: true,
+    reconnectPeriod: 1000,
+    connectTimeout: 10 * 60 * 1000,
+    will: {
+      topic: "WillMsg",
+      payload: "Connection Closed abnormally..!",
+      qos: 0,
+      retain: false,
+    },
+    rejectUnauthorized: false,
+  };
 
+  const mqttConnect = (host, options) => {
+    setConnectStatus("Connecting");
+    client = mqtt.connect(host, options);
+  };
+  useEffect(() => {
+    if (!client) {
+      mqttConnect("ws://" + window.location.hostname + ":9001", options);
+    }
+    if (client) {
+      console.log(client);
+      client?.on("connect", () => {
+        setConnectStatus("Connected");
+      });
+      client?.subscribe("#", 1, (error) => {
+        if (error) {
+          console.log("Subscribe to topics error", error);
+          return;
+        }
+      });
+      client?.on("error", (err) => {
+        console.error("Connection error: ", err);
+        client?.end();
+      });
+      client?.on("reconnect", () => {
+        setConnectStatus("Reconnecting");
+      });
+      client?.on("message", (topic, message) => {
+        const payload = { topic, message: message.toString() };
+        setPayload(payload);
+      });
+    }
+  }, [client]);
   return (
     <>
       <Row

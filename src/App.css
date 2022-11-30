@@ -72,6 +72,7 @@ span {
 }
 .buttons {
   display: flex;
+  justify-content: space-between;
   margin-top: 12px;
 }
 
@@ -84,4 +85,15 @@ span {
 }
 .auto_button {
   width: 100px;
+  cursor: pointer;
+  background-color: rgb(103, 57, 182);
+  border: 2px solid black;
+  color: white;
+}
+.btn_clicked {
+  width: 100px;
+  cursor: pointer;
+  background-color: yellow;
+  border: 2px solid black;
+  color: black;
 }
