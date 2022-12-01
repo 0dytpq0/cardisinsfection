@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Button, Alert, message, Col, Row } from "antd";
+import { Col, Row } from "antd";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import carImg from "./image/disinfection.gif";
 import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
-import { useInfo } from "./store";
 // import { useMqtt } from "./store";
 export let client = null;
 
 function App() {
-  const { carinfo } = useInfo((state) => state);
   // const {client,changeClient,connectstatus,changeConnectStatus,payload, }
   // const [client, setClient] = useState(null);
   const [connectstatus, setConnectStatus] = useState("");
@@ -38,9 +36,9 @@ function App() {
     client = mqtt.connect(host, options);
   };
   useEffect(() => {
-    if (!client) {
-      mqttConnect("ws://" + window.location.hostname + ":9001", options);
-    }
+    // if (!client) {
+    //   mqttConnect("ws://" + window.location.hostname + ":9001", options);
+    // }
     if (client) {
       console.log(client);
       client?.on("connect", () => {
