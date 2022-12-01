@@ -12,6 +12,9 @@ const AutoSwitch = ({ title, children, span }) => {
   const [isClickedCarClean, setIsClickedCarClean] = useState(false);
   const [isClickedAirDeo, setIsClickedAirDeo] = useState(false);
   const [isClickedOutGate, setIsClickedOutGate] = useState(false);
+  const [isClickedPipeAir, setIsClickedPipeAir] = useState(false);
+  const [inputStatus, setInputStatus] = useState("");
+  const [outputStatus, setOutputStatus] = useState("");
 
   useEffect(() => {
     client?.on("message", (topic, message) => {
@@ -27,11 +30,16 @@ const AutoSwitch = ({ title, children, span }) => {
           setIsClickedCarClean(jsonMsg.CARCLEAN === 1 ? true : false);
           setIsClickedAirDeo(jsonMsg.AIR_DEODORIZATION === 1 ? true : false);
           setIsClickedOutGate(jsonMsg.OUT_GATE === 1 ? true : false);
+          setIsClickedPipeAir(jsonMsg.PIPE_AIR_WATERDRAIN === 1 ? true : false);
+          setInputStatus(jsonMsg.INPUT_STATUS);
+          setOutputStatus(jsonMsg.OUPUT_STATUS);
         }
       }
     });
   });
-  const handleToggle = (func, state) => {
+  console.log("inputStatus :>> ", inputStatus);
+  console.log("outputStatus", outputStatus);
+  const handleToggle = (func) => {
     func(false);
   };
   const showDrawer = () => {
@@ -54,25 +62,26 @@ const AutoSwitch = ({ title, children, span }) => {
     setIsClickedCarClean(false);
     setIsClickedAirDeo(false);
     setIsClickedOutGate(false);
+    setIsClickedPipeAir(false);
   };
   const onBreakerUpHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "BREAKER","STATUS": 1}');
-    handleToggle(setIsClickedBreaker, isClickedBreaker);
+    handleToggle(setIsClickedBreaker);
     setIsClickedBreaker(true);
   };
   const onBreakerDownHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "BREAKER","STATUS": 0}');
-    handleToggle(setIsClickedBreaker, isClickedBreaker);
+    handleToggle(setIsClickedBreaker);
     setIsClickedBreaker(false);
   };
   const onInGateOpenHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "In_Gate","STATUS": 1}');
-    handleToggle(setIsClickedInGate, isClickedInGate);
+    handleToggle(setIsClickedInGate);
     setIsClickedInGate(true);
   };
   const onInGateCloseHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "In_Gate","STATUS": 0}');
-    handleToggle(setIsClickedInGate, isClickedInGate);
+    handleToggle(setIsClickedInGate);
     setIsClickedInGate(false);
   };
   const onRemoveWaterOnHandler = () => {
@@ -80,7 +89,7 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "REMOVE_WATER","STATUS": 1}'
     );
-    handleToggle(setIsClickedCleanWater, isClickedCleanWater);
+    handleToggle(setIsClickedCleanWater);
     setIsClickedCleanWater(true);
   };
   const onRemoveWaterOffHandler = () => {
@@ -88,7 +97,7 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "REMOVE_WATER","STATUS": 0}'
     );
-    handleToggle(setIsClickedCleanWater, isClickedCleanWater);
+    handleToggle(setIsClickedCleanWater);
     setIsClickedCleanWater(false);
   };
   const onCleanDriverOnHandler = () => {
@@ -96,7 +105,7 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "CLEAN_DRIVER","STATUS": 1}'
     );
-    handleToggle(setIsClickedCleanDriver, isClickedCleanDriver);
+    handleToggle(setIsClickedCleanDriver);
     setIsClickedCleanDriver(true);
   };
   const onCleanDriverOffHandler = () => {
@@ -104,17 +113,17 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "CLEAN_DRIVER","STATUS": 0}'
     );
-    handleToggle(setIsClickedCleanDriver, isClickedCleanDriver);
+    handleToggle(setIsClickedCleanDriver);
     setIsClickedCleanDriver(false);
   };
   const onCarCleanOnHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "CARCLEAN","STATUS": 1}');
-    handleToggle(setIsClickedCarClean, isClickedCarClean);
+    handleToggle(setIsClickedCarClean);
     setIsClickedCarClean(true);
   };
   const onCarCleanOffHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "CARCLEAN","STATUS": 0}');
-    handleToggle(setIsClickedCarClean, isClickedCarClean);
+    handleToggle(setIsClickedCarClean);
     setIsClickedCarClean(false);
   };
   const onAirDeodorizationOnHandler = () => {
@@ -122,7 +131,7 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "AIR_DEODORIZATION","STATUS": 1}'
     );
-    handleToggle(setIsClickedAirDeo, isClickedAirDeo);
+    handleToggle(setIsClickedAirDeo);
     setIsClickedAirDeo(true);
   };
   const onAirDeodorizationOffHandler = () => {
@@ -130,20 +139,35 @@ const AutoSwitch = ({ title, children, span }) => {
       "CarCleanDeviceRequest",
       '{"CMD": "AIR_DEODORIZATION","STATUS": 0}'
     );
-    handleToggle(setIsClickedAirDeo, isClickedAirDeo);
+    handleToggle(setIsClickedAirDeo);
     setIsClickedAirDeo(false);
   };
   const onOutGateOpenHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "OUT_GATE","STATUS": 1}');
-    handleToggle(setIsClickedOutGate, isClickedOutGate);
+    handleToggle(setIsClickedOutGate);
     setIsClickedOutGate(true);
   };
   const onOutGateCloseHandler = () => {
     client?.publish("CarCleanDeviceRequest", '{"CMD": "OUT_GATE","STATUS": 0}');
-    handleToggle(setIsClickedOutGate, isClickedOutGate);
+    handleToggle(setIsClickedOutGate);
     setIsClickedOutGate(false);
   };
-
+  const onPipeAirOnHandler = () => {
+    client?.publish(
+      "CarCleanDeviceRequest",
+      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 1}'
+    );
+    handleToggle(setIsClickedPipeAir);
+    setIsClickedPipeAir(true);
+  };
+  const onPipeAirOffHandler = () => {
+    client?.publish(
+      "CarCleanDeviceRequest",
+      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 0}'
+    );
+    handleToggle(setIsClickedPipeAir);
+    setIsClickedPipeAir(false);
+  };
   useEffect(() => {
     client?.on("message", (topic, message) => {
       console.log("message :>> ", topic, message.toString());
@@ -153,7 +177,12 @@ const AutoSwitch = ({ title, children, span }) => {
     <>
       <Col span={span} style={{ height: "70vh" }}>
         <Header className="header">
-          {title}{" "}
+          {title}
+          <Col offset={16}>
+            <span>InputStatus : {inputStatus}</span>
+            <br />
+            <span>OutputStatus : {outputStatus}</span>
+          </Col>
           <Switch
             onClick={open ? onClose : showDrawer}
             checkedChildren="자동"
@@ -325,6 +354,26 @@ const AutoSwitch = ({ title, children, span }) => {
                   </Button>
                 </Col>
               </Row>
+            </Row>
+
+            <Row className="auto_columns">
+              <Col span={6}>공기파이프</Col>
+              <Col span={9}>
+                <Button
+                  className={isClickedPipeAir ? "btn_clicked" : " auto_button"}
+                  onClick={onPipeAirOnHandler}
+                >
+                  열기
+                </Button>
+              </Col>
+              <Col span={9}>
+                <Button
+                  className={isClickedPipeAir ? " auto_button" : "btn_clicked"}
+                  onClick={onPipeAirOffHandler}
+                >
+                  닫기
+                </Button>
+              </Col>
             </Row>
           </Drawer>
         </Col>
