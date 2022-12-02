@@ -73,5 +73,15 @@ export const useMqtt = create(
       },
       rejectUnauthorized: false,
     },
+    ip: "",
+    changeIp: (newData) =>
+      set((state) => ({
+        ip: newData,
+      })),
+    port: "",
+    changePort: (newData) =>
+      set((state) => ({
+        port: newData,
+      })),
   }))
 );

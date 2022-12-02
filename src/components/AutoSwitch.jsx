@@ -37,8 +37,6 @@ const AutoSwitch = ({ title, children, span }) => {
       }
     });
   });
-  console.log("inputStatus :>> ", inputStatus);
-  console.log("outputStatus", outputStatus);
   const handleToggle = (func) => {
     func(false);
   };
@@ -169,9 +167,7 @@ const AutoSwitch = ({ title, children, span }) => {
     setIsClickedPipeAir(false);
   };
   useEffect(() => {
-    client?.on("message", (topic, message) => {
-      console.log("message :>> ", topic, message.toString());
-    });
+    client?.on("message", (topic, message) => {});
   });
   return (
     <>

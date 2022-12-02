@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Col, Row } from "antd";
+import { Col, Row, Button, Layout, Modal } from "antd";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
+import IpChange from "./components/IpChange";
 import carImg from "./image/disinfection.gif";
 import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
+
 // import { useMqtt } from "./store";
 export let client = null;
 
@@ -15,6 +17,9 @@ function App() {
   // const [client, setClient] = useState(null);
   const [connectstatus, setConnectStatus] = useState("");
   const [payload, setPayload] = useState([]);
+  const [isModalOpenPrint, setIsModalOpenPrint] = useState(false);
+  const [isModalOpenFind, setIsModalOpenFind] = useState(false);
+
   const options = {
     keepalive: 3000,
     protocolId: "MQTT",
@@ -31,20 +36,32 @@ function App() {
     rejectUnauthorized: false,
   };
 
+  var str = "TIME20221201113500";
+  let bytes = []; // char codes
+  var bytesv2 = []; // char codes
+  for (var i = 0; i < str.length; ++i) {
+    var code = str.charCodeAt(i);
+
+    bytes = bytes.concat([code]);
+
+    bytesv2 = bytesv2.concat([code & 0xff, (code / 256) >>> 0]);
+  }
+  bytes.unshift(2);
+  bytes.push(3);
+
   const mqttConnect = (host, options) => {
     setConnectStatus("Connecting");
     client = mqtt.connect(host, options);
   };
   useEffect(() => {
-    // if (!client) {
-    //   mqttConnect("ws://" + window.location.hostname + ":9001", options);
-    // }
+    if (!client) {
+      mqttConnect("ws://" + window.location.hostname + ":9001", options);
+    }
     if (client) {
-      console.log(client);
       client?.on("connect", () => {
         setConnectStatus("Connected");
       });
-      client?.subscribe("#", 1, (error) => {
+      client?.subscribe("#", 0, (error) => {
         if (error) {
           console.log("Subscribe to topics error", error);
           return;
@@ -61,10 +78,63 @@ function App() {
         const payload = { topic, message: message.toString() };
         setPayload(payload);
       });
+      client?.on("disconnect", () => client.end());
     }
   }, [client]);
+
+  const showModalPrint = () => {
+    setIsModalOpenPrint(true);
+  };
+  const handleOkPrint = (e) => {
+    setIsModalOpenPrint(false);
+  };
+  const handleCancelPrint = () => {
+    setIsModalOpenPrint(false);
+  };
+  const showModalFind = () => {
+    setIsModalOpenFind(true);
+  };
+  const handleOkFind = (e) => {
+    setIsModalOpenFind(false);
+  };
+  const handleCancelFind = () => {
+    setIsModalOpenFind(false);
+  };
+
   return (
     <>
+      <Row>
+        <Col>
+          <Button onClick={showModalPrint}>소독필증</Button>
+          <Modal
+            title="Basic Modal"
+            open={isModalOpenPrint}
+            onOk={handleOkPrint}
+            onCancel={handleCancelPrint}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
+        </Col>
+        <Col>
+          <Button onClick={showModalFind}>조회</Button>
+          <Modal
+            title="Basic Modal"
+            open={isModalOpenFind}
+            onOk={handleOkFind}
+            onCancel={handleCancelFind}
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
+        </Col>
+        <Col>
+          <IpChange />
+        </Col>
+      </Row>
+
       <Row
         wrap={false}
         style={{ height: "100vh", overflow: "hidden" }}
@@ -74,7 +144,9 @@ function App() {
           <Container title={"소독필증"}>
             <Printinfo />
           </Container>
-          <Container title={"차량확인"}></Container>
+          <Container title={"차량확인"}>
+            <img src="http://127.0.0.1:4000/images/1.jpg" />
+          </Container>
         </Col>
 
         <Col flex={8}>
