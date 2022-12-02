@@ -76,6 +76,13 @@ function App() {
       });
       client?.on("message", (topic, message) => {
         const payload = { topic, message: message.toString() };
+        if (topic.includes("CCTV")) {
+          message = message.toString().replaceAll("\\", "/");
+          // .replaceAll('"', "'");
+          console.log("message :>> ", message);
+          let msg = JSON.parse(message.toString());
+          console.log("msg :>> ", msg);
+        }
         setPayload(payload);
       });
       client?.on("disconnect", () => client.end());
