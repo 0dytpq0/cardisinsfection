@@ -10,6 +10,7 @@ import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
 import WaitingCar from "./components/WaitingCar";
+import InquireAll from "./components/InquireAll";
 
 // import { useMqtt } from "./store";
 export let client = null;
@@ -127,14 +128,15 @@ function App() {
         <Col>
           <Button onClick={showModalFind}>조회</Button>
           <Modal
+            style={{ height: "60vh" }}
+            bodyStyle={{ overflowX: "auto", overflowY: "auto" }}
+            width="700"
             title="Basic Modal"
             open={isModalOpenFind}
             onOk={handleOkFind}
             onCancel={handleCancelFind}
           >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <InquireAll />
           </Modal>
         </Col>
         <Col>

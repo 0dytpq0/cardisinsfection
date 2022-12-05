@@ -108,3 +108,11 @@ span {
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border-radius: 5px 5px 0px 0px;
 }
+.inquire_container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+.table {
+  font-size: 100px;
+}
