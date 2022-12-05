@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Input, Col, Row } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useInfo } from "../store";
@@ -8,6 +8,7 @@ import CheckerButtonViewContainer from "./CheckerButtonViewContainer";
 import ActorButtonViewContainer from "./ActorButtonViewContainer";
 import CarButtonViewContainer from "./CarButtonViewContainer";
 import axios from "axios";
+import { client } from "../App";
 
 export default function CarinfoContainer() {
   const {
@@ -27,6 +28,27 @@ export default function CarinfoContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
+
+  useEffect(() => {
+    client?.subscribe("CCTV", 0, (error) => {
+      if (error) {
+        console.log("Subscribe to topics error", error);
+        return;
+      }
+    });
+
+    client?.on("message", (topic, message) => {
+      const payload = { topic, message: message.toString() };
+      console.log("124515 :>> ", 124515);
+      if (topic.includes("CCTV")) {
+        message = message.toString().replaceAll("\\", "/");
+        let msg = JSON.parse(message.toString());
+        console.log("msgcar", msg);
+        changeCarInfo({ ...carinfo, Number: msg.CARNUMBER });
+      }
+    });
+    client?.on("disconnect", () => client.end());
+  }, [client]);
 
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
@@ -260,7 +282,7 @@ export default function CarinfoContainer() {
         <Input
           className="input"
           placeholder="차량 번호"
-          value={carinfo.Number}
+          value={carinfo?.Number}
           onChange={onChangeCarNum}
         />
         <Button onClick={carShowModal}>조회</Button>
@@ -280,44 +302,44 @@ export default function CarinfoContainer() {
       <Input
         className="input"
         placeholder="차량 목적"
-        value={carinfo.Purpose}
+        value={carinfo?.Purpose}
         onChange={onChangePurpose}
       />
       <Input
         className="input"
         placeholder="등록 번호"
-        value={carinfo.RegNum}
+        value={carinfo?.RegNum}
         onChange={onChangeRegNum}
       />
       <Input
         className="input"
         placeholder="GPS 번호"
-        value={carinfo.GpsNum}
+        value={carinfo?.GpsNum}
         onChange={onChangeGpsnum}
       />
       <Input
         className="input"
         placeholder="차주 성명"
-        value={carinfo.Owner}
+        value={carinfo?.Owner}
         onChange={onChangeOwner}
       />
       <Input
         className="input"
         placeholder="주소"
-        value={carinfo.Address}
+        value={carinfo?.Address}
         onChange={onChangeAddr}
       />
       <Input
         className="input"
         placeholder="연락처"
-        value={carinfo.Phone}
+        value={carinfo?.Phone}
         onChange={onChangePhone}
       />
       <Row wrap={false} style={{ display: "flex", alignItems: "center" }}>
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
           <Input
             className="input"
-            value={carinfo.SPoint}
+            value={carinfo?.SPoint}
             placeholder="출발지"
             onChange={onChangeFrom}
           />
@@ -327,7 +349,7 @@ export default function CarinfoContainer() {
           <Input
             className="input"
             placeholder="목적지"
-            value={carinfo.EPoint}
+            value={carinfo?.EPoint}
             onChange={onChangeTo}
           />
         </Col>
