@@ -97,3 +97,14 @@ span {
   border: 2px solid black;
   color: black;
 }
+.waiting__list {
+  list-style: none;
+  padding-left: 0px;
+}
+.waiting__list__item {
+  margin: 15px 0px;
+  padding: 5px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 5px 5px 0px 0px;
+}

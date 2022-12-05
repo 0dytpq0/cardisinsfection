@@ -174,10 +174,15 @@ const AutoSwitch = ({ title, children, span }) => {
       <Col span={span} style={{ height: "70vh" }}>
         <Header className="header">
           {title}
-          <Col offset={16}>
-            <span>InputStatus : {inputStatus}</span>
-            <br />
-            <span>OutputStatus : {outputStatus}</span>
+          <Col style={{ display: "flex", flexWrap: "no-wrap" }} offset={16}>
+            <span>
+              Input : {inputStatus}
+              {"\u00A0"}
+              {"\u00A0"}
+              {"\u00A0"}
+              {"\u00A0"}
+            </span>
+            <span>Output : {outputStatus}</span>
           </Col>
           <Switch
             onClick={open ? onClose : showDrawer}

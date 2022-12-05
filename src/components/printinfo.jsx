@@ -5,7 +5,7 @@ import { useInfo } from "../store";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 export default function Printinfo() {
-  const { carinfo, areainfo, actorinfo, checkerinfo } = useInfo();
+  const { carinfo, areainfo, actorinfo, checkerinfo, waitingcar } = useInfo();
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Col, Row, Button, Layout, Modal } from "antd";
+import { StyleProvider } from "@ant-design/cssinjs";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import IpChange from "./components/IpChange";
@@ -8,6 +9,7 @@ import carImg from "./image/disinfection.gif";
 import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
+import WaitingCar from "./components/WaitingCar";
 
 // import { useMqtt } from "./store";
 export let client = null;
@@ -79,9 +81,7 @@ function App() {
         if (topic.includes("CCTV")) {
           message = message.toString().replaceAll("\\", "/");
           // .replaceAll('"', "'");
-          console.log("message :>> ", message);
           let msg = JSON.parse(message.toString());
-          console.log("msg :>> ", msg);
         }
         setPayload(payload);
       });
@@ -163,7 +163,9 @@ function App() {
                 <CarinfoContainer></CarinfoContainer>
               </Container>
 
-              <Container span={5} title={"대기저장"}></Container>
+              <Container span={5} title={"대기저장"}>
+                <WaitingCar />
+              </Container>
               <Container span={5} title={"프린트완료차량"}></Container>
               <Container span={8} title={"알림"}></Container>
             </Row>

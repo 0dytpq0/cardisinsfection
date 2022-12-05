@@ -9,11 +9,7 @@ const IpChange = () => {
   const [parsedValue, setParsedValue] = useState([]);
   const { ip, port, changeIp, changePort } = useMqtt();
 
-  console.log("parsedValue :>> ", parsedValue);
-  console.log("ip :>> ", ip);
-  console.log("port", port);
-  const showModalIp = async () => {
-    setIsModalOpenIp(true);
+  const getData = async () => {
     await axios.get(`http://localhost:4000/settingitemsIP`).then((response) => {
       let data = response.data[0].Value;
 
@@ -23,6 +19,13 @@ const IpChange = () => {
       changePort(parsedValue.PORT);
       setData(data);
     });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const showModalIp = async () => {
+    setIsModalOpenIp(true);
   };
   const handleOkIp = (e) => {
     setIsModalOpenIp(false);

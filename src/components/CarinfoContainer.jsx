@@ -12,6 +12,8 @@ import { client } from "../App";
 
 export default function CarinfoContainer() {
   const {
+    waitingcar,
+    changeWaitingCar,
     changeCarInfo,
     carinfo,
     carmodalinfo,
@@ -23,52 +25,87 @@ export default function CarinfoContainer() {
     actormodalinfo,
     changeActorInfo,
     changeCarModalInfo,
+    waitingcurrentnumber,
   } = useInfo((state) => state);
   const [isModalOpenCar, setIsModalOpenCar] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
+  const [carInfoData, setCarInfoData] = useState("");
 
   useEffect(() => {
-    client?.subscribe("CCTV", 0, (error) => {
+    let Number = "";
+    let sql = "";
+    Number = waitingcurrentnumber;
+    if (Number !== "") {
+      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
+    }
+    axios.get(sql).then((res, error) => {
       if (error) {
-        console.log("Subscribe to topics error", error);
-        return;
+        console.log("error :>> ", error);
       }
+      console?.log("res", sql, res);
+      let data = res.data[0];
+      setCarInfoData({
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
+      });
+      changeCarModalInfo({
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
+      });
+      changeCarInfo({
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
+      });
+      console.log("data :>> ", data);
     });
-
-    client?.on("message", (topic, message) => {
-      const payload = { topic, message: message.toString() };
-      console.log("124515 :>> ", 124515);
-      if (topic.includes("CCTV")) {
-        message = message.toString().replaceAll("\\", "/");
-        let msg = JSON.parse(message.toString());
-        console.log("msgcar", msg);
-        changeCarInfo({ ...carinfo, Number: msg.CARNUMBER });
-      }
-    });
-    client?.on("disconnect", () => client.end());
-  }, [client]);
-
+  }, [waitingcurrentnumber]);
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
+    setCarInfoData({ ...carInfoData, Number: e.target.value });
   };
   const onChangePurpose = (e) => {
     changeCarInfo({ ...carmodalinfo, Purpose: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Purpose: e.target.value });
+    setCarInfoData({ ...carInfoData, Purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
     changeCarInfo({ ...carmodalinfo, RegNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, RegNumber: e.target.value });
+    setCarInfoData({ ...carInfoData, RegNumber: e.target.value });
   };
   const onChangeGpsnum = (e) => {
     changeCarInfo({ ...carmodalinfo, GpsNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, GpsNumber: e.target.value });
+    setCarInfoData({ ...carInfoData, GpsNumber: e.target.value });
   };
   const onChangeOwner = (e) => {
     changeCarInfo({ ...carmodalinfo, Owner: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Owner: e.target.value });
+    setCarInfoData({ ...carInfoData, Owner: e.target.value });
   };
   const onChangeAddr = (e) => {
     changeCarInfo({
@@ -76,6 +113,7 @@ export default function CarinfoContainer() {
       Address: e.target.value,
     });
     changeCarModalInfo({ ...carmodalinfo, Address: e.target.value });
+    setCarInfoData({ ...carInfoData, Address: e.target.value });
   };
   const onChangePhone = (e) => {
     changeCarInfo({ ...carmodalinfo, Phone: e.target.value });
@@ -83,6 +121,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       Phone: e.target.value,
     });
+    setCarInfoData({ ...carInfoData, Phone: e.target.value });
   };
   const onChangeFrom = (e) => {
     changeCarInfo({ ...carmodalinfo, SPoint: e.target.value });
@@ -90,6 +129,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       SPoint: e.target.value,
     });
+    setCarInfoData({ ...carInfoData, SPoint: e.target.value });
   };
   const onChangeTo = (e) => {
     changeCarInfo({ ...carmodalinfo, EPoint: e.target.value });
@@ -97,6 +137,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       EPoint: e.target.value,
     });
+    setCarInfoData({ ...carInfoData, EPoint: e.target.value });
   };
 
   const carShowModal = () => {
@@ -106,6 +147,7 @@ export default function CarinfoContainer() {
   const carHandleOk = () => {
     setIsModalOpenCar(false);
     changeCarInfo(carmodalinfo);
+    setCarInfoData(carmodalinfo);
   };
 
   const carHandleCancel = () => {
@@ -282,7 +324,7 @@ export default function CarinfoContainer() {
         <Input
           className="input"
           placeholder="차량 번호"
-          value={carinfo?.Number}
+          value={carInfoData?.Number}
           onChange={onChangeCarNum}
         />
         <Button onClick={carShowModal}>조회</Button>
@@ -302,44 +344,44 @@ export default function CarinfoContainer() {
       <Input
         className="input"
         placeholder="차량 목적"
-        value={carinfo?.Purpose}
+        value={carInfoData?.Purpose}
         onChange={onChangePurpose}
       />
       <Input
         className="input"
         placeholder="등록 번호"
-        value={carinfo?.RegNum}
+        value={carInfoData?.RegNum}
         onChange={onChangeRegNum}
       />
       <Input
         className="input"
         placeholder="GPS 번호"
-        value={carinfo?.GpsNum}
+        value={carInfoData?.GpsNum}
         onChange={onChangeGpsnum}
       />
       <Input
         className="input"
         placeholder="차주 성명"
-        value={carinfo?.Owner}
+        value={carInfoData?.Owner}
         onChange={onChangeOwner}
       />
       <Input
         className="input"
         placeholder="주소"
-        value={carinfo?.Address}
+        value={carInfoData?.Address}
         onChange={onChangeAddr}
       />
       <Input
         className="input"
         placeholder="연락처"
-        value={carinfo?.Phone}
+        value={carInfoData?.Phone}
         onChange={onChangePhone}
       />
       <Row wrap={false} style={{ display: "flex", alignItems: "center" }}>
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
           <Input
             className="input"
-            value={carinfo?.SPoint}
+            value={carInfoData?.SPoint}
             placeholder="출발지"
             onChange={onChangeFrom}
           />
@@ -349,7 +391,7 @@ export default function CarinfoContainer() {
           <Input
             className="input"
             placeholder="목적지"
-            value={carinfo?.EPoint}
+            value={carInfoData?.EPoint}
             onChange={onChangeTo}
           />
         </Col>

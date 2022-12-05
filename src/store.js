@@ -38,6 +38,16 @@ export const useInfo = create(
       set((state) => ({
         actormodalinfo: newData,
       })),
+    waitingcar: [],
+    waitingcurrentnumber: "",
+    changeWaitingCar: (newData) =>
+      set((state) => ({
+        waitingcar: newData,
+      })),
+    changeWaitingCurrentNumber: (newData) =>
+      set((state) => ({
+        waitingcurrentnumber: newData,
+      })),
   }))
 );
 
