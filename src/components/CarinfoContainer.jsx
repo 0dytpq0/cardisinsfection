@@ -44,40 +44,77 @@ export default function CarinfoContainer() {
       if (error) {
         console.log("error :>> ", error);
       }
-      let data = res.data[0];
-      setCarInfoData({
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
-      changeCarModalInfo({
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
-      changeCarInfo({
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
+      console.log("res.data :>> ", res.data);
+      let data = res?.data[0];
+      if (res?.data.length > 0) {
+        setCarInfoData({
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
+        });
+        changeCarModalInfo({
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
+        });
+        changeCarInfo({
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
+        });
+      } else {
+        setCarInfoData({
+          Number: "",
+          Address: "",
+          RegNumber: "",
+          Phone: "",
+          GpsNumber: "",
+          Owner: "",
+          SPoint: "",
+          Purpose: "",
+          EPoint: "",
+        });
+        changeCarModalInfo({
+          Number: "",
+          Address: "",
+          RegNumber: "",
+          Phone: "",
+          GpsNumber: "",
+          Owner: "",
+          SPoint: "",
+          Purpose: "",
+          EPoint: "",
+        });
+        changeCarInfo({
+          Number: "",
+          Address: "",
+          RegNumber: "",
+          Phone: "",
+          GpsNumber: "",
+          Owner: "",
+          SPoint: "",
+          Purpose: "",
+          EPoint: "",
+        });
+      }
     });
   }, [waitingcurrentnumber]);
   const onChangeCarNum = (e) => {

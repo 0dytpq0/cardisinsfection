@@ -3,11 +3,10 @@ import { useInfo } from "../store";
 import axios from "axios";
 import { client } from "../App";
 
-const WaitingCar = () => {
+const WaitingCar = ({ carimg }) => {
   const { changeWaitingCar, waitingcar, changeWaitingCurrentNumber } =
     useInfo();
   let arr = [];
-
   useEffect(() => {
     client?.subscribe("CCTV", 0, (error) => {
       if (error) {
@@ -41,11 +40,8 @@ const WaitingCar = () => {
       <div style={{ height: "10vh", overflow: "hidden" }}>
         <ul className="waiting__list">{ItemList}</ul>
       </div>
-      <div>
-        <img
-          style={{ width: "34vh", height: "280px", zIndex: "0" }}
-          src="http://127.0.0.1:4000/images/1.jpg"
-        />
+      <div style={{ backgroundColor: "red" }}>
+        <img className="carimg" src={carimg} />
       </div>
     </div>
   );

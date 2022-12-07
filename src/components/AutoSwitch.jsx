@@ -186,8 +186,8 @@ const AutoSwitch = ({ title, children, span }) => {
           </Col>
           <Switch
             onClick={open ? onClose : showDrawer}
-            checkedChildren="자동"
-            unCheckedChildren="수동"
+            checkedChildren="수동"
+            unCheckedChildren="자동"
           />
         </Header>
 
@@ -268,7 +268,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 </Col>
               </Row>
               <Row className="auto_columns">
-                <Col span={6}>운전석소독</Col>
+                <Col span={6}>운전자소독</Col>
                 <Col span={9}>
                   <Button
                     className={
@@ -314,7 +314,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 </Col>
               </Row>
               <Row className="auto_columns">
-                <Col span={6}>공기정화</Col>
+                <Col span={6}>공기 정화</Col>
                 <Col span={9}>
                   <Button
                     className={isClickedAirDeo ? "btn_clicked" : " auto_button"}
@@ -358,7 +358,7 @@ const AutoSwitch = ({ title, children, span }) => {
             </Row>
 
             <Row className="auto_columns">
-              <Col span={6}>공기파이프</Col>
+              <Col span={6}>에어 배출</Col>
               <Col span={9}>
                 <Button
                   className={isClickedPipeAir ? "btn_clicked" : " auto_button"}

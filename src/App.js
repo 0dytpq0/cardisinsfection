@@ -6,6 +6,11 @@ import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import IpChange from "./components/IpChange";
 import carImg from "./image/disinfection.gif";
+import Breaker1 from "./image/Breaker1.gif";
+import Water2 from "./image/Water2.gif";
+import Move3 from "./image/Move3.gif";
+import Disinfect4 from "./image/Disinfect4.gif";
+import Out5 from "./image/Out5.gif";
 import Printinfo from "./components/Printinfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
@@ -16,6 +21,7 @@ import arrivesound from "./mp3/carArrived.mp3";
 import notrecogsound from "./mp3/carNotRecog.mp3";
 import ReactDOM from "react-dom/client";
 import PrintCompleted from "./components/PrintCompleted";
+import Alarm from "./components/Alarm";
 
 import { useMqtt, useInfo } from "./store";
 import { WindowsFilled } from "@ant-design/icons";
@@ -30,6 +36,7 @@ function App() {
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
   const { changePrintedCar, waitingcar, printedcar, waitingcurrentnumber } =
     useInfo();
+  const [carimg, setCarImg] = useState("");
   const options = {
     keepalive: 3000,
     protocolId: "MQTT",
@@ -45,7 +52,8 @@ function App() {
     },
     rejectUnauthorized: false,
   };
-
+  // let carImg = null;
+  let imgurl = "";
   var str = "TIME20221201113500";
   let bytes = []; // char codes
   var bytesv2 = []; // char codes
@@ -89,13 +97,47 @@ function App() {
         if (topic.includes("CCTV")) {
           message = message.toString().replaceAll("\\", "/");
           // .replaceAll('"', "'");
-          let msg = JSON.parse(message.toString());
-          if (msg.CARNUMBER === "미인식") {
-            const audio = new Audio(notrecogsound);
-            audio.play();
-          } else if (msg.CMD !== "CCTVISOK") {
-            const audio = new Audio(arrivesound);
-            audio.play();
+          console.log("message", message);
+          let msg = JSON.parse(message?.toString());
+
+          if (msg?.CARNUMBER === "미인식") {
+            try {
+              const audio = new Audio(notrecogsound);
+              audio.play();
+            } catch (error) {
+              console.log("error", error);
+            }
+          } else if (msg?.CMD !== "CCTVISOK") {
+            try {
+              const audio = new Audio(arrivesound);
+              audio.play();
+            } catch (error) {
+              console.log("error", error);
+            }
+            imgurl = msg?.IMG;
+            console.log("imgurl :>> ", imgurl);
+            imgurl = imgurl?.replace("c:/LPR", "http://127.0.0.1:4000/images");
+            setCarImg(imgurl);
+          }
+        }
+        if (topic.includes("CarCleanDeviceRequest")) {
+          const msg = message.toString();
+          const jsonMsg = JSON.parse(msg);
+          if (jsonMsg?.CMD === "BREAKER") {
+            carImg = Breaker1;
+          }
+          if (jsonMsg?.CMD === "REMOVE_WATER") {
+            carImg = Water2;
+          }
+          if (jsonMsg?.CMD === "CLEAN_DRIVER") {
+            carImg = Move3;
+          }
+          if (jsonMsg?.CMD === "AIR_DEODORIZATION") {
+            carImg = Disinfect4;
+          }
+          if (jsonMsg?.CMD === "OUT_GATE") {
+            carImg = Out5;
+            console.log("carImg :>> ", carImg);
           }
         }
         setPayload(payload);
@@ -212,12 +254,14 @@ function App() {
               </Container>
 
               <Container span={5} title={"대기저장"}>
-                <WaitingCar />
+                <WaitingCar carimg={carimg} />
               </Container>
               <Container span={5} title={"프린트완료차량"}>
                 <PrintCompleted />
               </Container>
-              <Container span={8} title={"알림"}></Container>
+              <Container span={8} title={"알림"}>
+                <Alarm />
+              </Container>
             </Row>
           </Col>
           <Col>
