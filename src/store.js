@@ -48,6 +48,11 @@ export const useInfo = create(
       set((state) => ({
         waitingcurrentnumber: newData,
       })),
+    printedcar: [],
+    changePrintedCar: (newData) =>
+      set((state) => ({
+        printedcar: newData,
+      })),
   }))
 );
 

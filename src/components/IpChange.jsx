@@ -43,7 +43,7 @@ const IpChange = () => {
     <div>
       <Button onClick={showModalIp}>IP설정</Button>
       <Modal
-        title="IP,PORT 설정"
+        title="설정"
         open={isModalOpenIp}
         onOk={handleOkIp}
         onCancel={handleCancelIp}

@@ -44,7 +44,6 @@ export default function CarinfoContainer() {
       if (error) {
         console.log("error :>> ", error);
       }
-      console?.log("res", sql, res);
       let data = res.data[0];
       setCarInfoData({
         Number: `${data?.Number}`,
@@ -79,7 +78,6 @@ export default function CarinfoContainer() {
         Purpose: `${data?.Purpose}`,
         EPoint: `${data?.EPoint}`,
       });
-      console.log("data :>> ", data);
     });
   }, [waitingcurrentnumber]);
   const onChangeCarNum = (e) => {

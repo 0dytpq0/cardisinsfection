@@ -1,15 +1,24 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Table } from "antd";
+import { Button, Table, DatePicker, Space } from "antd";
+import dayjs from "dayjs";
+import { Excel } from "antd-table-saveas-excel";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
 
 const InquireAll = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [carInfoItems, setCarInfoItems] = useState({});
+  const [carInfoItems, setCarInfoItems] = useState([]);
+  const dateFormat = "YYYY/MM/DD";
+
+  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const columns = [
     {
       title: "출력일",
-      dataIndex: "IssueDate",
+      dataIndex: "PrintIndex",
     },
     {
       title: "차량번호",
@@ -64,69 +73,70 @@ const InquireAll = () => {
       dataIndex: "CName",
     },
   ];
-  const data = [];
-  for (let i = 0; i < carInfoItems.length; i++) {
-    data.push({
-      IssueDate: carInfoItems[i].IssueDate,
-      Number: carInfoItems[i].Number,
-      Owner: carInfoItems[i].Owner,
-      Address: carInfoItems[i].Address,
-      Phone: carInfoItems[i].Phone,
-      Purpose: carInfoItems[i].Purpose,
-      EPoint: carInfoItems[i].EPoint,
-      SPoint: carInfoItems[i].SPoint,
-      AreaType: carInfoItems[i].AreaType,
-      Area: carInfoItems[i].Area,
-      PointName: carInfoItems[i].PointName,
-      DContent: carInfoItems[i].DContent,
-      EName: carInfoItems[i].EName,
-      CName: carInfoItems[i].CName,
-    });
-  }
 
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
+  const { RangePicker } = DatePicker;
+
   const onSelectChange = (newSelectedRowKeys) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
+
+  const excelButton = () => {
+    const excel = new Excel();
+    excel
+      .addSheet(startDate + "-" + endDate)
+      .addColumns(columns)
+      .addDataSource(carInfoItems, {
+        str2Percent: true,
+      })
+      .saveAs(startDate + "-" + endDate + "-소독데이터.xlsx");
   };
-  const hasSelected = selectedRowKeys.length > 0;
+  const searchButton = () => {
+    searchData();
+  };
+  const searchData = () => {
+    console.log("startDate", startDate);
+    console.log("endDate", endDate);
+    let sql =
+      "http://localhost:4000/carinfoitemsDate?SDate=" +
+      startDate +
+      "&EDate=" +
+      endDate +
+      "";
+    console.log("sql :>> ", sql);
+    axios.get(sql).then((res) => {
+      console.log("res.data", res);
+      let arr = res.data;
+      arr.map((item, i) => {
+        item = { ...item, key: i };
+      });
+      console.log("arr", arr);
+      setCarInfoItems(arr);
+    });
+  };
 
   useEffect(() => {
-    axios.get("http://localhost:4000/carinfoitemsall").then((res) => {
-      let data = res.data.map((_, i) => ({
-        IssueDate: `${res.data[i].IssueDate}`,
-        Number: `${res.data[i].Number}`,
-        Phone: `${res.data[i].Phone}`,
-        Owner: `${res.data[i].Owner}`,
-        Address: `${res.data[i].Address}`,
-        Purpose: `${res.data[i].Purpose}`,
-        EPoint: `${res.data[i].EPoint}`,
-        SPoint: `${res.data[i].SPoint}`,
-        AreaType: `${res.data[i].AreaType}`,
-        Area: `${res.data[i].Area}`,
-        PointName: `${res.data[i].PointName}`,
-        DContent: `${res.data[i].DContent}`,
-        EName: `${res.data[i].EName}`,
-        CName: `${res.data[i].CName}`,
-        Selected: false,
-        idx: i,
-      }));
-      setCarInfoItems(data);
-      console.log("data :>> ", data);
-    });
-  }, []);
-  console.log("carInfoItems", carInfoItems);
+    searchData();
+  }, [startDate, endDate]);
+  const onHandleCalender = (e) => {
+    console.log("e", e);
+    if (e !== null) {
+      if (e[0] !== null) {
+        let Sday = e[0].$D.toString().padStart(2, "0");
+        let Syear = e[0].$y;
+        let Smonth = (e[0].$M + 1).toString().padStart(2, "0");
+        setStartDate(`${Syear}-${Smonth}-${Sday}`);
+        console.log("startDate", startDate);
+      }
+      if (e[1] !== null) {
+        let Eday = e[1].$D.toString().padStart(2, "0");
+        let Eyear = e[1].$y;
+        let Emonth = (e[1].$M + 1).toString().padStart(2, "0");
+        setEndDate(`${Eyear}-${Emonth}-${Eday}`);
+        console.log("EndDate", endDate);
+      }
+    }
+  };
 
   return (
     <div>
@@ -135,29 +145,23 @@ const InquireAll = () => {
           marginBottom: 16,
         }}
       >
-        <Button
-          type="primary"
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-        >
-          Reload
-        </Button>
         <span
           style={{
             marginLeft: 8,
           }}
-        >
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-        </span>
+        ></span>
       </div>
-      <Table
-        scrollToFirstRowOnChange={false}
-        scroll={{ x: 500, y: 500 }}
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
+      <Table scroll={{ y: 400 }} columns={columns} dataSource={carInfoItems} />
+      <RangePicker
+        onChange={onHandleCalender}
+        defaultValue={[
+          dayjs("2022-02-01", dateFormat),
+          dayjs("2022-12-06", dateFormat),
+        ]}
+        format={dateFormat}
       />
+      <Button onClick={searchButton}>조회</Button>
+      <Button onClick={excelButton}>엑셀</Button>
     </div>
   );
 };

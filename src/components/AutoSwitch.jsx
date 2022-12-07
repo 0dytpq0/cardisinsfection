@@ -36,7 +36,7 @@ const AutoSwitch = ({ title, children, span }) => {
         }
       }
     });
-  });
+  }, []);
   const handleToggle = (func) => {
     func(false);
   };
@@ -383,4 +383,4 @@ const AutoSwitch = ({ title, children, span }) => {
   );
 };
 
-export default AutoSwitch;
+export default React.memo(AutoSwitch);

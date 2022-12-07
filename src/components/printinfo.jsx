@@ -1,26 +1,28 @@
 import React from "react";
 import "../App.css";
-import { Row, Col, Divider } from "antd";
+import { Button, Row, Col, Divider } from "antd";
 import { useInfo } from "../store";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
-export default function Printinfo() {
+export default function Printinfo({ printRef }) {
   const { carinfo, areainfo, actorinfo, checkerinfo, waitingcar } = useInfo();
   let today = new Date();
   let year = today.getFullYear();
   let month = today.getMonth();
   let date = today.getDate();
+
   return (
     <>
       <div
+        className="printarea"
+        ref={printRef}
         style={{
           padding: "10px",
-          overflow: "auto",
-          height: "570px",
+          height: "80vh",
         }}
       >
         <div className="printinfo">
-          <span>일련번호 -</span>
+          <span>일련번호 - </span>
           <h2 style={{ textAlign: "center" }}>소 독 필 증</h2>
           <span>운전자 정보</span>
           <Row className="innerinfo">
@@ -112,7 +114,11 @@ export default function Printinfo() {
             <Row className="checkman__font">
               <Col className="font">소속 - {checkerinfo.Attached}</Col>
               <Col className="font">직급 - {checkerinfo.Position}</Col>
-              <Col className="font">성명 - {checkerinfo.Name}</Col>
+              <Col className="font auth_name">성명 - {checkerinfo.Name}</Col>
+              <img
+                className="auth_img"
+                src="http://127.0.0.1:4000/images/auth.png"
+              />
             </Row>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Col, Row, Button, Layout, Modal } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
@@ -11,8 +11,14 @@ import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
 import WaitingCar from "./components/WaitingCar";
 import InquireAll from "./components/InquireAll";
+import ReactToPrint from "react-to-print";
+import arrivesound from "./mp3/carArrived.mp3";
+import notrecogsound from "./mp3/carNotRecog.mp3";
+import ReactDOM from "react-dom/client";
+import PrintCompleted from "./components/PrintCompleted";
 
-// import { useMqtt } from "./store";
+import { useMqtt, useInfo } from "./store";
+import { WindowsFilled } from "@ant-design/icons";
 export let client = null;
 
 function App() {
@@ -22,7 +28,8 @@ function App() {
   const [payload, setPayload] = useState([]);
   const [isModalOpenPrint, setIsModalOpenPrint] = useState(false);
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
-
+  const { changePrintedCar, waitingcar, printedcar, waitingcurrentnumber } =
+    useInfo();
   const options = {
     keepalive: 3000,
     protocolId: "MQTT",
@@ -83,12 +90,19 @@ function App() {
           message = message.toString().replaceAll("\\", "/");
           // .replaceAll('"', "'");
           let msg = JSON.parse(message.toString());
+          if (msg.CARNUMBER === "미인식") {
+            const audio = new Audio(notrecogsound);
+            audio.play();
+          } else if (msg.CMD !== "CCTVISOK") {
+            const audio = new Audio(arrivesound);
+            audio.play();
+          }
         }
         setPayload(payload);
       });
       client?.on("disconnect", () => client.end());
     }
-  }, [client]);
+  }, []);
 
   const showModalPrint = () => {
     setIsModalOpenPrint(true);
@@ -108,6 +122,19 @@ function App() {
   const handleCancelFind = () => {
     setIsModalOpenFind(false);
   };
+  const onPrintedCar = () => {
+    changePrintedCar(waitingcar[0]);
+    console.log("printedcar :>> ", printedcar);
+  };
+  const printFunc = () => {
+    onPrintedCar();
+    let printContents = componentRef.current.innerHTML;
+    let originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+  };
+  const componentRef = useRef(null);
 
   return (
     <>
@@ -131,10 +158,14 @@ function App() {
             style={{ height: "60vh" }}
             bodyStyle={{ overflowX: "auto", overflowY: "auto" }}
             width="700"
-            title="Basic Modal"
             open={isModalOpenFind}
             onOk={handleOkFind}
             onCancel={handleCancelFind}
+            footer={[
+              <Button key="submit" type="primary" onClick={handleOkFind}>
+                닫기
+              </Button>,
+            ]}
           >
             <InquireAll />
           </Modal>
@@ -151,10 +182,25 @@ function App() {
       >
         <Col style={{ width: "300px" }} flex={2}>
           <Container title={"소독필증"}>
-            <Printinfo />
-          </Container>
-          <Container title={"차량확인"}>
-            <img src="http://127.0.0.1:4000/images/1.jpg" />
+            <Button onClick={printFunc}>출력</Button>
+            {/* <ReactToPrint
+              handleClick={() => {
+                console.log("first");
+              }}
+              trigger={() => {
+                return (
+                  <Button
+                    onClick={() => {
+                      console.log("first");
+                    }}
+                  >
+                    출력
+                  </Button>
+                );
+              }}
+              content={() => componentRef.current}
+            /> */}
+            <Printinfo className="printarea" printRef={componentRef} />
           </Container>
         </Col>
 
@@ -168,7 +214,9 @@ function App() {
               <Container span={5} title={"대기저장"}>
                 <WaitingCar />
               </Container>
-              <Container span={5} title={"프린트완료차량"}></Container>
+              <Container span={5} title={"프린트완료차량"}>
+                <PrintCompleted />
+              </Container>
               <Container span={8} title={"알림"}></Container>
             </Row>
           </Col>

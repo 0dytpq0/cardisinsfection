@@ -1,18 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useInfo, waitingInfo } from "../store";
+import React, { useEffect } from "react";
+import { useInfo } from "../store";
 import axios from "axios";
 import { client } from "../App";
 
 const WaitingCar = () => {
-  const {
-    changeCarInfo,
-    carinfo,
-    changeWaitingCar,
-    waitingcar,
-    changeWaitingCurrentNumber,
-    waitingcurrentnumber,
-  } = useInfo();
-  const [waiting, setWaiting] = useState([]);
+  const { changeWaitingCar, waitingcar, changeWaitingCurrentNumber } =
+    useInfo();
   let arr = [];
 
   useEffect(() => {
@@ -24,7 +17,7 @@ const WaitingCar = () => {
     });
 
     client?.on("message", (topic, message) => {
-      const payload = { topic, message: message.toString() };
+      // const payload = { topic, message: message.toString() };
       if (topic.includes("CCTV")) {
         message = message.toString().replaceAll("\\", "/");
         let msg = JSON.parse(message.toString());
@@ -36,7 +29,7 @@ const WaitingCar = () => {
       }
     });
     client?.on("disconnect", () => client.end());
-  }, [client]);
+  }, []);
   const ItemList = waitingcar.map((item, idx) => (
     <li key={idx} className="waiting__list__item">
       {item}
@@ -45,7 +38,15 @@ const WaitingCar = () => {
 
   return (
     <div>
-      <ul className="waiting__list">{ItemList}</ul>
+      <div style={{ height: "10vh", overflow: "hidden" }}>
+        <ul className="waiting__list">{ItemList}</ul>
+      </div>
+      <div>
+        <img
+          style={{ width: "34vh", height: "280px", zIndex: "0" }}
+          src="http://127.0.0.1:4000/images/1.jpg"
+        />
+      </div>
     </div>
   );
 };
