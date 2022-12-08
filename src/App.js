@@ -97,7 +97,6 @@ function App() {
         if (topic.includes("CCTV")) {
           message = message.toString().replaceAll("\\", "/");
           // .replaceAll('"', "'");
-          console.log("message", message);
           let msg = JSON.parse(message?.toString());
 
           if (msg?.CARNUMBER === "미인식") {
@@ -115,7 +114,6 @@ function App() {
               console.log("error", error);
             }
             imgurl = msg?.IMG;
-            console.log("imgurl :>> ", imgurl);
             imgurl = imgurl?.replace("c:/LPR", "http://127.0.0.1:4000/images");
             setCarImg(imgurl);
           }
@@ -165,35 +163,39 @@ function App() {
     setIsModalOpenFind(false);
   };
   const onPrintedCar = () => {
-    changePrintedCar(waitingcar[0]);
+    let arr = printedcar;
+    arr.unshift(waitingcar[0]);
+    if (arr.length > 10) {
+      arr.pop();
+    }
+    changePrintedCar(arr);
     console.log("printedcar :>> ", printedcar);
   };
   const printFunc = () => {
     onPrintedCar();
     let printContents = componentRef.current.innerHTML;
-    let originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
+    let windowObject = window.open(
+      "",
+      "PrintWindow",
+      "width=1000, height=1000, top=200, lefg=200, tollbars=no, scrollbars=no, resizeable=no"
+    );
+
+    windowObject.document.writeln(printContents);
+    windowObject.document.close();
+    windowObject.focus();
+    windowObject.print();
+    windowObject.close();
+    // let arr=[]
+    // arr = waitingcar
+    // arr = arr.shift();
+    waitingcar.shift();
+    console.log("waitingcar", waitingcar);
   };
   const componentRef = useRef(null);
 
   return (
     <>
       <Row>
-        <Col>
-          <Button onClick={showModalPrint}>소독필증</Button>
-          <Modal
-            title="Basic Modal"
-            open={isModalOpenPrint}
-            onOk={handleOkPrint}
-            onCancel={handleCancelPrint}
-          >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-          </Modal>
-        </Col>
         <Col>
           <Button onClick={showModalFind}>조회</Button>
           <Modal
@@ -252,7 +254,6 @@ function App() {
               <Container span={6} title={"차량정보"}>
                 <CarinfoContainer></CarinfoContainer>
               </Container>
-
               <Container span={5} title={"대기저장"}>
                 <WaitingCar carimg={carimg} />
               </Container>

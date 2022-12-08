@@ -356,12 +356,15 @@ export default function CarinfoContainer() {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "end" }}>
-        <Input
-          className="input"
-          placeholder="차량 번호"
-          value={carInfoData?.Number}
-          onChange={onChangeCarNum}
-        />
+        <label>
+          차량 번호
+          <Input
+            className="input input_carnum"
+            placeholder="차량 번호"
+            value={carInfoData?.Number}
+            onChange={onChangeCarNum}
+          />
+        </label>
         <Button onClick={carShowModal}>조회</Button>
         <Modal
           style={{ height: "300px" }}
@@ -376,59 +379,84 @@ export default function CarinfoContainer() {
         {/* <Button>삭제</Button> */}
         <Button>N</Button>
       </div>
-      <Input
-        className="input"
-        placeholder="차량 목적"
-        value={carInfoData?.Purpose}
-        onChange={onChangePurpose}
-      />
-      <Input
-        className="input"
-        placeholder="등록 번호"
-        value={carInfoData?.RegNum}
-        onChange={onChangeRegNum}
-      />
-      <Input
-        className="input"
-        placeholder="GPS 번호"
-        value={carInfoData?.GpsNum}
-        onChange={onChangeGpsnum}
-      />
-      <Input
-        className="input"
-        placeholder="차주 성명"
-        value={carInfoData?.Owner}
-        onChange={onChangeOwner}
-      />
-      <Input
-        className="input"
-        placeholder="주소"
-        value={carInfoData?.Address}
-        onChange={onChangeAddr}
-      />
-      <Input
-        className="input"
-        placeholder="연락처"
-        value={carInfoData?.Phone}
-        onChange={onChangePhone}
-      />
+      <label>
+        차량 목적
+        <Input
+          className="input input_purpose"
+          placeholder="차량 목적"
+          value={carInfoData?.Purpose}
+          onChange={onChangePurpose}
+        />
+      </label>
+      <label>
+        등록 번호
+        <Input
+          className="input input_regnum"
+          placeholder="등록 번호"
+          value={carInfoData?.RegNum}
+          onChange={onChangeRegNum}
+        />
+      </label>
+      <label>
+        GPS 번호
+        <Input
+          className="input input_gpsnum"
+          placeholder="GPS 번호"
+          value={carInfoData?.GpsNum}
+          onChange={onChangeGpsnum}
+        />
+      </label>
+      <label>
+        차주 성명
+        <Input
+          className="input input_owner"
+          placeholder="차주 성명"
+          value={carInfoData?.Owner}
+          onChange={onChangeOwner}
+        />
+      </label>
+      <label>
+        주소
+        <Input
+          className="input input_address"
+          placeholder="주소"
+          value={carInfoData?.Address}
+          onChange={onChangeAddr}
+        />
+      </label>
+      <label>
+        연락처
+        <Input
+          className="input input_phone"
+          placeholder="연락처"
+          value={carInfoData?.Phone}
+          onChange={onChangePhone}
+        />
+      </label>
+
       <Row wrap={false} style={{ display: "flex", alignItems: "center" }}>
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Input
-            className="input"
-            value={carInfoData?.SPoint}
-            placeholder="출발지"
-            onChange={onChangeFrom}
-          />
+          <label>
+            출발지
+            <Input
+              className="input input_spoint"
+              value={carInfoData?.SPoint}
+              placeholder="출발지"
+              onChange={onChangeFrom}
+            />
+          </label>
         </Col>
         <ArrowRightOutlined />
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Input
-            className="input"
-            placeholder="목적지"
-            value={carInfoData?.EPoint}
-            onChange={onChangeTo}
-          />
+          <label>
+            목적지
+            <Input
+              className="input input_epoint"
+              placeholder="목적지"
+              value={carInfoData?.EPoint}
+              onChange={onChangeTo}
+            />
+          </label>
         </Col>
       </Row>
       <Row className="buttons" wrap={false} gutter={8}>

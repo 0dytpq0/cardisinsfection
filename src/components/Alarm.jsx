@@ -100,6 +100,19 @@ const Alarm = () => {
           arr.push(moment().format("HH:mm:ss") + " 에어 배출 완료");
           setMsgList(arr);
         }
+      } else if (topic === "CCTV") {
+        const msg = message.toString();
+        const jsonMsg = JSON.parse(msg);
+        if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 1) {
+          let arr = msgList;
+          arr.push(moment().format("HH:mm:ss") + " 시스템 연결 완료");
+          setMsgList(arr);
+        }
+        if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 0) {
+          let arr = msgList;
+          arr.push(moment().format("HH:mm:ss") + " 시스템 연결 실패 재시도중");
+          setMsgList(arr);
+        }
       }
     });
   }, []);

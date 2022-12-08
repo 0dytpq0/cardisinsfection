@@ -7,18 +7,33 @@ const IpChange = () => {
   const [isModalOpenIp, setIsModalOpenIp] = useState(false);
   const [data, setData] = useState("");
   const [parsedValue, setParsedValue] = useState([]);
-  const { ip, port, changeIp, changePort } = useMqtt();
+  const {
+    tcpip,
+    tcpport,
+    changeTcpIp,
+    changeTcpPort,
+    mqtturl,
+    mqttport,
+    changeMqttUrl,
+    changeMqttPort,
+  } = useMqtt();
 
   const getData = async () => {
-    await axios.get(`http://localhost:4000/settingitemsIP`).then((response) => {
-      let data = response.data[0].Value;
-
-      data = data.replaceAll("`", '"');
-      setParsedValue(JSON.parse(data));
-      changeIp(parsedValue.IP);
-      changePort(parsedValue.PORT);
-      setData(data);
-    });
+    await axios
+      .get(`http://localhost:4000/settingitemsConfig`)
+      .then((response) => {
+        let data = response.data[0].Value;
+        console.log("data", data);
+        data = data.replaceAll("`", '"');
+        console.log("data :>> ", data);
+        setParsedValue(JSON.parse(data));
+        console.log("parsedValue :>> ", parsedValue);
+        changeTcpIp(parsedValue.TCPIP);
+        changeTcpPort(parsedValue.TCPPORT);
+        changeMqttUrl(parsedValue.MQTTURL);
+        changeMqttPort(parsedValue.MQTTPORT);
+        setData(data);
+      });
   };
 
   useEffect(() => {
@@ -33,11 +48,17 @@ const IpChange = () => {
   const handleCancelIp = () => {
     setIsModalOpenIp(false);
   };
-  const onChangeIp = (e) => {
-    changeIp(e.target.value);
+  const onChangeTcpIp = (e) => {
+    changeTcpIp(e.target.value);
   };
-  const onChangePort = (e) => {
-    changePort(e.target.value);
+  const onChangeTcpPort = (e) => {
+    changeTcpPort(e.target.value);
+  };
+  const onChangeMqttUrl = (e) => {
+    changeMqttUrl(e.target.value);
+  };
+  const onChangeMqttPort = (e) => {
+    changeMqttPort(e.target.value);
   };
   return (
     <div>
@@ -48,8 +69,16 @@ const IpChange = () => {
         onOk={handleOkIp}
         onCancel={handleCancelIp}
       >
-        <Input placeholder="IP" value={ip} onChange={onChangeIp} />
-        <Input placeholder="PORT" value={port} onChange={onChangePort} />
+        <label>
+          TCPIP
+          <Input value={tcpip} onChange={onChangeTcpIp} />
+          <Input value={tcpport} onChange={onChangeTcpPort} />
+        </label>
+        <label>
+          MQTT
+          <Input value={mqtturl} onChange={onChangeMqttUrl} />
+          <Input value={mqttport} onChange={onChangeMqttPort} />
+        </label>
       </Modal>
     </div>
   );

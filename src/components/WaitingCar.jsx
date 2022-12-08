@@ -40,7 +40,7 @@ const WaitingCar = ({ carimg }) => {
       <div style={{ height: "10vh", overflow: "hidden" }}>
         <ul className="waiting__list">{ItemList}</ul>
       </div>
-      <div style={{ backgroundColor: "red" }}>
+      <div>
         <img className="carimg" src={carimg} />
       </div>
     </div>

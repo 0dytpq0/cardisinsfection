@@ -5,7 +5,6 @@ import axios from "axios";
 
 const PrintCompleted = ({ printed }) => {
   const { printedcar, changeCarInfo, changePrintedCar } = useInfo();
-  let arr = [];
   const onListChange = (e) => {
     let Number = "";
     let sql = "";
@@ -33,11 +32,10 @@ const PrintCompleted = ({ printed }) => {
     // if ((printedcar.length = 9)) {
     //   printedcar.unshift();
     // }
-    // changePrintedCar(arr);
     console.log("printedcar :>> ", printedcar);
   };
-  arr.push(printedcar);
-  const itemList = arr.map((item, idx) => (
+
+  const itemList = printedcar.map((item, idx) => (
     <li onClick={onListChange} key={idx} className="printedcar_list_item">
       {item}
     </li>
