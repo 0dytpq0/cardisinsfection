@@ -101,16 +101,17 @@ const Alarm = () => {
           setMsgList(arr);
         }
       } else if (topic === "CCTV") {
-        const msg = message.toString();
-        const jsonMsg = JSON.parse(msg);
+        message = message?.toString().replaceAll("\\", "/");
+        const msg = message?.toString();
+        const jsonMsg = JSON?.parse(msg);
         if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 1) {
           let arr = msgList;
-          arr.push(moment().format("HH:mm:ss") + " 시스템 연결 완료");
+          arr.push(moment().format("HH:mm:ss") + " CCTV 연결 성공");
           setMsgList(arr);
         }
         if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 0) {
           let arr = msgList;
-          arr.push(moment().format("HH:mm:ss") + " 시스템 연결 실패 재시도중");
+          arr.push(moment().format("HH:mm:ss") + " CCTV 연결 실패 재시도중");
           setMsgList(arr);
         }
       }

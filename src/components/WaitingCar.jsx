@@ -1,11 +1,21 @@
 import React, { useEffect } from "react";
 import { useInfo } from "../store";
+import { List } from "antd";
 import axios from "axios";
 import { client } from "../App";
 
 const WaitingCar = ({ carimg }) => {
-  const { changeWaitingCar, waitingcar, changeWaitingCurrentNumber } =
-    useInfo();
+  const {
+    changeWaitingCar,
+    waitingcar,
+    changeWaitingCurrentNumber,
+    deletewaitingcar,
+    changeDeleteWaitingCar,
+    changeCarInfo,
+    changeActorInfo,
+    changeAreaInfo,
+    changeCheckerInfo,
+  } = useInfo();
   let arr = [];
   useEffect(() => {
     client?.subscribe("CCTV", 0, (error) => {
@@ -29,8 +39,57 @@ const WaitingCar = ({ carimg }) => {
     });
     client?.on("disconnect", () => client.end());
   }, []);
+  const onClickHandler = (e) => {
+    let Number = "";
+    let sql = "";
+    console.log("e :>> ", e);
+    Number = e.target.innerText;
+    if (Number !== "") {
+      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
+    }
+    axios.get(sql).then((res, error) => {
+      if (error) {
+        console.log("error :>> ", error);
+      }
+      let data = res.data[0];
+      console.log("data :>> ", data);
+      changeCarInfo({
+        PrintIndex: `${data?.PrintIndex}`,
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
+      });
+      changeActorInfo({
+        Attached: `${data?.CAttached}`,
+        Name: `${data?.CName}`,
+        Phone: `${data?.CPhone}`,
+        Position: `${data?.CPosition}`,
+      });
+      changeCheckerInfo({
+        Attached: `${data?.EAttached}`,
+        Name: `${data?.EName}`,
+        Phone: `${data?.EPhone}`,
+        Position: `${data?.EPosition}`,
+      });
+      changeAreaInfo({
+        Area: `${data?.Area}`,
+        AreaType: `${data?.AreaType}`,
+        DContent: `${data?.DContent}`,
+      });
+      changeDeleteWaitingCar(e.target.innerText);
+      console.log("waitingcar", waitingcar);
+
+      console.log("deletewaitingcar", deletewaitingcar);
+    });
+  };
   const ItemList = waitingcar.map((item, idx) => (
-    <li key={idx} className="waiting__list__item">
+    <li onClick={onClickHandler} key={idx} className="waiting__list__item">
       {item}
     </li>
   ));
@@ -46,5 +105,4 @@ const WaitingCar = ({ carimg }) => {
     </div>
   );
 };
-
 export default WaitingCar;

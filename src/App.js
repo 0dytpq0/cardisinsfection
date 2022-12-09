@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
 import { Col, Row, Button, Layout, Modal } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
+import axios from "axios";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import IpChange from "./components/IpChange";
@@ -22,6 +23,7 @@ import notrecogsound from "./mp3/carNotRecog.mp3";
 import ReactDOM from "react-dom/client";
 import PrintCompleted from "./components/PrintCompleted";
 import Alarm from "./components/Alarm";
+import moment from "moment";
 
 import { useMqtt, useInfo } from "./store";
 import { WindowsFilled } from "@ant-design/icons";
@@ -34,8 +36,17 @@ function App() {
   const [payload, setPayload] = useState([]);
   const [isModalOpenPrint, setIsModalOpenPrint] = useState(false);
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
-  const { changePrintedCar, waitingcar, printedcar, waitingcurrentnumber } =
-    useInfo();
+  const [dbImgUrl, setDbImgUrl] = useState("");
+  const {
+    changePrintedCar,
+    waitingcar,
+    printedcar,
+    waitingcurrentnumber,
+    carinfo,
+    actorinfo,
+    checkerinfo,
+    areainfo,
+  } = useInfo();
   const [carimg, setCarImg] = useState("");
   const options = {
     keepalive: 3000,
@@ -114,7 +125,9 @@ function App() {
               console.log("error", error);
             }
             imgurl = msg?.IMG;
+
             imgurl = imgurl?.replace("c:/LPR", "http://127.0.0.1:4000/images");
+            setDbImgUrl(imgurl);
             setCarImg(imgurl);
           }
         }
@@ -163,13 +176,58 @@ function App() {
     setIsModalOpenFind(false);
   };
   const onPrintedCar = () => {
+    let crTime = moment().format("YYYYMMDDHHmmss");
     let arr = printedcar;
-    arr.unshift(waitingcar[0]);
+    arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
     if (arr.length > 10) {
       arr.pop();
     }
+    let rt2 = false;
+
     changePrintedCar(arr);
-    console.log("printedcar :>> ", printedcar);
+    axios
+      .post("http://localhost:4000/carinfoitems", {
+        PrintIndex: crTime,
+        Number: `${carinfo?.Number}`,
+        Address: `${carinfo?.Address}`,
+        RegNumber: `${carinfo?.RegNumber}`,
+        Phone: `${carinfo?.Phone}`,
+        GpsNumber: `${carinfo?.GpsNumber}`,
+        Owner: `${carinfo?.Owner}`,
+        SPoint: `${carinfo?.SPoint}`,
+        Purpose: `${carinfo?.Purpose}`,
+        EPoint: `${carinfo?.EPoint}`,
+        EAttached: `${actorinfo?.Attached}`,
+        EName: `${actorinfo?.Name}`,
+        EPhone: `${actorinfo?.Phone}`,
+        EPosition: `${actorinfo?.Position}`,
+        CAttached: `${checkerinfo?.Attached}`,
+        CName: `${checkerinfo?.Name}`,
+        CPhone: `${checkerinfo?.Phone}`,
+        CPosition: `${checkerinfo?.Position}`,
+        Area: `${areainfo?.Area}`,
+        AreaType: `${areainfo?.AreaType}`,
+        DContent: `${areainfo?.DContent}`,
+        PointName: `${areainfo?.PointName}`,
+        ImagePath: `${dbImgUrl}`,
+      })
+      .then((res) => {
+        if (res.statusText === "OK") {
+          rt2 = true;
+        } else {
+          rt2 = false;
+        }
+        console.log("rt2", rt2);
+        if (rt2 === true) {
+          Modal.success({
+            content: `저장 성공!`,
+          });
+        } else {
+          Modal.error({
+            content: `저장 실패!`,
+          });
+        }
+      });
   };
   const printFunc = () => {
     onPrintedCar();
@@ -182,8 +240,10 @@ function App() {
 
     windowObject.document.writeln(printContents);
     windowObject.document.close();
+
     windowObject.focus();
-    windowObject.print();
+    let aa = windowObject.print();
+    console.log("aa :>> ", aa);
     windowObject.close();
     // let arr=[]
     // arr = waitingcar

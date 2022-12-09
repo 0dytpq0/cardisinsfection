@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Input, Col, Row } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, FilterFilled } from "@ant-design/icons";
 import { useInfo } from "../store";
 import ButtonContainer from "./ButtonContainer";
 import ButtonContainerArea from "./ButtonContainerArea";
@@ -8,13 +8,16 @@ import CheckerButtonViewContainer from "./CheckerButtonViewContainer";
 import ActorButtonViewContainer from "./ActorButtonViewContainer";
 import CarButtonViewContainer from "./CarButtonViewContainer";
 import axios from "axios";
+import moment from "moment";
+
 import { client } from "../App";
 
 export default function CarinfoContainer() {
   const {
+    deletewaitingcar,
+    changeCarInfo,
     waitingcar,
     changeWaitingCar,
-    changeCarInfo,
     carinfo,
     carmodalinfo,
     areainfo,
@@ -48,6 +51,7 @@ export default function CarinfoContainer() {
       let data = res?.data[0];
       if (res?.data.length > 0) {
         setCarInfoData({
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
           RegNumber: `${data?.RegNumber}`,
@@ -58,18 +62,9 @@ export default function CarinfoContainer() {
           Purpose: `${data?.Purpose}`,
           EPoint: `${data?.EPoint}`,
         });
-        changeCarModalInfo({
-          Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
-          RegNumber: `${data?.RegNumber}`,
-          Phone: `${data?.Phone}`,
-          GpsNumber: `${data?.GpsNumber}`,
-          Owner: `${data?.Owner}`,
-          SPoint: `${data?.SPoint}`,
-          Purpose: `${data?.Purpose}`,
-          EPoint: `${data?.EPoint}`,
-        });
+
         changeCarInfo({
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
           RegNumber: `${data?.RegNumber}`,
@@ -82,6 +77,7 @@ export default function CarinfoContainer() {
         });
       } else {
         setCarInfoData({
+          PrintIndex: "",
           Number: "",
           Address: "",
           RegNumber: "",
@@ -92,18 +88,9 @@ export default function CarinfoContainer() {
           Purpose: "",
           EPoint: "",
         });
-        changeCarModalInfo({
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
-        });
+
         changeCarInfo({
+          PrintIndex: "",
           Number: "",
           Address: "",
           RegNumber: "",
@@ -352,7 +339,24 @@ export default function CarinfoContainer() {
   const handleCancelActor = () => {
     setIsModalOpenActor(false);
   };
-
+  const onDeleteButton = () => {
+    let arr = [];
+    let arr2 = [];
+    arr = waitingcar;
+    arr.map((item, idx) =>
+      item !== deletewaitingcar ? arr2.push(item) : null
+    );
+    changeWaitingCar(arr2);
+    console.log("waitingcar :>> ", waitingcar);
+    setCarInfoData({ ...carInfoData, Number: waitingcar[0].Number });
+  };
+  const onNButton = () => {
+    const time = moment().format("HH:mm:ss");
+    client.publish(
+      "CarCleanDevice",
+      '{"CMD":"STEP_Recognized","STATUS":"O","TIME":"' + time + '","QUEUE":O}'
+    );
+  };
   return (
     <div>
       <div style={{ display: "flex", alignItems: "end" }}>
@@ -376,8 +380,8 @@ export default function CarinfoContainer() {
           <CarButtonViewContainer />
         </Modal>
 
-        {/* <Button>삭제</Button> */}
-        <Button>N</Button>
+        <Button onClick={onDeleteButton}>삭제</Button>
+        <Button onClick={onNButton}>N</Button>
       </div>
       <label>
         차량 목적

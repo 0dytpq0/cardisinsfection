@@ -44,6 +44,11 @@ export const useInfo = create(
       set((state) => ({
         waitingcar: newData,
       })),
+    deletewaitingcar: "",
+    changeDeleteWaitingCar: (newData) =>
+      set((state) => ({
+        deletewaitingcar: newData,
+      })),
     changeWaitingCurrentNumber: (newData) =>
       set((state) => ({
         waitingcurrentnumber: newData,

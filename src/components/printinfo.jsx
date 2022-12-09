@@ -22,52 +22,44 @@ export default function Printinfo({ printRef }) {
         }}
       >
         <div className="printinfo">
-          <span>일련번호 - </span>
+          <span>일련번호 - {carinfo?.PrintIndex} </span>
           <h2 style={{ textAlign: "center" }}>소 독 필 증</h2>
           <span>운전자 정보</span>
           <Row className="innerinfo">
             <Row>
-              <Col className="font">성명 :</Col>
-              <Col className="font">{carinfo?.Owner}</Col>
+              <Col className="font">성명 : {carinfo?.Owner}</Col>
             </Row>
             <Row>
-              <Col className="font">차량 번호 :</Col>
-              <Col className="font">{carinfo?.Number}</Col>
+              <Col className="font">차량 번호 : {carinfo?.Number}</Col>
             </Row>
             <Row>
-              <Col className="font"> 등록 번호 :</Col>
-              <Col className="font">{carinfo?.RegNumber}</Col>
+              <Col className="font">등록 번호 : {carinfo?.RegNumber}</Col>
             </Row>
             <Row>
-              <Col className="font"> GPS 번호 :</Col>
-              <Col className="font">{carinfo?.GpsNumber}</Col>
+              <Col className="font">GPS 번호 : {carinfo?.GpsNumber}</Col>
             </Row>
 
             <Row>
-              <Col className="font">주소 :</Col>
-              <Col className="font">{carinfo?.Address}</Col>
+              <Col className="font">주소 : {carinfo?.Address}</Col>
             </Row>
             <Row>
-              <Col className="font">연락처 :</Col>
-              <Col className="font">{carinfo?.Phone}</Col>
+              <Col className="font">연락처 : {carinfo?.Phone}</Col>
             </Row>
             <Row>
-              <Col className="font">차량 목적 :</Col>
-              <Col className="font">{carinfo?.Purpose}</Col>
+              <Col className="font">차량 목적 : {carinfo?.Purpose}</Col>
             </Row>
           </Row>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
           <span>소득내역</span>
           <div className="innerinfo">
             <Row>
-              <Col className="font">소독일시 :</Col>
               <Col className="font">
-                {year}/{month}/{date}
+                소독일시 : {year}/{month}/{date}
               </Col>
             </Row>
             <Row>
-              <Col className="font">이동경로 :</Col>
               <Col className="font">
+                이동경로 :{" "}
                 {carinfo?.SPoint
                   ? carinfo?.SPoint
                   : "\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}
@@ -76,32 +68,26 @@ export default function Printinfo({ printRef }) {
               </Col>
             </Row>
             <Row>
-              <Col className="font">소독내용 :</Col>
-              <Col className="font">{areainfo.DContent}</Col>
+              <Col className="font">소독내용 : {areainfo.DContent}</Col>
             </Row>
           </div>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
           <span>소득 실시자</span>
           <div className="innerinfo">
             <Row>
-              <Col className="font">소독 지역</Col>
-              <Col className="font">{areainfo.Area}</Col>
+              <Col className="font">소독 지역 : {areainfo.Area}</Col>
             </Row>
             <Row>
-              <Col className="font">소독 장소명</Col>
-              <Col className="font">{areainfo.PointName}</Col>
+              <Col className="font">소독 장소명 : {areainfo.PointName}</Col>
             </Row>
             <Row>
-              <Col className="font">소속</Col>
-              <Col className="font">{actorinfo.Attached}</Col>
+              <Col className="font">소속 : {actorinfo.Attached}</Col>
             </Row>
             <Row>
-              <Col className="font">직급</Col>
-              <Col className="font">{actorinfo.Position}</Col>
+              <Col className="font">직급 : {actorinfo.Position}</Col>
             </Row>
             <Row>
-              <Col className="font">성명</Col>
-              <Col className="font">{actorinfo.Name}</Col>
+              <Col className="font">성명 : {actorinfo.Name}</Col>
             </Row>
           </div>
           <Divider style={{ border: "1px solid rgba(0,0,0,0.8)" }} />
