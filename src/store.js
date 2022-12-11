@@ -3,6 +3,11 @@ import { persist } from "zustand/middleware";
 
 export const useInfo = create(
   persist((set) => ({
+    carinfodata: {},
+    changeCarInfoData: (newData) =>
+      set((state) => ({
+        carinfodata: newData,
+      })),
     carinfo: {},
     changeCarInfo: (newData) =>
       set((state) => ({
@@ -101,7 +106,7 @@ export const useMqtt = create(
     tcpport: null,
     changeTcpPort: (newData) =>
       set((state) => ({
-        potcpport: newData,
+        tcpport: newData,
       })),
     mqtturl: "",
     changeMqttUrl: (newData) =>

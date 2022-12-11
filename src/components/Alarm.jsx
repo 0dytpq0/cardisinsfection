@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { client } from "../App";
 import moment from "moment";
+import { withSuccess } from "antd/es/modal/confirm";
 
 const Alarm = () => {
   const [msgList, setMsgList] = useState([]);
@@ -104,7 +105,12 @@ const Alarm = () => {
         message = message?.toString().replaceAll("\\", "/");
         const msg = message?.toString();
         const jsonMsg = JSON?.parse(msg);
-        if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 1) {
+        console.log("jsonMsg", jsonMsg);
+        if (
+          jsonMsg?.CMD === "CCTVISOK" &&
+          jsonMsg?.STATUS === 1 &&
+          jsonMsg?.SUCCESSCOUNT === 1
+        ) {
           let arr = msgList;
           arr.push(moment().format("HH:mm:ss") + " CCTV 연결 성공");
           setMsgList(arr);

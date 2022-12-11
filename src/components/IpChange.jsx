@@ -25,13 +25,12 @@ const IpChange = () => {
         let data = response.data[0].Value;
         console.log("data", data);
         data = data.replaceAll("`", '"');
+        data = JSON.parse(data);
         console.log("data :>> ", data);
-        setParsedValue(JSON.parse(data));
-        console.log("parsedValue :>> ", parsedValue);
-        changeTcpIp(parsedValue.TCPIP);
-        changeTcpPort(parsedValue.TCPPORT);
-        changeMqttUrl(parsedValue.MQTTURL);
-        changeMqttPort(parsedValue.MQTTPORT);
+        changeTcpIp(data.TCPIP);
+        changeTcpPort(data.TCPPORT);
+        changeMqttUrl(data.MQTTURL);
+        changeMqttPort(data.MQTTPORT);
         setData(data);
       });
   };
@@ -62,7 +61,7 @@ const IpChange = () => {
   };
   return (
     <div>
-      <Button onClick={showModalIp}>IP설정</Button>
+      <Button onClick={showModalIp}>설정</Button>
       <Modal
         title="설정"
         open={isModalOpenIp}
@@ -70,13 +69,20 @@ const IpChange = () => {
         onCancel={handleCancelIp}
       >
         <label>
-          TCPIP
+          TCP IP
           <Input value={tcpip} onChange={onChangeTcpIp} />
-          <Input value={tcpport} onChange={onChangeTcpPort} />
         </label>
         <label>
-          MQTT
+          TCP PORT
+          <Input value={tcpport} onChange={onChangeTcpPort} />
+        </label>
+
+        <label>
+          MQTT URL
           <Input value={mqtturl} onChange={onChangeMqttUrl} />
+        </label>
+        <label>
+          MQTT PORT
           <Input value={mqttport} onChange={onChangeMqttPort} />
         </label>
       </Modal>

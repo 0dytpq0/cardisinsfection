@@ -9,6 +9,7 @@ const PrintCompleted = ({ printed }) => {
     changeCarInfo,
     changePrintedCar,
     carinfo,
+    changeCarInfoData,
     changeActorInfo,
     changeCheckerInfo,
     changeAreaInfo,
@@ -55,6 +56,18 @@ const PrintCompleted = ({ printed }) => {
         Area: `${data?.Area}`,
         AreaType: `${data?.AreaType}`,
         DContent: `${data?.DContent}`,
+      });
+      changeCarInfoData({
+        PrintIndex: `${data?.PrintIndex}`,
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
       });
     });
     // if ((printedcar.length = 9)) {
