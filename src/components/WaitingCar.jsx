@@ -59,6 +59,20 @@ const WaitingCar = ({ carimg }) => {
       }
       let data = res.data[0];
       console.log("data :>> ", data);
+      if ((Number = "미인식")) {
+        changeCarInfoData({
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
+        });
+      }
       changeCarInfo({
         PrintIndex: `${data?.PrintIndex}`,
         Number: `${data?.Number}`,
