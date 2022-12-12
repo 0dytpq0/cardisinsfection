@@ -122,6 +122,5 @@ export const useMqtt = create(
 );
 
 export const useWaitingCar = create((set) => ({
-  trashwaitingcar:[],
-  changeTrashWaitingCar:
-}))
+  trashwaitingcar: [],
+}));

@@ -14,8 +14,6 @@ import { client } from "../App";
 
 export default function CarinfoContainer() {
   const {
-    changeAreaInfo,
-
     deletewaitingcar,
     changeCarInfo,
     waitingcar,
@@ -31,13 +29,12 @@ export default function CarinfoContainer() {
     changeActorInfo,
     changeCarModalInfo,
     waitingcurrentnumber,
-    changeCarInfoData,
-    carinfodata,
   } = useInfo((state) => state);
   const [isModalOpenCar, setIsModalOpenCar] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
+  const [carInfoData, setCarInfoData] = useState("");
 
   useEffect(() => {
     let Number = "";
@@ -53,7 +50,7 @@ export default function CarinfoContainer() {
       console.log("res.data :>> ", res.data);
       let data = res?.data[0];
       if (res?.data.length > 0) {
-        changeCarInfoData({
+        setCarInfoData({
           PrintIndex: moment().format("YYYYMMDDHHmmss"),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
@@ -79,7 +76,7 @@ export default function CarinfoContainer() {
           EPoint: `${data?.EPoint}`,
         });
       } else {
-        changeCarInfoData({
+        setCarInfoData({
           PrintIndex: "",
           Number: "",
           Address: "",
@@ -110,27 +107,27 @@ export default function CarinfoContainer() {
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
-    changeCarInfoData({ ...carinfodata, Number: e.target.value });
+    setCarInfoData({ ...carInfoData, Number: e.target.value });
   };
   const onChangePurpose = (e) => {
     changeCarInfo({ ...carmodalinfo, Purpose: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Purpose: e.target.value });
-    changeCarInfoData({ ...carinfodata, Purpose: e.target.value });
+    setCarInfoData({ ...carInfoData, Purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
     changeCarInfo({ ...carmodalinfo, RegNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, RegNumber: e.target.value });
-    changeCarInfoData({ ...carinfodata, RegNumber: e.target.value });
+    setCarInfoData({ ...carInfoData, RegNumber: e.target.value });
   };
   const onChangeGpsnum = (e) => {
     changeCarInfo({ ...carmodalinfo, GpsNumber: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, GpsNumber: e.target.value });
-    changeCarInfoData({ ...carinfodata, GpsNumber: e.target.value });
+    setCarInfoData({ ...carInfoData, GpsNumber: e.target.value });
   };
   const onChangeOwner = (e) => {
     changeCarInfo({ ...carmodalinfo, Owner: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Owner: e.target.value });
-    changeCarInfoData({ ...carinfodata, Owner: e.target.value });
+    setCarInfoData({ ...carInfoData, Owner: e.target.value });
   };
   const onChangeAddr = (e) => {
     changeCarInfo({
@@ -138,7 +135,7 @@ export default function CarinfoContainer() {
       Address: e.target.value,
     });
     changeCarModalInfo({ ...carmodalinfo, Address: e.target.value });
-    changeCarInfoData({ ...carinfodata, Address: e.target.value });
+    setCarInfoData({ ...carInfoData, Address: e.target.value });
   };
   const onChangePhone = (e) => {
     changeCarInfo({ ...carmodalinfo, Phone: e.target.value });
@@ -146,7 +143,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       Phone: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, Phone: e.target.value });
+    setCarInfoData({ ...carInfoData, Phone: e.target.value });
   };
   const onChangeFrom = (e) => {
     changeCarInfo({ ...carmodalinfo, SPoint: e.target.value });
@@ -154,7 +151,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       SPoint: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, SPoint: e.target.value });
+    setCarInfoData({ ...carInfoData, SPoint: e.target.value });
   };
   const onChangeTo = (e) => {
     changeCarInfo({ ...carmodalinfo, EPoint: e.target.value });
@@ -162,7 +159,7 @@ export default function CarinfoContainer() {
       ...carmodalinfo,
       EPoint: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, EPoint: e.target.value });
+    setCarInfoData({ ...carInfoData, EPoint: e.target.value });
   };
 
   const carShowModal = () => {
@@ -172,7 +169,7 @@ export default function CarinfoContainer() {
   const carHandleOk = () => {
     setIsModalOpenCar(false);
     changeCarInfo(carmodalinfo);
-    changeCarInfoData(carmodalinfo);
+    setCarInfoData(carmodalinfo);
   };
 
   const carHandleCancel = () => {
@@ -342,175 +339,16 @@ export default function CarinfoContainer() {
   const handleCancelActor = () => {
     setIsModalOpenActor(false);
   };
-  // console.log("waitingcar :>> ", waitingcar);
-  const onDeleteButton = (e) => {
+  const onDeleteButton = () => {
     let arr = [];
     let arr2 = [];
-    let Number = "";
-    let sql = "";
-    console.log("e :>> ", e);
-
     arr = waitingcar;
     arr.map((item, idx) =>
       item !== deletewaitingcar ? arr2.push(item) : null
     );
-    console.log("arr2", arr2);
     changeWaitingCar(arr2);
-    Number = arr2[0];
-    if (arr2.length === 0) {
-      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
-      axios.get(sql).then((res, error) => {
-        if (error) {
-          console.log("error :>> ", error);
-        }
-        let data = res.data[0];
-        console.log("data :>> ", data);
-        changeCarInfo({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
-        });
-        changeActorInfo({
-          Attached: "",
-          Name: "",
-          Phone: "",
-          Position: "",
-        });
-        changeCheckerInfo({
-          Attached: "",
-          Name: "",
-          Phone: "",
-          Position: "",
-        });
-        changeAreaInfo({
-          Area: "",
-          AreaType: "",
-          DContent: "",
-        });
-        changeCarInfoData({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
-        });
-      });
-    } else if (arr2[0] !== "미인식") {
-      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
-      axios.get(sql).then((res, error) => {
-        if (error) {
-          console.log("error :>> ", error);
-        }
-        let data = res.data[0];
-        console.log("data :>> ", data);
-        changeCarInfo({
-          PrintIndex: `${data?.PrintIndex}`,
-          Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
-          RegNumber: `${data?.RegNumber}`,
-          Phone: `${data?.Phone}`,
-          GpsNumber: `${data?.GpsNumber}`,
-          Owner: `${data?.Owner}`,
-          SPoint: `${data?.SPoint}`,
-          Purpose: `${data?.Purpose}`,
-          EPoint: `${data?.EPoint}`,
-        });
-        changeActorInfo({
-          Attached: `${data?.CAttached}`,
-          Name: `${data?.CName}`,
-          Phone: `${data?.CPhone}`,
-          Position: `${data?.CPosition}`,
-        });
-        changeCheckerInfo({
-          Attached: `${data?.EAttached}`,
-          Name: `${data?.EName}`,
-          Phone: `${data?.EPhone}`,
-          Position: `${data?.EPosition}`,
-        });
-        changeAreaInfo({
-          Area: `${data?.Area}`,
-          AreaType: `${data?.AreaType}`,
-          DContent: `${data?.DContent}`,
-        });
-        changeCarInfoData({
-          PrintIndex: `${data?.PrintIndex}`,
-          Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
-          RegNumber: `${data?.RegNumber}`,
-          Phone: `${data?.Phone}`,
-          GpsNumber: `${data?.GpsNumber}`,
-          Owner: `${data?.Owner}`,
-          SPoint: `${data?.SPoint}`,
-          Purpose: `${data?.Purpose}`,
-          EPoint: `${data?.EPoint}`,
-        });
-      });
-    } else if (arr2[0] === "미인식") {
-      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
-      axios.get(sql).then((res, error) => {
-        if (error) {
-          console.log("error :>> ", error);
-        }
-        let data = res.data[0];
-        console.log("data :>> ", data);
-        changeCarInfo({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
-        });
-        changeActorInfo({
-          Attached: "",
-          Name: "",
-          Phone: "",
-          Position: "",
-        });
-        changeCheckerInfo({
-          Attached: "",
-          Name: "",
-          Phone: "",
-          Position: "",
-        });
-        changeAreaInfo({
-          Area: "",
-          AreaType: "",
-          DContent: "",
-        });
-        changeCarInfoData({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
-        });
-      });
-    }
-
     console.log("waitingcar :>> ", waitingcar);
-    changeCarInfoData({ ...carinfodata, Number: waitingcar[0].Number });
+    setCarInfoData({ ...carInfoData, Number: waitingcar[0].Number });
   };
   const onNButton = () => {
     const time = moment().format("HH:mm:ss");
@@ -527,7 +365,7 @@ export default function CarinfoContainer() {
           <Input
             className="input input_carnum"
             placeholder="차량 번호"
-            value={carinfodata?.Number}
+            value={carInfoData?.Number}
             onChange={onChangeCarNum}
           />
         </label>
@@ -550,7 +388,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_purpose"
           placeholder="차량 목적"
-          value={carinfodata?.Purpose}
+          value={carInfoData?.Purpose}
           onChange={onChangePurpose}
         />
       </label>
@@ -559,7 +397,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_regnum"
           placeholder="등록 번호"
-          value={carinfodata?.RegNum}
+          value={carInfoData?.RegNum}
           onChange={onChangeRegNum}
         />
       </label>
@@ -568,7 +406,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_gpsnum"
           placeholder="GPS 번호"
-          value={carinfodata?.GpsNum}
+          value={carInfoData?.GpsNum}
           onChange={onChangeGpsnum}
         />
       </label>
@@ -577,7 +415,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_owner"
           placeholder="차주 성명"
-          value={carinfodata?.Owner}
+          value={carInfoData?.Owner}
           onChange={onChangeOwner}
         />
       </label>
@@ -586,7 +424,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_address"
           placeholder="주소"
-          value={carinfodata?.Address}
+          value={carInfoData?.Address}
           onChange={onChangeAddr}
         />
       </label>
@@ -595,7 +433,7 @@ export default function CarinfoContainer() {
         <Input
           className="input input_phone"
           placeholder="연락처"
-          value={carinfodata?.Phone}
+          value={carInfoData?.Phone}
           onChange={onChangePhone}
         />
       </label>
@@ -606,7 +444,7 @@ export default function CarinfoContainer() {
             출발지
             <Input
               className="input input_spoint"
-              value={carinfodata?.SPoint}
+              value={carInfoData?.SPoint}
               placeholder="출발지"
               onChange={onChangeFrom}
             />
@@ -619,7 +457,7 @@ export default function CarinfoContainer() {
             <Input
               className="input input_epoint"
               placeholder="목적지"
-              value={carinfodata?.EPoint}
+              value={carInfoData?.EPoint}
               onChange={onChangeTo}
             />
           </label>
