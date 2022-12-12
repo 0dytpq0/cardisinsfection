@@ -12,7 +12,7 @@ import Water2 from "./image/Water2.gif";
 import Move3 from "./image/Move3.gif";
 import Disinfect4 from "./image/Disinfect4.gif";
 import Out5 from "./image/Out5.gif";
-import Printinfo from "./components/Printinfo";
+import PrintInfo from "./components/PrintInfo";
 import AutoSwitch from "./components/AutoSwitch";
 import * as mqtt from "mqtt/dist/mqtt.min";
 import WaitingCar from "./components/WaitingCar";
@@ -304,7 +304,7 @@ function App() {
               }}
               content={() => componentRef.current}
             /> */}
-            <Printinfo className="printarea" printRef={componentRef} />
+            <PrintInfo className="printarea" printRef={componentRef} />
           </Container>
         </Col>
 
