@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
-import { useInfo } from "../store";
+import { useInfo, useWaitingCar } from "../store";
 import { List } from "antd";
 import axios from "axios";
 import { client } from "../App";
+import moment from "moment";
 
 const WaitingCar = ({ carimg }) => {
   const {
+    changeCarInfoData,
+    carinfodata,
     changeWaitingCar,
     waitingcar,
     changeWaitingCurrentNumber,
@@ -16,6 +19,7 @@ const WaitingCar = ({ carimg }) => {
     changeAreaInfo,
     changeCheckerInfo,
   } = useInfo();
+  const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
   let arr = [];
   useEffect(() => {
     client?.subscribe("CCTV", 0, (error) => {
@@ -35,13 +39,13 @@ const WaitingCar = ({ carimg }) => {
         arr = waitingcar;
         arr = arr.filter((item) => item !== undefined);
         arr = arr.filter((item) => item !== null);
-        changeWaitingCar(arr);
+        changeTrashWaitingCar(arr);
         changeWaitingCurrentNumber(arr[0]);
+        changeWaitingCar(trashwaitingcar);
       }
     });
     client?.on("disconnect", () => client.end());
-  }, []);
-  console.log("waitingcar :>> ", waitingcar);
+  }, [trashwaitingcar]);
   const onClickHandler = (e) => {
     let Number = "";
     let sql = "";
@@ -84,13 +88,25 @@ const WaitingCar = ({ carimg }) => {
         AreaType: `${data?.AreaType}`,
         DContent: `${data?.DContent}`,
       });
+      changeCarInfoData({
+        PrintIndex: moment().format("YYYYMMDDHHmmss"),
+        Number: `${data?.Number}`,
+        Address: `${data?.Address}`,
+        RegNumber: `${data?.RegNumber}`,
+        Phone: `${data?.Phone}`,
+        GpsNumber: `${data?.GpsNumber}`,
+        Owner: `${data?.Owner}`,
+        SPoint: `${data?.SPoint}`,
+        Purpose: `${data?.Purpose}`,
+        EPoint: `${data?.EPoint}`,
+      });
       changeDeleteWaitingCar(e.target.innerText);
       console.log("waitingcar", waitingcar);
 
       console.log("deletewaitingcar", deletewaitingcar);
     });
   };
-  const ItemList = waitingcar.map((item, idx) => (
+  const ItemList = trashwaitingcar.map((item, idx) => (
     <li onClick={onClickHandler} key={idx} className="waiting__list__item">
       {item}
     </li>
