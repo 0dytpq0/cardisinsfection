@@ -6,7 +6,7 @@ import axios from "axios";
 import Container from "./components/Container";
 import CarinfoContainer from "./components/CarinfoContainer";
 import IpChange from "./components/IpChange";
-import carImg from "./image/disinfection.gif";
+import gifImg from "./image/disinfection.gif";
 import Breaker1 from "./image/Breaker1.gif";
 import Water2 from "./image/Water2.gif";
 import Move3 from "./image/Move3.gif";
@@ -38,6 +38,8 @@ function App() {
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
   const [dbImgUrl, setDbImgUrl] = useState("");
   const {
+    waitingcarimg,
+    changeWaitingCarImg,
     changePrintedCar,
     waitingcar,
     printedcar,
@@ -128,27 +130,26 @@ function App() {
 
             imgurl = imgurl?.replace("c:/LPR", "http://127.0.0.1:4000/images");
             setDbImgUrl(imgurl);
-            setCarImg(imgurl);
+            changeWaitingCarImg(imgurl);
           }
         }
         if (topic.includes("CarCleanDeviceRequest")) {
           const msg = message.toString();
           const jsonMsg = JSON.parse(msg);
           if (jsonMsg?.CMD === "BREAKER") {
-            carImg = Breaker1;
+            gifImg = Breaker1;
           }
           if (jsonMsg?.CMD === "REMOVE_WATER") {
-            carImg = Water2;
+            gifImg = Water2;
           }
           if (jsonMsg?.CMD === "CLEAN_DRIVER") {
-            carImg = Move3;
+            gifImg = Move3;
           }
           if (jsonMsg?.CMD === "AIR_DEODORIZATION") {
-            carImg = Disinfect4;
+            gifImg = Disinfect4;
           }
           if (jsonMsg?.CMD === "OUT_GATE") {
-            carImg = Out5;
-            console.log("carImg :>> ", carImg);
+            gifImg = Out5;
           }
         }
         setPayload(payload);
@@ -182,7 +183,7 @@ function App() {
     if (arr.length > 10) {
       arr.pop();
     }
-    let rt2 = false;
+    let rt1 = false;
 
     changePrintedCar(arr);
     axios
@@ -214,10 +215,12 @@ function App() {
       .then((res) => {
         console.log("res :>> ", res);
         if (res.statusText === "OK") {
+          rt1 = true;
           Modal.success({
             content: `저장 성공!`,
           });
         } else {
+          rt1 = false;
           Modal.error({
             content: `저장 실패!`,
           });
@@ -240,9 +243,6 @@ function App() {
     let aa = windowObject.print();
     console.log("aa :>> ", aa);
     windowObject.close();
-    // let arr=[]
-    // arr = waitingcar
-    // arr = arr.shift();
     waitingcar.shift();
     console.log("waitingcar", waitingcar);
   };
@@ -310,7 +310,7 @@ function App() {
                 <CarinfoContainer></CarinfoContainer>
               </Container>
               <Container span={5} title={"대기저장"}>
-                <WaitingCar carimg={carimg} />
+                <WaitingCar />
               </Container>
               <Container span={5} title={"프린트완료차량"}>
                 <PrintCompleted />
@@ -322,7 +322,7 @@ function App() {
           </Col>
           <Col>
             <AutoSwitch title={"상태정보"}>
-              <img style={{ width: "99%", height: "50vh" }} src={carImg} />
+              <img style={{ width: "99%", height: "50vh" }} src={gifImg} />
             </AutoSwitch>
           </Col>
         </Col>

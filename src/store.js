@@ -63,6 +63,11 @@ export const useInfo = create(
       set((state) => ({
         printedcar: newData,
       })),
+    waitingcarimg: [],
+    changeWaitingCarImg: (newData) =>
+      set((state) => ({
+        waitingcarimg: newData,
+      })),
   }))
 );
 

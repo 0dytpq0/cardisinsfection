@@ -5,7 +5,7 @@ import axios from "axios";
 import { client } from "../App";
 import moment from "moment";
 
-const WaitingCar = ({ carimg }) => {
+const WaitingCar = () => {
   const {
     changeCarInfoData,
     carinfodata,
@@ -18,6 +18,8 @@ const WaitingCar = ({ carimg }) => {
     changeActorInfo,
     changeAreaInfo,
     changeCheckerInfo,
+    changeWaitingCarImg,
+    waitingcarimg,
   } = useInfo();
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
   let arr = [];
@@ -59,6 +61,8 @@ const WaitingCar = ({ carimg }) => {
       }
       let data = res.data[0];
       if (Number !== "미인식") {
+        console.log("data", data.ImagePath);
+
         changeCarInfo({
           PrintIndex: `${data?.PrintIndex}`,
           Number: `${data?.Number}`,
@@ -100,6 +104,8 @@ const WaitingCar = ({ carimg }) => {
           Purpose: `${data?.Purpose}`,
           EPoint: `${data?.EPoint}`,
         });
+        changeWaitingCarImg(data.ImagePath);
+        console.log("waitingcarimg", waitingcarimg);
       } else {
         console.log("Number :>> ", Number);
         changeCarInfoData({
@@ -160,7 +166,7 @@ const WaitingCar = ({ carimg }) => {
         <ul className="waiting__list">{ItemList}</ul>
       </div>
       <div>
-        <img className="carimg" src={carimg} />
+        <img className="carimg" src={waitingcarimg} />
       </div>
     </div>
   );

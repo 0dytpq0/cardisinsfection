@@ -43,6 +43,7 @@ export default function CarinfoContainer() {
     let Number = "";
     let sql = "";
     Number = waitingcurrentnumber;
+    console.log("Number", Number);
     if (Number !== "") {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
     }
@@ -78,59 +79,61 @@ export default function CarinfoContainer() {
           Purpose: "",
           EPoint: "",
         });
-      } else if (res?.data.length > 0) {
-        changeCarInfoData({
-          PrintIndex: moment().format("YYYYMMDDHHmmss"),
-          Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
-          RegNumber: `${data?.RegNumber}`,
-          Phone: `${data?.Phone}`,
-          GpsNumber: `${data?.GpsNumber}`,
-          Owner: `${data?.Owner}`,
-          SPoint: `${data?.SPoint}`,
-          Purpose: `${data?.Purpose}`,
-          EPoint: `${data?.EPoint}`,
-        });
-
-        changeCarInfo({
-          PrintIndex: moment().format("YYYYMMDDHHmmss"),
-          Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
-          RegNumber: `${data?.RegNumber}`,
-          Phone: `${data?.Phone}`,
-          GpsNumber: `${data?.GpsNumber}`,
-          Owner: `${data?.Owner}`,
-          SPoint: `${data?.SPoint}`,
-          Purpose: `${data?.Purpose}`,
-          EPoint: `${data?.EPoint}`,
-        });
       } else {
+        console.log("124 :>> ", 124);
         changeCarInfoData({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
         });
 
         changeCarInfo({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
         });
       }
+      //  else {
+      //   changeCarInfoData({
+      //     PrintIndex: "",
+      //     Number: "",
+      //     Address: "",
+      //     RegNumber: "",
+      //     Phone: "",
+      //     GpsNumber: "",
+      //     Owner: "",
+      //     SPoint: "",
+      //     Purpose: "",
+      //     EPoint: "",
+      //   });
+
+      //   changeCarInfo({
+      //     PrintIndex: "",
+      //     Number: "",
+      //     Address: "",
+      //     RegNumber: "",
+      //     Phone: "",
+      //     GpsNumber: "",
+      //     Owner: "",
+      //     SPoint: "",
+      //     Purpose: "",
+      //     EPoint: "",
+      //   });
+      // }
     });
   }, []);
   const onChangeCarNum = (e) => {
