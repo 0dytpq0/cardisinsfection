@@ -52,7 +52,7 @@ export default function CarinfoContainer() {
       }
       console.log("res.data :>> ", res.data);
       let data = res?.data[0];
-      if ((Number = "미인식")) {
+      if (Number === "미인식") {
         changeCarInfoData({
           PrintIndex: "",
           Number: "",

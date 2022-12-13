@@ -58,8 +58,36 @@ const WaitingCar = ({ carimg }) => {
         console.log("error :>> ", error);
       }
       let data = res.data[0];
-      console.log("data :>> ", data);
-      if ((Number = "미인식")) {
+      if (Number !== "미인식") {
+        changeCarInfo({
+          PrintIndex: `${data?.PrintIndex}`,
+          Number: `${data?.Number}`,
+          Address: `${data?.Address}`,
+          RegNumber: `${data?.RegNumber}`,
+          Phone: `${data?.Phone}`,
+          GpsNumber: `${data?.GpsNumber}`,
+          Owner: `${data?.Owner}`,
+          SPoint: `${data?.SPoint}`,
+          Purpose: `${data?.Purpose}`,
+          EPoint: `${data?.EPoint}`,
+        });
+        changeActorInfo({
+          Attached: `${data?.CAttached}`,
+          Name: `${data?.CName}`,
+          Phone: `${data?.CPhone}`,
+          Position: `${data?.CPosition}`,
+        });
+        changeCheckerInfo({
+          Attached: `${data?.EAttached}`,
+          Name: `${data?.EName}`,
+          Phone: `${data?.EPhone}`,
+          Position: `${data?.EPosition}`,
+        });
+        changeAreaInfo({
+          Area: `${data?.Area}`,
+          AreaType: `${data?.AreaType}`,
+          DContent: `${data?.DContent}`,
+        });
         changeCarInfoData({
           PrintIndex: moment().format("YYYYMMDDHHmmss"),
           Number: `${data?.Number}`,
@@ -72,52 +100,52 @@ const WaitingCar = ({ carimg }) => {
           Purpose: `${data?.Purpose}`,
           EPoint: `${data?.EPoint}`,
         });
+      } else {
+        console.log("Number :>> ", Number);
+        changeCarInfoData({
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          Number: "",
+          Address: "",
+          RegNumber: "",
+          Phone: "",
+          GpsNumber: "",
+          Owner: "",
+          SPoint: "",
+          Purpose: "",
+          EPoint: "",
+        });
+        changeCarInfo({
+          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          Number: "",
+          Address: "",
+          RegNumber: "",
+          Phone: "",
+          GpsNumber: "",
+          Owner: "",
+          SPoint: "",
+          Purpose: "",
+          EPoint: "",
+        });
+        changeActorInfo({
+          Attached: "",
+          Name: "",
+          Phone: "",
+          Position: "",
+        });
+        changeCheckerInfo({
+          Attached: "",
+          Name: "",
+          Phone: "",
+          Position: "",
+        });
+        changeAreaInfo({
+          Area: "",
+          AreaType: "",
+          DContent: "",
+        });
       }
-      changeCarInfo({
-        PrintIndex: `${data?.PrintIndex}`,
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
-      changeActorInfo({
-        Attached: `${data?.CAttached}`,
-        Name: `${data?.CName}`,
-        Phone: `${data?.CPhone}`,
-        Position: `${data?.CPosition}`,
-      });
-      changeCheckerInfo({
-        Attached: `${data?.EAttached}`,
-        Name: `${data?.EName}`,
-        Phone: `${data?.EPhone}`,
-        Position: `${data?.EPosition}`,
-      });
-      changeAreaInfo({
-        Area: `${data?.Area}`,
-        AreaType: `${data?.AreaType}`,
-        DContent: `${data?.DContent}`,
-      });
-      changeCarInfoData({
-        PrintIndex: moment().format("YYYYMMDDHHmmss"),
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
-      changeDeleteWaitingCar(e.target.innerText);
-      console.log("waitingcar", waitingcar);
 
-      console.log("deletewaitingcar", deletewaitingcar);
+      changeDeleteWaitingCar(e.target.innerText);
     });
   };
   const ItemList = trashwaitingcar.map((item, idx) => (

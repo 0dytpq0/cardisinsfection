@@ -212,13 +212,8 @@ function App() {
         ImagePath: `${dbImgUrl}`,
       })
       .then((res) => {
+        console.log("res :>> ", res);
         if (res.statusText === "OK") {
-          rt2 = true;
-        } else {
-          rt2 = false;
-        }
-        console.log("rt2", rt2);
-        if (rt2 === true) {
           Modal.success({
             content: `저장 성공!`,
           });
