@@ -16,6 +16,7 @@ export default function CarinfoContainer() {
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
 
   const {
+    changeWaitingCurrentNumber,
     changeCarInfoData,
     carinfodata,
     deletewaitingcar,
@@ -80,7 +81,6 @@ export default function CarinfoContainer() {
           EPoint: "",
         });
       } else {
-        console.log("124 :>> ", 124);
         changeCarInfoData({
           PrintIndex: moment().format("YYYYMMDDHHmmss"),
           Number: `${data?.Number}`,
@@ -135,7 +135,7 @@ export default function CarinfoContainer() {
       //   });
       // }
     });
-  }, []);
+  }, [waitingcurrentnumber]);
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
@@ -381,6 +381,7 @@ export default function CarinfoContainer() {
     changeTrashWaitingCar(arr2);
     changeCarInfoData({ ...carinfodata, Number: trashwaitingcar[0].Number });
     changeWaitingCar(trashwaitingcar);
+    changeWaitingCurrentNumber(arr2[0]);
   };
   const onNButton = () => {
     const time = moment().format("HH:mm:ss");

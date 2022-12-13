@@ -4,6 +4,7 @@ import { Col, Row, Button, Layout, Modal } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
 import axios from "axios";
 import Container from "./components/Container";
+import WaitingContainer from "./components/WaitingContainer";
 import CarinfoContainer from "./components/CarinfoContainer";
 import IpChange from "./components/IpChange";
 import gifImg from "./image/disinfection.gif";
@@ -309,9 +310,9 @@ function App() {
               <Container span={6} title={"차량정보"}>
                 <CarinfoContainer></CarinfoContainer>
               </Container>
-              <Container span={5} title={"대기저장"}>
+              <WaitingContainer span={5} title={"대기저장"}>
                 <WaitingCar />
-              </Container>
+              </WaitingContainer>
               <Container span={5} title={"프린트완료차량"}>
                 <PrintCompleted />
               </Container>

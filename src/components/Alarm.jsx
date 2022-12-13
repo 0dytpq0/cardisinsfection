@@ -111,12 +111,16 @@ const Alarm = () => {
           jsonMsg?.SUCCESSCOUNT === 1
         ) {
           let arr = msgList;
-          arr.unshift(moment().format("HH:mm:ss") + " CCTV 연결 성공");
+          arr.unshift(
+            moment().format("HH:mm:ss") + " 차량번호 인식 카메라 연결 성공"
+          );
           setMsgList(arr);
         }
         if (jsonMsg?.CMD === "CCTVISOK" && jsonMsg?.STATUS === 0) {
           let arr = msgList;
-          arr.unshift(moment().format("HH:mm:ss") + " CCTV 연결 실패 재시도중");
+          arr.unshift(
+            moment().format("HH:mm:ss") + "차량번호 인식 카메라 실패 재시도중"
+          );
           setMsgList(arr);
         }
       }
