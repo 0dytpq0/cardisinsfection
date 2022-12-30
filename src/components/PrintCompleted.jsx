@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useInfo } from "../store";
-import CarinfoContainer from "./CarinfoContainer";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { useInfo } from '../store';
+import CarinfoContainer from './CarinfoContainer';
+import axios from 'axios';
 
 const PrintCompleted = ({ printed }) => {
   const {
@@ -15,19 +15,19 @@ const PrintCompleted = ({ printed }) => {
     changeAreaInfo,
   } = useInfo();
   const onListChange = (e) => {
-    let PrintIndex = "";
-    let sql = "";
-    console.log("e :>> ", e);
+    let PrintIndex = '';
+    let sql = '';
+    console.log('e :>> ', e);
     PrintIndex = e.target.dataset.set;
-    if (PrintIndex !== "") {
+    if (PrintIndex !== '') {
       sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {
-        console.log("error :>> ", error);
+        console.log('error :>> ', error);
       }
       let data = res.data[0];
-      console.log("data :>> ", data);
+      console.log('data :>> ', data);
       changeCarInfo({
         PrintIndex: `${data?.PrintIndex}`,
         Number: `${data?.Number}`,
@@ -39,18 +39,21 @@ const PrintCompleted = ({ printed }) => {
         SPoint: `${data?.SPoint}`,
         Purpose: `${data?.Purpose}`,
         EPoint: `${data?.EPoint}`,
+        RegistryDate: `${data?.RegistryDate}`,
       });
       changeActorInfo({
         Attached: `${data?.CAttached}`,
         Name: `${data?.CName}`,
         Phone: `${data?.CPhone}`,
         Position: `${data?.CPosition}`,
+        Type: `${data?.Type}`,
       });
       changeCheckerInfo({
         Attached: `${data?.EAttached}`,
         Name: `${data?.EName}`,
         Phone: `${data?.EPhone}`,
         Position: `${data?.EPosition}`,
+        Type: `${data?.Type}`,
       });
       changeAreaInfo({
         Area: `${data?.Area}`,
@@ -80,14 +83,14 @@ const PrintCompleted = ({ printed }) => {
       data-set={item.PrintIndex}
       onClick={onListChange}
       key={idx}
-      className="printedcar_list_item"
+      className='printedcar_list_item'
     >
       {item.Number}
     </li>
   ));
   return (
     <div>
-      <ul className="printedcar_list">{itemList}</ul>
+      <ul className='printedcar_list'>{itemList}</ul>
     </div>
   );
 };

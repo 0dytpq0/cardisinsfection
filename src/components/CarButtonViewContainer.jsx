@@ -1,7 +1,7 @@
-import React from "react";
-import { Input } from "antd";
-import { useInfo } from "../store";
-import CarButtonContainer from "./CarButtonContainer";
+import React from 'react';
+import { Input } from 'antd';
+import { useInfo } from '../store';
+import CarButtonContainer from './CarButtonContainer';
 
 const CarButtonViewContainer = () => {
   const { carmodalinfo, changeCarModalInfo } = useInfo();
@@ -34,61 +34,61 @@ const CarButtonViewContainer = () => {
   };
   return (
     <div>
-      <CarButtonContainer title={"출입자 정보"}></CarButtonContainer>
+      <CarButtonContainer title={'출입자 정보'}></CarButtonContainer>
       <Input
         onChange={onChangeCarNumber}
-        className="input"
+        className='input'
         value={carmodalinfo.Number}
-        placeholder="차량 번호"
+        placeholder='차량 번호'
       />
       <Input
         onChange={onChangeCarPurpose}
-        className="input"
+        className='input'
         value={carmodalinfo.Purpose}
-        placeholder="목적"
+        placeholder='목적'
       />
       <Input
         onChange={onChangeCarRegNumber}
-        className="input"
+        className='input'
         value={carmodalinfo.RegNumber}
-        placeholder="등록번호"
+        placeholder='등록번호'
       />
       <Input
         onChange={onChangeCarGpsNumber}
-        className="input"
+        className='input'
         value={carmodalinfo.GpsNumber}
-        placeholder="GPS번호"
+        placeholder='GPS번호'
       />
       <Input
         onChange={onChangeCarOwner}
-        className="input"
+        className='input'
         value={carmodalinfo.Owner}
-        placeholder="출입자"
+        placeholder='출입자'
       />
 
       <Input
         onChange={onChangeCarAddress}
-        className="input"
+        className='input'
         value={carmodalinfo.Address}
-        placeholder="주소"
+        placeholder='주소'
       />
       <Input
         onChange={onChangeCarPhone}
-        className="input"
+        className='input'
         value={carmodalinfo.Phone}
-        placeholder="연락처"
+        placeholder='연락처'
       />
       <Input
         onChange={onChangeCarSPoint}
-        className="input"
+        className='input'
         value={carmodalinfo.SPoint}
-        placeholder="출발지"
+        placeholder='출발지'
       />
       <Input
         onChange={onChangeCarEPoint}
-        className="input"
+        className='input'
         value={carmodalinfo.EPoint}
-        placeholder="도착지"
+        placeholder='도착지'
       />
     </div>
   );

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Input, Col, Row } from "antd";
-import { ArrowRightOutlined, FilterFilled } from "@ant-design/icons";
-import { useInfo, useWaitingCar } from "../store";
-import ButtonContainer from "./ButtonContainer";
-import ButtonContainerArea from "./ButtonContainerArea";
-import CheckerButtonViewContainer from "./CheckerButtonViewContainer";
-import ActorButtonViewContainer from "./ActorButtonViewContainer";
-import CarButtonViewContainer from "./CarButtonViewContainer";
-import axios from "axios";
-import moment from "moment";
+import React, { useState, useEffect, useRef } from 'react';
+import { Modal, Button, Input, Col, Row } from 'antd';
+import { ArrowRightOutlined, FilterFilled } from '@ant-design/icons';
+import { useInfo, useWaitingCar } from '../store';
+import ButtonContainer from './ButtonContainer';
+import ButtonContainerArea from './ButtonContainerArea';
+import CheckerButtonViewContainer from './CheckerButtonViewContainer';
+import ActorButtonViewContainer from './ActorButtonViewContainer';
+import CarButtonViewContainer from './CarButtonViewContainer';
+import axios from 'axios';
+import moment from 'moment';
 
-import { client } from "../App";
+import { client } from '../App';
 
 export default function CarinfoContainer() {
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
@@ -40,51 +40,53 @@ export default function CarinfoContainer() {
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
 
+  // const waitingcarHeader = useRef(waitingcurrentnumber);
+
   useEffect(() => {
-    let Number = "";
-    let sql = "";
+    let Number = '';
+    let sql = '';
     Number = waitingcurrentnumber;
-    console.log("Number", Number);
-    if (Number !== "") {
+    console.log('Number', Number);
+    if (Number !== '') {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {
-        console.log("error :>> ", error);
+        console.log('error :>> ', error);
       }
-      console.log("res.data :>> ", res.data);
+      console.log('res.data :>> ', res.data);
       let data = res?.data[0];
-      if (Number === "미인식") {
+      if (Number === '미인식') {
         changeCarInfoData({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
+          PrintIndex: '',
+          Number: '',
+          Address: '',
+          RegNumber: '',
+          Phone: '',
+          GpsNumber: '',
+          Owner: '',
+          SPoint: '',
+          Purpose: '',
+          EPoint: '',
         });
 
         changeCarInfo({
-          PrintIndex: "",
-          Number: "",
-          Address: "",
-          RegNumber: "",
-          Phone: "",
-          GpsNumber: "",
-          Owner: "",
-          SPoint: "",
-          Purpose: "",
-          EPoint: "",
+          PrintIndex: '',
+          Number: '',
+          Address: '',
+          RegNumber: '',
+          Phone: '',
+          GpsNumber: '',
+          Owner: '',
+          SPoint: '',
+          Purpose: '',
+          EPoint: '',
         });
       } else {
         changeCarInfoData({
-          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: `${data?.Number}`,
-          Address: `${data?.Address}`,
+          Address: `${data?.Address}` ?? '',
           RegNumber: `${data?.RegNumber}`,
           Phone: `${data?.Phone}`,
           GpsNumber: `${data?.GpsNumber}`,
@@ -95,7 +97,7 @@ export default function CarinfoContainer() {
         });
 
         changeCarInfo({
-          PrintIndex: moment().format("YYYYMMDDHHmmss"),
+          PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
           RegNumber: `${data?.RegNumber}`,
@@ -135,6 +137,7 @@ export default function CarinfoContainer() {
       //   });
       // }
     });
+    // console.log('waitingcurrentnumber', waitingcurrentnumber);
   }, [waitingcurrentnumber]);
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
@@ -215,16 +218,19 @@ export default function CarinfoContainer() {
   const handleOk = () => {
     setIsModalOpen(false);
     let areaValue = JSON.stringify(areainfo);
-    areaValue = areaValue.replaceAll('"', "`");
+    areaValue = areaValue.replaceAll('"', '`');
+
+    // axios.put('http://localhost:4000/operator')
+
     axios
-      .put("http://localhost:4000/settingitems/", {
-        Name: "DeliverProof",
+      .put('http://localhost:4000/settingitems/', {
+        Name: 'DeliverProof',
         Value: areaValue,
       })
       .then((res) => {
-        console.log("res", res.statusText);
+        console.log('res', res.statusText);
 
-        if (res.statusText === "OK") {
+        if (res.statusText === 'OK') {
           Modal.success({
             content: `저장 성공!`,
           });
@@ -247,60 +253,60 @@ export default function CarinfoContainer() {
     setIsModalOpenChecker(false);
     changeCheckerInfo(checkermodalinfo);
     let checkerValue = JSON.stringify(checkermodalinfo);
-    checkerValue = checkerValue.replaceAll('"', "`");
-    console.log("checkerValue :>> ", checkerValue);
+    checkerValue = checkerValue.replaceAll('"', '`');
+    console.log('checkerValue :>> ', checkerValue);
     let rt1 = false;
     let rt2 = false;
     await axios
-      .put("http://localhost:4000/settingitems/", {
-        Name: "COperator",
+      .put('http://localhost:4000/settingitems/', {
+        Name: 'COperator',
         Value: checkerValue,
       })
       .then((res) => {
-        console.log("res", res.statusText);
+        console.log('res', res.statusText);
 
-        if (res.statusText === "OK") {
-          rt1 = true;
-          Modal.success({
-            content: `저장 성공!`,
-          });
-        } else {
-          rt1 = false;
-          Modal.error({
-            content: `저장 실패!`,
-          });
-        }
+        // if (res.statusText === 'OK') {
+        //   rt1 = true;
+        //   Modal.success({
+        //     content: `저장 성공!`,
+        //   });
+        // } else {
+        //   rt1 = false;
+        //   Modal.error({
+        //     content: `저장 실패!`,
+        //   });
+        // }
       });
 
-    checkerValue = checkerValue.replaceAll("`", '"');
+    checkerValue = checkerValue.replaceAll('`', '"');
     checkerValue = JSON.parse(checkerValue);
 
-    //   await axios
-    //     .post("http://localhost:4000/operatoritems/", {
-    //       Name: checkerValue.Name,
-    //       Phone: checkerValue.Phone,
-    //       Type: checkerValue.Type,
-    //       Position: checkerValue.Position,
-    //       Attached: checkerValue.Attached,
-    //     })
-    //     .then((res) => {
-    //       console.log("res", res.statusText);
-    //       if (res.statusText === "OK") {
-    //         rt2 = true;
-    //       } else {
-    //         rt2 = false;
-    //       }
-    //     });
-    //   console.log("rt1,rt2", rt1, rt2);
-    //   if (rt1 === true && rt2 === true) {
-    //     Modal.success({
-    //       content: `저장 성공!`,
-    //     });
-    //   } else {
-    //     Modal.error({
-    //       content: `저장 실패!`,
-    //     });
-    //   }
+    await axios
+      .post('http://localhost:4000/operatoritems/', {
+        Name: checkerValue.Name,
+        Phone: checkerValue.Phone,
+        Type: checkerValue.Type,
+        Position: checkerValue.Position,
+        Attached: checkerValue.Attached,
+      })
+      .then((res) => {
+        console.log('res', res.statusText);
+        if (res.statusText === 'OK') {
+          rt2 = true;
+        } else {
+          rt2 = false;
+        }
+      });
+    console.log('rt1,rt2', rt1, rt2);
+    if (rt2 === true) {
+      Modal.success({
+        content: `저장 성공!`,
+      });
+    } else {
+      Modal.error({
+        content: `저장 실패!`,
+      });
+    }
   };
 
   const handleCancelchecker = () => {
@@ -313,19 +319,19 @@ export default function CarinfoContainer() {
   const handleOkActor = async () => {
     setIsModalOpenActor(false);
     changeActorInfo(actormodalinfo);
-    let actorValue = JSON.stringify(actorinfo);
-    actorValue = actorValue.replaceAll('"', "`");
+    let actorValue = JSON.stringify(actormodalinfo);
+    actorValue = actorValue.replaceAll('"', '`');
     let rt1 = false;
     let rt2 = false;
     axios
-      .put("http://localhost:4000/settingitems/", {
-        Name: "EOperator",
+      .put('http://localhost:4000/settingitems/', {
+        Name: 'EOperator',
         Value: actorValue,
       })
       .then((res) => {
-        console.log("res", res.statusText);
+        console.log('res', res.statusText);
 
-        if (res.statusText === "OK") {
+        if (res.statusText === 'OK') {
           rt1 = true;
           Modal.success({
             content: `저장 성공!`,
@@ -338,39 +344,40 @@ export default function CarinfoContainer() {
         }
       });
 
-    actorValue = actorValue.replaceAll("`", '"');
+    actorValue = actorValue.replaceAll('`', '"');
     actorValue = JSON.parse(actorValue);
 
-    //   await axios
-    //     .post("http://localhost:4000/operatoritems/", {
-    //       Name: actorValue.Name,
-    //       Phone: actorValue.Phone,
-    //       Type: actorValue.Type,
-    //       Position: actorValue.Position,
-    //       Attached: actorValue.Attached,
-    //     })
-    //     .then((res) => {
-    //       console.log("res", res.statusText);
-    //       if (res.statusText === "OK") {
-    //         rt2 = true;
-    //       } else {
-    //         rt2 = false;
-    //       }
-    //     });
-    //   console.log("rt1,rt2", rt1, rt2);
-    //   if (rt1 === true && rt2 === true) {
-    //     Modal.success({
-    //       content: `저장 성공!`,
-    //     });
-    //   } else {
-    //     Modal.error({
-    //       content: `저장 실패!`,
-    //     });
-    //   }
+    await axios
+      .post('http://localhost:4000/operatoritems/', {
+        Name: actorValue.Name,
+        Phone: actorValue.Phone,
+        Type: actorValue.Type,
+        Position: actorValue.Position,
+        Attached: actorValue.Attached,
+      })
+      .then((res) => {
+        console.log('res', res.statusText);
+        if (res.statusText === 'OK') {
+          rt2 = true;
+        } else {
+          rt2 = false;
+        }
+      });
+    console.log('rt1,rt2', rt1, rt2);
+    // if (rt1 === true && rt2 === true) {
+    //   Modal.success({
+    //     content: `저장 성공!`,
+    //   });
+    // } else {
+    //   Modal.error({
+    //     content: `저장 실패!`,
+    //   });
+    // }
   };
   const handleCancelActor = () => {
     setIsModalOpenActor(false);
   };
+
   const onDeleteButton = () => {
     let arr = [];
     let arr2 = [];
@@ -384,28 +391,30 @@ export default function CarinfoContainer() {
     changeWaitingCurrentNumber(arr2[0]);
   };
   const onNButton = () => {
-    const time = moment().format("HH:mm:ss");
+    const time = moment().format('HH:mm:ss');
     client.publish(
-      "CarCleanDevice",
+      'CarCleanDevice',
       '{"CMD":"STEP_Recognized","STATUS":"O","TIME":"' + time + '","QUEUE":O}'
     );
   };
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "end" }}>
+      <div style={{ display: 'flex', alignItems: 'end' }}>
         <label>
           차량 번호
           <Input
-            className="input input_carnum"
-            placeholder="차량 번호"
-            value={carinfodata?.Number}
+            className='input input_carnum'
+            placeholder='차량 번호'
+            value={
+              carinfodata?.Number === 'undefined' ? '' : carinfodata?.Number
+            }
             onChange={onChangeCarNum}
           />
         </label>
         <Button onClick={carShowModal}>조회</Button>
         <Modal
-          style={{ height: "300px" }}
-          title=""
+          style={{ height: '300px' }}
+          title=''
           open={isModalOpenCar}
           onOk={carHandleOk}
           onCancel={carHandleCancel}
@@ -419,66 +428,74 @@ export default function CarinfoContainer() {
       <label>
         차량 목적
         <Input
-          className="input input_purpose"
-          placeholder="차량 목적"
-          value={carinfodata?.Purpose}
+          className='input input_purpose'
+          placeholder='차량 목적'
+          value={
+            carinfodata?.Purpose === 'undefined' ? '' : carinfodata?.Purpose
+          }
           onChange={onChangePurpose}
         />
       </label>
       <label>
         등록 번호
         <Input
-          className="input input_regnum"
-          placeholder="등록 번호"
-          value={carinfodata?.RegNum}
+          className='input input_regnum'
+          placeholder='등록 번호'
+          value={carinfodata?.RegNum === 'undefined' ? '' : carinfodata?.RegNum}
           onChange={onChangeRegNum}
         />
       </label>
       <label>
         GPS 번호
         <Input
-          className="input input_gpsnum"
-          placeholder="GPS 번호"
-          value={carinfodata?.GpsNum}
+          className='input input_gpsnum'
+          placeholder='GPS 번호'
+          value={carinfodata?.GpsNum === 'undefined' ? '' : carinfodata?.GpsNum}
           onChange={onChangeGpsnum}
         />
       </label>
       <label>
         차주 성명
         <Input
-          className="input input_owner"
-          placeholder="차주 성명"
-          value={carinfodata?.Owner}
+          className='input input_owner'
+          placeholder='차주 성명'
+          value={carinfodata?.Owner === 'undefined' ? '' : carinfodata?.Owner}
           onChange={onChangeOwner}
         />
       </label>
       <label>
         주소
         <Input
-          className="input input_address"
-          placeholder="주소"
-          value={carinfodata?.Address}
+          className='input input_address'
+          placeholder='주소'
+          value={
+            carinfodata?.Address === 'undefined' ? '' : carinfodata?.Address
+          }
           onChange={onChangeAddr}
         />
       </label>
       <label>
         연락처
         <Input
-          className="input input_phone"
-          placeholder="연락처"
-          value={carinfodata?.Phone}
+          className='input input_phone'
+          placeholder='연락처'
+          value={carinfodata?.Phone === 'undefined' ? '' : carinfodata?.Phone}
           onChange={onChangePhone}
         />
       </label>
 
-      <Row wrap={false} style={{ display: "flex", alignItems: "center" }}>
+      <Row wrap={false} style={{ display: 'flex', alignItems: 'center' }}>
         <Col xs={12} sm={12} md={12} lg={12} xl={12}>
           <label>
             출발지
             <Input
-              className="input input_spoint"
-              value={carinfodata?.SPoint}
-              placeholder="출발지"
+              className='input input_spoint'
+              value={
+                carinfodata?.SPoint === 'undefined'
+                  ? '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'
+                  : carinfodata?.SPoint
+              }
+              placeholder='출발지'
               onChange={onChangeFrom}
             />
           </label>
@@ -488,24 +505,26 @@ export default function CarinfoContainer() {
           <label>
             목적지
             <Input
-              className="input input_epoint"
-              placeholder="목적지"
-              value={carinfodata?.EPoint}
+              className='input input_epoint'
+              placeholder='목적지'
+              value={
+                carinfodata?.EPoint === 'undefined' ? '' : carinfodata?.EPoint
+              }
               onChange={onChangeTo}
             />
           </label>
         </Col>
       </Row>
-      <Row className="buttons" wrap={false} gutter={8}>
+      <Row className='buttons' wrap={false} gutter={8}>
         <Col>
           <Button onClick={showModal}>지역 정보</Button>
           <Modal
-            title=""
+            title=''
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <ButtonContainer title={"지역정보"}>
+            <ButtonContainer title={'지역정보'}>
               <ButtonContainerArea />
             </ButtonContainer>
           </Modal>
@@ -513,7 +532,7 @@ export default function CarinfoContainer() {
         <Col>
           <Button onClick={showModalchecker}>확인자 정보</Button>
           <Modal
-            title=""
+            title=''
             open={isModalOpenChecker}
             onOk={handleOkchecker}
             onCancel={handleCancelchecker}
@@ -524,7 +543,7 @@ export default function CarinfoContainer() {
         <Col>
           <Button onClick={showModalActor}>실시자 정보</Button>
           <Modal
-            title=""
+            title=''
             open={isModalOpenActor}
             onOk={handleOkActor}
             onCancel={handleCancelActor}
