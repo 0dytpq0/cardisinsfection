@@ -1,5 +1,5 @@
-import create from "zustand";
-import { persist } from "zustand/middleware";
+import create from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export const useInfo = create(
   persist((set) => ({
@@ -44,12 +44,12 @@ export const useInfo = create(
         actormodalinfo: newData,
       })),
     waitingcar: [],
-    waitingcurrentnumber: "",
+    waitingcurrentnumber: '',
     changeWaitingCar: (newData) =>
       set((state) => ({
         waitingcar: newData,
       })),
-    deletewaitingcar: "",
+    deletewaitingcar: '',
     changeDeleteWaitingCar: (newData) =>
       set((state) => ({
         deletewaitingcar: newData,
@@ -78,7 +78,7 @@ export const useMqtt = create(
       set((state) => ({
         client: newData,
       })),
-    connectstatus: "",
+    connectstatus: '',
     changeConnectStatus: (newData) =>
       set((state) => ({
         connectstatus: newData,
@@ -90,20 +90,20 @@ export const useMqtt = create(
       })),
     options: {
       keepalive: 3000,
-      protocolId: "MQTT",
+      protocolId: 'MQTT',
       protocolVersion: 4,
       clean: true,
       reconnectPeriod: 1000,
       connectTimeout: 10 * 60 * 1000,
       will: {
-        topic: "WillMsg",
-        payload: "Connection Closed abnormally..!",
+        topic: 'WillMsg',
+        payload: 'Connection Closed abnormally..!',
         qos: 0,
         retain: false,
       },
       rejectUnauthorized: false,
     },
-    tcpip: "",
+    tcpip: '',
     changeTcpIp: (newData) =>
       set((state) => ({
         tcpip: newData,
@@ -113,7 +113,7 @@ export const useMqtt = create(
       set((state) => ({
         tcpport: newData,
       })),
-    mqtturl: "",
+    mqtturl: '',
     changeMqttUrl: (newData) =>
       set((state) => ({
         mqtturl: newData,
