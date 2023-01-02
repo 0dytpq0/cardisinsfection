@@ -175,7 +175,7 @@ const WaitingCar = () => {
       <div style={{ height: '10vh', overflow: 'hidden' }}>
         <ul className='waiting__list'>{ItemList}</ul>
       </div>
-      <div>
+      <div className='waiting_img'>
         <img className='carimg' src={waitingcarimg} />
       </div>
     </div>
