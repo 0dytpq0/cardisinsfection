@@ -1,8 +1,8 @@
-import React from "react";
-import "../App.css";
-import { useInfo, useWaitingCar } from "../store";
-import { Col, Row, Layout, Button } from "antd";
-import AutoButton from "./AutoSwitch";
+import React from 'react';
+import '../App.css';
+import { useInfo, useWaitingCar } from '../store';
+import { Col, Row, Layout, Button } from 'antd';
+import AutoButton from './AutoSwitch';
 
 function WaitingContainer({ title, children, span }) {
   const { Header } = Layout;
@@ -15,8 +15,8 @@ function WaitingContainer({ title, children, span }) {
 
   return (
     <>
-      <Col span={span} style={{ height: "70vh" }}>
-        <Header className="header">
+      <Col span={span} style={{ height: '50vh' }}>
+        <Header className='header'>
           {title}
           <Button onClick={onClear}>Clear</Button>
         </Header>

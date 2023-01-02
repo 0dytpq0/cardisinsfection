@@ -252,6 +252,7 @@ export default function CarinfoContainer() {
   const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
     changeCheckerInfo(checkermodalinfo);
+    console.log('checkermodalinfo :>> ', checkermodalinfo);
     let checkerValue = JSON.stringify(checkermodalinfo);
     checkerValue = checkerValue.replaceAll('"', '`');
     console.log('checkerValue :>> ', checkerValue);

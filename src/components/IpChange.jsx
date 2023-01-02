@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Input, Button, Modal } from "antd";
-import { useMqtt } from "../store";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Input, Button, Modal } from 'antd';
+import { useMqtt } from '../store';
+import { DollarCircleFilled } from '@ant-design/icons';
 
 const IpChange = () => {
   const [isModalOpenIp, setIsModalOpenIp] = useState(false);
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
   const [parsedValue, setParsedValue] = useState([]);
   const {
     tcpip,
@@ -23,10 +24,10 @@ const IpChange = () => {
       .get(`http://localhost:4000/settingitemsConfig`)
       .then((response) => {
         let data = response.data[0].Value;
-        console.log("data", data);
-        data = data.replaceAll("`", '"');
+        console.log('data', data);
+        data = data.replaceAll('`', '"');
         data = JSON.parse(data);
-        console.log("data :>> ", data);
+        console.log('data :>> ', data);
         changeTcpIp(data.TCPIP);
         changeTcpPort(data.TCPPORT);
         changeMqttUrl(data.MQTTURL);
@@ -41,8 +42,32 @@ const IpChange = () => {
   const showModalIp = async () => {
     setIsModalOpenIp(true);
   };
-  const handleOkIp = (e) => {
+  const handleOkIp = async (e) => {
     setIsModalOpenIp(false);
+    console.log('data====', data);
+    console.log('tcpip', tcpip);
+    console.log('tcpport :>> ', tcpport);
+    console.log('mqtturl', mqtturl);
+    console.log('mqttport :>> ', mqttport);
+    let bb = {
+      TCPIP: tcpip,
+      TCPPORT: tcpport,
+      MQTTURL: mqtturl,
+      MQTTPORT: mqttport,
+      COMPCD: `C0009`,
+      WEBURL: `http://cowplan.co.kr/disinfect.post.php`,
+    };
+
+    let ipValue = JSON.stringify(bb);
+
+    await axios
+      .put('http://localhost:4000/settingitems', {
+        Name: 'Config',
+        Value: ipValue,
+      })
+      .then((res) => {
+        console.log('res.statusText :>> ', res.statusText);
+      });
   };
   const handleCancelIp = () => {
     setIsModalOpenIp(false);
@@ -63,7 +88,7 @@ const IpChange = () => {
     <div>
       <Button onClick={showModalIp}>설정</Button>
       <Modal
-        title="설정"
+        title='설정'
         open={isModalOpenIp}
         onOk={handleOkIp}
         onCancel={handleCancelIp}

@@ -349,7 +349,7 @@ function App() {
 
       <Row
         wrap={false}
-        style={{ height: '100vh', overflow: 'hidden' }}
+        style={{ height: '93vh', overflow: 'hidden' }}
         gutter={(8, 8)}
       >
         <Col style={{ width: '300px' }} flex={2}>
@@ -395,7 +395,10 @@ function App() {
           </Col>
           <Col>
             <AutoSwitch title={'상태정보'}>
-              <img style={{ width: '99%', height: '50vh' }} src={gifImg} />
+              <img
+                style={{ width: '99%', height: '50vh', marginTop: '10px' }}
+                src={gifImg}
+              />
             </AutoSwitch>
           </Col>
         </Col>
