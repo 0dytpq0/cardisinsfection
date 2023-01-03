@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import "../App.css";
-import { Col, Row, Layout, Button, Modal, List } from "antd";
-import axios from "axios";
-import { useInfo } from "../store";
+import React, { useState, useEffect } from 'react';
+import '../App.css';
+import { Col, Row, Layout, Button, Modal, List } from 'antd';
+import axios from 'axios';
+import { useInfo } from '../store';
 
 function CarButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [listData, setListData] = useState("");
+  const [listData, setListData] = useState('');
   const { changeActorInfo, changeCarModalInfo, carmodalinfo } = useInfo();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function CarButtonContainer({ title, children }) {
     // });
     const filteredData = listData.filter((item) => item.Selected === true);
     changeCarModalInfo(filteredData[0]);
-    console.log("carmodalinfo", carmodalinfo);
+    console.log('carmodalinfo', carmodalinfo);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -60,45 +60,42 @@ function CarButtonContainer({ title, children }) {
 
   return (
     <>
-      <Col className="buttoncontainer">
-        <Header className="header">
+      <Col className='buttoncontainer'>
+        <Header className='header'>
           {title}
 
           <Button onClick={showModal}>조회</Button>
           <Modal
-            title=""
+            title=''
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
           >
             <List
-              style={{ height: "400px", overflow: "auto" }}
-              className="list"
-              itemLayout="horizontal"
+              style={{ height: '400px', overflow: 'auto' }}
+              className='list'
+              itemLayout='horizontal'
               dataSource={listData}
               renderItem={(item) => (
                 <List.Item
                   onClick={onClickHandler}
                   data-idx={item.idx}
                   id={item.idx}
-                  className={item.Selected ? "active" : null}
+                  className={item.Selected ? 'active' : null}
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <div id={item.idx}>
-                    <h2 id={item.idx} style={{ display: "inline-block" }}>
+                    <h2 id={item.idx} style={{ display: 'inline-block' }}>
                       {item.Owner}
                     </h2>
-                    <div id={item.idx} style={{ width: "140px" }}>
-                    {item.Number}
-                      {"\u00A0"}
-                      {item.Purpose}
-                      {"\u00A0"}
-                      {item.Address}
-                      {"\u00A0"} <br />
-                      {item.Phone}
+                    <div id={item.idx} style={{ width: '140px' }}>
+                      <div>{item.Number}</div>
+                      <div>{item.Purpose}</div>
+                      <div>{item.Address}</div>
+                      <div>{item.Phone}</div>
                     </div>
                   </div>
                 </List.Item>

@@ -39,6 +39,7 @@ export default function CarinfoContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
+  const [listData, setListData] = useState('');
 
   // const waitingcarHeader = useRef(waitingcurrentnumber);
 
@@ -199,6 +200,23 @@ export default function CarinfoContainer() {
 
   const carShowModal = () => {
     setIsModalOpenCar(true);
+    axios.get(`http://localhost:4000/carinfoitemsall`).then((response) => {
+      let data = response.data.map((_, i) => ({
+        Number: `${response.data[i].Number}`,
+        RegNumber: `${response.data[i].RegNumber}`,
+        SPoint: `${response.data[i].SPoint}`,
+        EPoint: `${response.data[i].EPoint}`,
+        GpsNumber: `${response.data[i].GpsNumber}`,
+        Purpose: `${response.data[i].Purpose}`,
+        Owner: `${response.data[i].Owner}`,
+        Address: `${response.data[i].Address}`,
+        Phone: `${response.data[i].Phone}`,
+
+        Selected: false,
+        idx: i,
+      }));
+      setListData(data);
+    });
   };
 
   const carHandleOk = () => {

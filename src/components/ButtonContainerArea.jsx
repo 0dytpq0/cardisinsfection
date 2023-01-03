@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Alert, Checkbox, Input, Col, Row } from "antd";
-import { useInfo } from "../store";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Alert, Checkbox, Input, Col, Row } from 'antd';
+import { useInfo } from '../store';
+import axios from 'axios';
 
 const ButtonContainerArea = () => {
   const { carinfo, changeCarInfo, areainfo, changeAreaInfo } = useInfo();
@@ -9,15 +9,15 @@ const ButtonContainerArea = () => {
   const [protect, setProtect] = useState(false);
   const [quarantine, setQuarantine] = useState(true);
   const [wildAnimal, setWildAnimal] = useState(false);
-  const [area, setArea] = useState("");
-  const [pointName, setPointName] = useState("");
-  const [dContent, setDContent] = useState("");
+  const [area, setArea] = useState('');
+  const [pointName, setPointName] = useState('');
+  const [dContent, setDContent] = useState('');
   useEffect(() => {
     axios
       .get(`http://localhost:4000/settingitems?Name=DeliverProof`)
       .then((response) => {
         let data = response.data[0].Value;
-        data = data.replaceAll("`", '"');
+        data = data.replaceAll('`', '"');
         let parsedValue = JSON.parse(data);
         setArea(parsedValue?.Area);
         setPointName(parsedValue?.PointName);
@@ -80,20 +80,20 @@ const ButtonContainerArea = () => {
         야생조수류예찰지역
       </Checkbox>
       <Input
-        className="input"
-        placeholder="소독 지역"
+        className='input'
+        placeholder='소독 지역'
         value={area}
         onChange={onChangeArea}
       />
       <Input
-        className="input"
-        placeholder="소독 장소명"
+        className='input'
+        placeholder='소독 장소명'
         value={pointName}
         onChange={onChangePointName}
       />
       <Input
-        className="input"
-        placeholder="소독 내용"
+        className='input'
+        placeholder='소독 내용'
         value={dContent}
         onChange={onChangeDContent}
       />

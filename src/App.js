@@ -195,7 +195,7 @@ function App() {
     let crTime = moment().format('YYYYMMDDHHmmss');
     let arr = printedcar;
     arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
-    if (arr.length > 10) {
+    if (arr.length > 9) {
       arr.pop();
     }
     let rt1 = false;
@@ -313,10 +313,12 @@ function App() {
     windowObject.document.close();
 
     windowObject.focus();
-    let aa = windowObject.print();
-    console.log('aa :>> ', aa);
-    windowObject.close();
-    waitingcar.shift();
+    setTimeout(() => {
+      windowObject.print();
+      windowObject.close();
+      waitingcar.shift();
+    }, 1500);
+
     console.log('waitingcar', waitingcar);
   };
   const componentRef = useRef(null);

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Input } from "antd";
-import { useInfo } from "../store";
-import axios from "axios";
-import CheckerButtonContainer from "./CheckerButtonContainer";
+import React, { useEffect, useState } from 'react';
+import { Input } from 'antd';
+import { useInfo } from '../store';
+import axios from 'axios';
+import CheckerButtonContainer from './CheckerButtonContainer';
 
 const CheckerButtonViewContainer = () => {
   const {
@@ -17,7 +17,7 @@ const CheckerButtonViewContainer = () => {
       .get(`http://localhost:4000/settingitems?Name=COperator`)
       .then((response) => {
         let data = response.data[0].Value;
-        data = data.replaceAll("`", '"');
+        data = data.replaceAll('`', '"');
         let parsedValue = JSON.parse(data);
         changeCheckerInfo(parsedValue);
       });
@@ -37,30 +37,30 @@ const CheckerButtonViewContainer = () => {
 
   return (
     <div>
-      <CheckerButtonContainer title={"확인자 정보"}></CheckerButtonContainer>
+      <CheckerButtonContainer title={'확인자 정보'}></CheckerButtonContainer>
       <Input
         onChange={onChangeAttached}
-        className="input"
+        className='input'
         value={checkermodalinfo.Attached}
-        placeholder="소속"
-      />{" "}
+        placeholder='소속'
+      />{' '}
       <Input
         onChange={onChangecheckerPosition}
-        className="input"
+        className='input'
         value={checkermodalinfo.Position}
-        placeholder="직급"
-      />{" "}
+        placeholder='직급'
+      />{' '}
       <Input
         onChange={onChangeCheckerName}
-        className="input"
+        className='input'
         value={checkermodalinfo.Name}
-        placeholder="성명"
+        placeholder='성명'
       />
       <Input
         onChange={onChangecheckerPhone}
-        className="input"
+        className='input'
         value={checkermodalinfo.Phone}
-        placeholder="연락처"
+        placeholder='연락처'
       />
     </div>
   );
