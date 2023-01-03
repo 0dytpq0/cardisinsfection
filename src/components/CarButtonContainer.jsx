@@ -92,6 +92,8 @@ function CarButtonContainer({ title, children }) {
                       {item.Owner}
                     </h2>
                     <div id={item.idx} style={{ width: "140px" }}>
+                    {item.Number}
+                      {"\u00A0"}
                       {item.Purpose}
                       {"\u00A0"}
                       {item.Address}
