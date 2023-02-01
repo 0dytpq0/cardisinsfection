@@ -11,7 +11,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import { client } from '../App';
-
+//메인화면 차량정보 표시
 export default function CarinfoContainer() {
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
   const { listData, changeListData } = useListData();
@@ -26,8 +26,6 @@ export default function CarinfoContainer() {
     carinfo,
     carmodalinfo,
     areainfo,
-    checkerinfo,
-    actorinfo,
     checkermodalinfo,
     changeCheckerInfo,
     actormodalinfo,
@@ -39,15 +37,12 @@ export default function CarinfoContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
-  // const [listData, setListData] = useState('');
-
-  // const waitingcarHeader = useRef(waitingcurrentnumber);
 
   useEffect(() => {
+    //대기저장차량 첫번째에 따라 차량정보 가져오는 곳
     let Number = '';
     let sql = '';
     Number = waitingcurrentnumber;
-    console.log('Number', Number);
     if (Number !== '') {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
     }
@@ -57,6 +52,7 @@ export default function CarinfoContainer() {
       }
       console.log('res.data :>> ', res.data);
       let data = res?.data[0];
+      //undefined가 안뜨게 미인식일 시에 값 넣어주는 곳
       if (Number === '미인식') {
         changeCarInfoData({
           PrintIndex: '',
@@ -110,36 +106,9 @@ export default function CarinfoContainer() {
           EPoint: `${data?.EPoint}`,
         });
       }
-      //  else {
-      //   changeCarInfoData({
-      //     PrintIndex: "",
-      //     Number: "",
-      //     Address: "",
-      //     RegNumber: "",
-      //     Phone: "",
-      //     GpsNumber: "",
-      //     Owner: "",
-      //     SPoint: "",
-      //     Purpose: "",
-      //     EPoint: "",
-      //   });
-
-      //   changeCarInfo({
-      //     PrintIndex: "",
-      //     Number: "",
-      //     Address: "",
-      //     RegNumber: "",
-      //     Phone: "",
-      //     GpsNumber: "",
-      //     Owner: "",
-      //     SPoint: "",
-      //     Purpose: "",
-      //     EPoint: "",
-      //   });
-      // }
     });
-    // console.log('waitingcurrentnumber', waitingcurrentnumber);
   }, [waitingcurrentnumber]);
+  //차량정보 인풋창 수정
   const onChangeCarNum = (e) => {
     changeCarInfo({ ...carmodalinfo, Number: e.target.value });
     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
@@ -197,7 +166,7 @@ export default function CarinfoContainer() {
     });
     changeCarInfoData({ ...carinfodata, EPoint: e.target.value });
   };
-
+  //차량 정보 내의 조회버튼 클릭시 차량 번호와 유사한 것들을 modal창에 표시
   const carShowModal = () => {
     setIsModalOpenCar(true);
     axios
@@ -220,7 +189,7 @@ export default function CarinfoContainer() {
         changeListData(data);
       });
   };
-
+  //선택한 데이터 입력
   const carHandleOk = () => {
     setIsModalOpenCar(false);
     // changeCarInfo(carmodalinfo);
@@ -239,6 +208,7 @@ export default function CarinfoContainer() {
     setIsModalOpen(true);
   };
 
+  //지역정보 ok클릭시 setting값 저장
   const handleOk = () => {
     setIsModalOpen(false);
     let areaValue = JSON.stringify(areainfo);
@@ -273,6 +243,8 @@ export default function CarinfoContainer() {
   const showModalchecker = () => {
     setIsModalOpenChecker(true);
   };
+
+  //확인자정보 ok클릭시 setting값 저장
   const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
     changeCheckerInfo(checkermodalinfo);
@@ -341,6 +313,7 @@ export default function CarinfoContainer() {
   const showModalActor = () => {
     setIsModalOpenActor(true);
   };
+  //실시자정보 ok클릭시 setting값 저장
   const handleOkActor = async () => {
     setIsModalOpenActor(false);
     changeActorInfo(actormodalinfo);
@@ -403,6 +376,7 @@ export default function CarinfoContainer() {
     setIsModalOpenActor(false);
   };
 
+  //대기저장에 클릭한 것 삭제하는 버튼
   const onDeleteButton = () => {
     let arr = [];
     let arr2 = [];
@@ -415,16 +389,19 @@ export default function CarinfoContainer() {
     changeWaitingCar(trashwaitingcar);
     changeWaitingCurrentNumber(arr2[0]);
   };
+  //mqtt 송신 버튼
   const onNButton = () => {
-    const time = moment().format('HH:mm:ss');
+    const dateTime = moment().format('YY/MM/DD-HH:mm:ss');
     client.publish(
       'CarCleanDevice',
-      '{"CMD":"STEP_Recognized","STATUS":"O","TIME":"' + time + '","QUEUE":O}'
+      '{"CMD":"STEP_Recognized","STATUS":"O","TIME":"' +
+        dateTime +
+        '","QUEUE":O}'
     );
   };
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'end' }}>
+      <div style={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'end' }}>
         <label>
           차량 번호
           <Input

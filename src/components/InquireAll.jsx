@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Excel } from 'antd-table-saveas-excel';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
-
+//왼쪽 상단 조회버튼
 const InquireAll = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -81,6 +81,7 @@ const InquireAll = () => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
+  //엑셀로 변환
   const excelButton = () => {
     const excel = new Excel();
     excel
@@ -94,6 +95,7 @@ const InquireAll = () => {
   const searchButton = () => {
     searchData();
   };
+  //?일 ~ ?일 까지 데이터 불러오기
   const searchData = () => {
     console.log('startDate', startDate);
     console.log('endDate', endDate);
@@ -103,9 +105,7 @@ const InquireAll = () => {
       '&EDate=' +
       endDate +
       '';
-    console.log('sql :>> ', sql);
     axios.get(sql).then((res) => {
-      console.log('res.data', res);
       let arr = res.data;
       arr.map((item, i) => {
         item = { ...item, key: i };
@@ -118,6 +118,8 @@ const InquireAll = () => {
   useEffect(() => {
     searchData();
   }, [startDate, endDate]);
+
+  //날짜 수정 핸들러
   const onHandleCalender = (e) => {
     console.log('e', e);
     if (e !== null) {
@@ -155,7 +157,7 @@ const InquireAll = () => {
       <RangePicker
         onChange={onHandleCalender}
         defaultValue={[
-          dayjs('2022-02-01', dateFormat),
+          dayjs('2021-02-01', dateFormat),
           dayjs('2022-12-06', dateFormat),
         ]}
         format={dateFormat}

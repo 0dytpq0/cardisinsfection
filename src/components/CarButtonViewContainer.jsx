@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import { useInfo } from '../store';
 import CarButtonContainer from './CarButtonContainer';
-
+//미사용중, 차량 조회시 뜨는 input창
 const CarButtonViewContainer = () => {
   const { carmodalinfo, changeCarModalInfo } = useInfo();
   const onChangeCarNumber = (e) => {

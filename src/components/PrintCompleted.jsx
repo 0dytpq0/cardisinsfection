@@ -3,6 +3,7 @@ import { useInfo } from '../store';
 import CarinfoContainer from './CarinfoContainer';
 import axios from 'axios';
 
+//프린트 완료 차량
 const PrintCompleted = ({ printed }) => {
   const {
     printedcar,
@@ -14,6 +15,7 @@ const PrintCompleted = ({ printed }) => {
     changeCheckerInfo,
     changeAreaInfo,
   } = useInfo();
+  //프린트 완료 차량 리스트 클릭시 정보 가져오는 코드
   const onListChange = (e) => {
     let PrintIndex = '';
     let sql = '';
@@ -78,6 +80,7 @@ const PrintCompleted = ({ printed }) => {
     // }
   };
 
+  //화면에 뿌려주는 변수
   const itemList = printedcar.map((item, idx) => (
     <li
       data-set={item.PrintIndex}

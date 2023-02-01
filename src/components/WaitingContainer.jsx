@@ -3,7 +3,7 @@ import '../App.css';
 import { useInfo, useWaitingCar } from '../store';
 import { Col, Row, Layout, Button } from 'antd';
 import AutoButton from './AutoSwitch';
-
+//대기저장 헤더
 function WaitingContainer({ title, children, span }) {
   const { Header } = Layout;
   const { changeWaitingCar } = useInfo();

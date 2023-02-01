@@ -7,6 +7,7 @@ import ActorButtonContainer from './ActorButtonContainer';
 const ActorButtonViewContainer = () => {
   const { actormodalinfo, changeActorModalInfo } = useInfo();
 
+  //기본 세팅 값에서 E타입 근무자들을 불러온다.
   useEffect(() => {
     axios
       .get(`http://localhost:4000/settingitems?Name=EOperator`)
@@ -18,9 +19,9 @@ const ActorButtonViewContainer = () => {
       });
   }, []);
 
+  //인풋창 정보 입력시 zustand에 저장
   const onChangeActorAttached = (e) => {
     changeActorModalInfo({ ...actormodalinfo, Attached: e.target.value });
-    console.log('actorinfo :>> ', actormodalinfo);
   };
   const onChangeActorPosition = (e) => {
     changeActorModalInfo({ ...actormodalinfo, Position: e.target.value });

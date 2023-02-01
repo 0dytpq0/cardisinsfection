@@ -10,6 +10,7 @@ function ActorButtonContainer({ title, children }) {
   const [listData, setListData] = useState('');
   const { changeActorModalInfo } = useInfo();
 
+  //Type이 E인 것들 get
   useEffect(() => {
     axios.get(`http://localhost:4000/OperatoritemsAllE`).then((response) => {
       let data = response.data.map((_, i) => ({
@@ -24,7 +25,7 @@ function ActorButtonContainer({ title, children }) {
       setListData(data);
     });
   }, []);
-
+  //실시자 정보 조회 리스트 클릭 핸들러
   const onClickHandler = (e) => {
     let allData = listData;
     let newData = allData.map((item, idx) => {
@@ -39,6 +40,7 @@ function ActorButtonContainer({ title, children }) {
   const showModal = () => {
     setIsModalOpen(true);
   };
+  //선택된 리스트 정보 input으로 전송
   const handleOk = (e) => {
     setIsModalOpen(false);
     listData.map((item) => {

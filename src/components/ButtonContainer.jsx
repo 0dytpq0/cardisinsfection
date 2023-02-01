@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import "../App.css";
-import { Col, Row, Layout, Button, Modal, List } from "antd";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import '../App.css';
+import { Col, Row, Layout, Button, Modal, List } from 'antd';
+import axios from 'axios';
 
+//버튼 클릭시 modal창 띄우는 컨테이너
 function ButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,13 +20,13 @@ function ButtonContainer({ title, children }) {
 
   return (
     <>
-      <Col className="buttoncontainer">
-        <Header className="header">
+      <Col className='buttoncontainer'>
+        <Header className='header'>
           {title}
 
           <Button onClick={showModal}>조회</Button>
           <Modal
-            title=""
+            title=''
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}

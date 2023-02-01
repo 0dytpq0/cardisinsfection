@@ -4,6 +4,7 @@ import { Input, Button, Modal } from 'antd';
 import { useMqtt } from '../store';
 import { DollarCircleFilled } from '@ant-design/icons';
 
+//왼쪽 상단 설정버튼
 const IpChange = () => {
   const [isModalOpenIp, setIsModalOpenIp] = useState(false);
   const [data, setData] = useState('');
@@ -20,16 +21,14 @@ const IpChange = () => {
     compcd,
     changeCompCd,
   } = useMqtt();
-
+  //ip,port,compcd 세팅값 불러옴
   const getData = async () => {
     await axios
       .get(`http://localhost:4000/settingitemsConfig`)
       .then((response) => {
         let data = response.data[0].Value;
-        console.log('data', data);
         data = data.replaceAll('`', '"');
         data = JSON.parse(data);
-        console.log('data :>> ', data);
         changeTcpIp(data.TCPIP);
         changeTcpPort(data.TCPPORT);
         changeMqttUrl(data.MQTTURL);
@@ -45,9 +44,10 @@ const IpChange = () => {
   const showModalIp = async () => {
     setIsModalOpenIp(true);
   };
+  //ok클릭시 핸들러
   const handleOkIp = async (e) => {
     setIsModalOpenIp(false);
-
+    console.log('handleOkIp');
     let bb = {
       TCPIP: tcpip,
       TCPPORT: tcpport,
@@ -56,9 +56,9 @@ const IpChange = () => {
       COMPCD: compcd,
       WEBURL: `http://cowplan.co.kr/disinfect.post.php`,
     };
-
+    //setting값에 input 입력값을 넣어줌
     let ipValue = JSON.stringify(bb);
-
+    console.log('ipValue');
     await axios
       .put('http://localhost:4000/settingitems', {
         Name: 'Config',
@@ -68,6 +68,7 @@ const IpChange = () => {
         console.log('res.statusText :>> ', res.statusText);
       });
   };
+  //input 입력값 핸들러
   const handleCancelIp = () => {
     setIsModalOpenIp(false);
   };

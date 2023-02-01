@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { useInfo } from '../store';
 import axios from 'axios';
 import CheckerButtonContainer from './CheckerButtonContainer';
-
+//확인자 정보 input창
 const CheckerButtonViewContainer = () => {
   const {
     changeCheckerInfo,
@@ -13,6 +13,7 @@ const CheckerButtonViewContainer = () => {
   } = useInfo();
 
   useEffect(() => {
+    //C타입 근무자 setting값 불러오기
     axios
       .get(`http://localhost:4000/settingitems?Name=COperator`)
       .then((response) => {
@@ -22,6 +23,7 @@ const CheckerButtonViewContainer = () => {
         changeCheckerInfo(parsedValue);
       });
   }, []);
+  //input 입력시 변화
   const onChangeAttached = (e) => {
     changeCheckerModalInfo({ ...checkermodalinfo, Attached: e.target.value });
   };

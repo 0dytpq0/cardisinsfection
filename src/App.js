@@ -116,8 +116,8 @@ function App() {
       client?.on('message', (topic, message) => {
         const payload = { topic, message: message.toString() };
         if (topic.includes('CCTV')) {
-          message = message.toString().replaceAll('\\', '/');
-          // .replaceAll('"', "'");
+          message = message?.toString()?.replaceAll('\\', '/');
+
           let msg = JSON.parse(message?.toString());
 
           if (msg?.CARNUMBER === '미인식') {
@@ -150,6 +150,7 @@ function App() {
         }
         if (topic.includes('CarCleanDeviceRequest')) {
           const msg = message.toString();
+          console.log('msg', msg);
           const jsonMsg = JSON.parse(msg);
           if (jsonMsg?.CMD === 'BREAKER') {
             gifImg = Breaker1;

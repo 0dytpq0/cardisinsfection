@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import "../App.css";
-import { Button, Col, Row, Layout, Switch, Drawer } from "antd";
-import { client } from "../App";
+import React, { useState, useEffect } from 'react';
+import '../App.css';
+import moment from 'moment';
+import { Button, Col, Row, Layout, Switch, Drawer } from 'antd';
+import { client } from '../App';
 const AutoSwitch = ({ title, children, span }) => {
   const { Header } = Layout;
   const [open, setOpen] = useState(false);
@@ -13,15 +14,17 @@ const AutoSwitch = ({ title, children, span }) => {
   const [isClickedAirDeo, setIsClickedAirDeo] = useState(false);
   const [isClickedOutGate, setIsClickedOutGate] = useState(false);
   const [isClickedPipeAir, setIsClickedPipeAir] = useState(false);
-  const [inputStatus, setInputStatus] = useState("");
-  const [outputStatus, setOutputStatus] = useState("");
+  const [inputStatus, setInputStatus] = useState('');
+  const [outputStatus, setOutputStatus] = useState('');
+  const dateTime = moment().format('YY/MM/DD-HH:mm:ss');
 
+  //거점 동작에 관한 mqtt publish
   useEffect(() => {
-    client?.on("message", (topic, message) => {
-      if (topic.includes("dawoon/iotCtrl")) {
+    client?.on('message', (topic, message) => {
+      if (topic.includes('dawoon/iotCtrl')) {
         const msg = message.toString();
         const jsonMsg = JSON.parse(msg);
-        if (jsonMsg.CMD === "STATUS_RESPONE") {
+        if (jsonMsg.CMD === 'STATUS_RESPONE') {
           setOpen(jsonMsg.AUTO_MODE === 1 ? true : false);
           setIsClickedBreaker(jsonMsg.BREAKER === 1 ? true : false);
           setIsClickedCleanWater(jsonMsg.REMOVE_WATER === 1 ? true : false);
@@ -40,18 +43,20 @@ const AutoSwitch = ({ title, children, span }) => {
   const handleToggle = (func) => {
     func(false);
   };
+  //수동 동작 창 오픈
   const showDrawer = () => {
     setOpen(true);
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "AUTO_MODE","STATUS": 0}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "AUTO_MODE","STATUS": 0,"dateTime":"' + dateTime + '"}'
     );
   };
+  // 수동 동작 창 닫음
   const onClose = () => {
     setOpen(false);
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "AUTO_MODE","STATUS": 1}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "AUTO_MODE","STATUS": 1,"dateTime":"' + dateTime + '"}'
     );
     setIsClickedBreaker(false);
     setIsClickedCleanWater(false);
@@ -62,152 +67,184 @@ const AutoSwitch = ({ title, children, span }) => {
     setIsClickedOutGate(false);
     setIsClickedPipeAir(false);
   };
+  //차단기
   const onBreakerUpHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "BREAKER","STATUS": 1}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "BREAKER","STATUS": 1,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedBreaker);
     setIsClickedBreaker(true);
   };
   const onBreakerDownHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "BREAKER","STATUS": 0}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "BREAKER","STATUS": 0,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedBreaker);
     setIsClickedBreaker(false);
   };
+  //입구
   const onInGateOpenHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "In_Gate","STATUS": 1}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "In_Gate","STATUS": 1,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedInGate);
     setIsClickedInGate(true);
   };
   const onInGateCloseHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "In_Gate","STATUS": 0}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "In_Gate","STATUS": 0,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedInGate);
     setIsClickedInGate(false);
   };
+  //물기제거
   const onRemoveWaterOnHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "REMOVE_WATER","STATUS": 1}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "REMOVE_WATER","STATUS": 1,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedCleanWater);
     setIsClickedCleanWater(true);
   };
   const onRemoveWaterOffHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "REMOVE_WATER","STATUS": 0}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "REMOVE_WATER","STATUS": 0,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedCleanWater);
     setIsClickedCleanWater(false);
   };
+  //운전자 소독
   const onCleanDriverOnHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "CLEAN_DRIVER","STATUS": 1}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "CLEAN_DRIVER","STATUS": 1,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedCleanDriver);
     setIsClickedCleanDriver(true);
   };
   const onCleanDriverOffHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "CLEAN_DRIVER","STATUS": 0}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "CLEAN_DRIVER","STATUS": 0,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedCleanDriver);
     setIsClickedCleanDriver(false);
   };
+  //차 소독
   const onCarCleanOnHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "CARCLEAN","STATUS": 1}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "CARCLEAN","STATUS": 1,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedCarClean);
     setIsClickedCarClean(true);
   };
   const onCarCleanOffHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "CARCLEAN","STATUS": 0}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "CARCLEAN","STATUS": 0,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedCarClean);
     setIsClickedCarClean(false);
   };
+  //공기정화
   const onAirDeodorizationOnHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "AIR_DEODORIZATION","STATUS": 1}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "AIR_DEODORIZATION","STATUS": 1,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedAirDeo);
     setIsClickedAirDeo(true);
   };
   const onAirDeodorizationOffHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "AIR_DEODORIZATION","STATUS": 0}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "AIR_DEODORIZATION","STATUS": 0,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedAirDeo);
     setIsClickedAirDeo(false);
   };
+  //출구
   const onOutGateOpenHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "OUT_GATE","STATUS": 1}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "OUT_GATE","STATUS": 1,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedOutGate);
     setIsClickedOutGate(true);
   };
   const onOutGateCloseHandler = () => {
-    client?.publish("CarCleanDeviceRequest", '{"CMD": "OUT_GATE","STATUS": 0}');
+    client?.publish(
+      'CarCleanDeviceRequest',
+      '{"CMD": "OUT_GATE","STATUS": 0,"dateTime":"' + dateTime + '"}'
+    );
     handleToggle(setIsClickedOutGate);
     setIsClickedOutGate(false);
   };
+  //에어 배출
   const onPipeAirOnHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 1}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 1,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedPipeAir);
     setIsClickedPipeAir(true);
   };
   const onPipeAirOffHandler = () => {
     client?.publish(
-      "CarCleanDeviceRequest",
-      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 0}'
+      'CarCleanDeviceRequest',
+      '{"CMD": "PIPE_AIR_WATERDRAIN","STATUS": 0,"dateTime":"' + dateTime + '"}'
     );
     handleToggle(setIsClickedPipeAir);
     setIsClickedPipeAir(false);
   };
   useEffect(() => {
-    client?.on("message", (topic, message) => {});
+    client?.on('message', (topic, message) => {});
   });
   return (
     <>
-      <Col span={span} style={{ height: "70vh" }}>
-        <Header className="header">
+      <Col span={span} style={{ height: '70vh' }}>
+        <Header className='header'>
           {title}
-          <Col style={{ display: "flex", flexWrap: "no-wrap" }} offset={16}>
+          <Col style={{ display: 'flex', flexWrap: 'no-wrap' }} offset={16}>
             <span>
               Input : {inputStatus}
-              {"\u00A0"}
-              {"\u00A0"}
-              {"\u00A0"}
-              {"\u00A0"}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
+              {'\u00A0'}
             </span>
             <span>Output : {outputStatus}</span>
           </Col>
           <Switch
             onClick={open ? onClose : showDrawer}
-            checkedChildren="수동"
-            unCheckedChildren="자동"
+            checkedChildren='수동'
+            unCheckedChildren='자동'
           />
         </Header>
 
         <Col>
           {children}
           <Drawer
-            title="장치 제어"
-            placement="right"
+            title='장치 제어'
+            placement='right'
             closable={false}
             onClose={onClose}
             open={open}
             getContainer={false}
           >
-            <Row className="auto">
-              <Row className="auto_columns">
+            <Row className='auto'>
+              <Row className='auto_columns'>
                 <Col span={6}>차단기</Col>
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedBreaker ? "btn_clicked" : " auto_button"
+                      isClickedBreaker ? 'btn_clicked' : ' auto_button'
                     }
                     onClick={onBreakerUpHandler}
                   >
@@ -217,7 +254,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedBreaker ? " auto_button" : "btn_clicked"
+                      isClickedBreaker ? ' auto_button' : 'btn_clicked'
                     }
                     onClick={onBreakerDownHandler}
                   >
@@ -225,11 +262,11 @@ const AutoSwitch = ({ title, children, span }) => {
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>입구문</Col>
                 <Col span={9}>
                   <Button
-                    className={isClickedInGate ? "btn_clicked" : " auto_button"}
+                    className={isClickedInGate ? 'btn_clicked' : ' auto_button'}
                     onClick={onInGateOpenHandler}
                   >
                     열기
@@ -237,19 +274,19 @@ const AutoSwitch = ({ title, children, span }) => {
                 </Col>
                 <Col span={9}>
                   <Button
-                    className={isClickedInGate ? " auto_button" : "btn_clicked"}
+                    className={isClickedInGate ? ' auto_button' : 'btn_clicked'}
                     onClick={onInGateCloseHandler}
                   >
                     닫기
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>물기제거</Col>
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCleanWater ? "btn_clicked" : " auto_button"
+                      isClickedCleanWater ? 'btn_clicked' : ' auto_button'
                     }
                     onClick={onRemoveWaterOnHandler}
                   >
@@ -259,7 +296,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCleanWater ? " auto_button" : "btn_clicked"
+                      isClickedCleanWater ? ' auto_button' : 'btn_clicked'
                     }
                     onClick={onRemoveWaterOffHandler}
                   >
@@ -267,12 +304,12 @@ const AutoSwitch = ({ title, children, span }) => {
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>운전자소독</Col>
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCleanDriver ? "btn_clicked" : " auto_button"
+                      isClickedCleanDriver ? 'btn_clicked' : ' auto_button'
                     }
                     onClick={onCleanDriverOnHandler}
                   >
@@ -282,7 +319,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCleanDriver ? " auto_button" : "btn_clicked"
+                      isClickedCleanDriver ? ' auto_button' : 'btn_clicked'
                     }
                     onClick={onCleanDriverOffHandler}
                   >
@@ -290,12 +327,12 @@ const AutoSwitch = ({ title, children, span }) => {
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>소독기</Col>
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCarClean ? "btn_clicked" : " auto_button"
+                      isClickedCarClean ? 'btn_clicked' : ' auto_button'
                     }
                     onClick={onCarCleanOnHandler}
                   >
@@ -305,7 +342,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedCarClean ? " auto_button" : "btn_clicked"
+                      isClickedCarClean ? ' auto_button' : 'btn_clicked'
                     }
                     onClick={onCarCleanOffHandler}
                   >
@@ -313,11 +350,11 @@ const AutoSwitch = ({ title, children, span }) => {
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>공기 정화</Col>
                 <Col span={9}>
                   <Button
-                    className={isClickedAirDeo ? "btn_clicked" : " auto_button"}
+                    className={isClickedAirDeo ? 'btn_clicked' : ' auto_button'}
                     onClick={onAirDeodorizationOnHandler}
                   >
                     동작
@@ -325,19 +362,19 @@ const AutoSwitch = ({ title, children, span }) => {
                 </Col>
                 <Col span={9}>
                   <Button
-                    className={isClickedAirDeo ? " auto_button" : "btn_clicked"}
+                    className={isClickedAirDeo ? ' auto_button' : 'btn_clicked'}
                     onClick={onAirDeodorizationOffHandler}
                   >
                     중지
                   </Button>
                 </Col>
               </Row>
-              <Row className="auto_columns">
+              <Row className='auto_columns'>
                 <Col span={6}>출구문</Col>
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedOutGate ? "btn_clicked" : " auto_button"
+                      isClickedOutGate ? 'btn_clicked' : ' auto_button'
                     }
                     onClick={onOutGateOpenHandler}
                   >
@@ -347,7 +384,7 @@ const AutoSwitch = ({ title, children, span }) => {
                 <Col span={9}>
                   <Button
                     className={
-                      isClickedOutGate ? " auto_button" : "btn_clicked"
+                      isClickedOutGate ? ' auto_button' : 'btn_clicked'
                     }
                     onClick={onOutGateCloseHandler}
                   >
@@ -357,11 +394,11 @@ const AutoSwitch = ({ title, children, span }) => {
               </Row>
             </Row>
 
-            <Row className="auto_columns">
+            <Row className='auto_columns'>
               <Col span={6}>에어 배출</Col>
               <Col span={9}>
                 <Button
-                  className={isClickedPipeAir ? "btn_clicked" : " auto_button"}
+                  className={isClickedPipeAir ? 'btn_clicked' : ' auto_button'}
                   onClick={onPipeAirOnHandler}
                 >
                   열기
@@ -369,7 +406,7 @@ const AutoSwitch = ({ title, children, span }) => {
               </Col>
               <Col span={9}>
                 <Button
-                  className={isClickedPipeAir ? " auto_button" : "btn_clicked"}
+                  className={isClickedPipeAir ? ' auto_button' : 'btn_clicked'}
                   onClick={onPipeAirOffHandler}
                 >
                   닫기

@@ -3,6 +3,8 @@ import { Alert, Checkbox, Input, Col, Row } from 'antd';
 import { useInfo } from '../store';
 import axios from 'axios';
 
+//지역정보 버튼 클릭시 컨테이너
+
 const ButtonContainerArea = () => {
   const { carinfo, changeCarInfo, areainfo, changeAreaInfo } = useInfo();
   const [origin, setOrigin] = useState(false);
@@ -12,6 +14,7 @@ const ButtonContainerArea = () => {
   const [area, setArea] = useState('');
   const [pointName, setPointName] = useState('');
   const [dContent, setDContent] = useState('');
+  //세팅값의 지역정보 가져오는 axios
   useEffect(() => {
     axios
       .get(`http://localhost:4000/settingitems?Name=DeliverProof`)
@@ -25,31 +28,37 @@ const ButtonContainerArea = () => {
         changeAreaInfo(parsedValue);
       });
   }, []);
+  //checkbox 클릭 함수들
   const onChangeOrigin = (e) => {
     setOrigin(true);
     setProtect(false);
     setQuarantine(false);
     setWildAnimal(false);
+    changeAreaInfo({ ...areainfo, AreaType: '발생지' });
   };
   const onChangeProtect = (e) => {
     setOrigin(false);
     setProtect(true);
     setQuarantine(false);
     setWildAnimal(false);
+    changeAreaInfo({ ...areainfo, AreaType: '보호지역' });
   };
   const onChangeQuarantine = (e) => {
     setOrigin(false);
     setProtect(false);
     setQuarantine(true);
     setWildAnimal(false);
+    changeAreaInfo({ ...areainfo, AreaType: '예찰지역' });
   };
   const onChangeWildAnimal = (e) => {
     setOrigin(false);
     setProtect(false);
     setQuarantine(false);
     setWildAnimal(true);
+    changeAreaInfo({ ...areainfo, AreaType: '야생조수류예찰지역' });
   };
 
+  //지역정보 input창 입력시 함수들
   const onChangeArea = (e) => {
     setArea(e.target.value);
     changeAreaInfo({ ...areainfo, Area: e.target.value });

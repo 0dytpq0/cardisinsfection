@@ -1,3 +1,4 @@
+//미사용중, 차량 조회 버튼 클릭시 인풋창에서 조회버튼을 누르면 드는 정보
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { Col, Row, Layout, Button, Modal, List } from 'antd';
@@ -9,14 +10,7 @@ function CarButtonContainer({ title, children }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [listData, setListData] = useState('');
   const { listData, changeListData } = useListData();
-  const {
-    changeActorInfo,
-    changeCarModalInfo,
-    carmodalinfo,
-    waitingcurrentnumber,
-    carinfodata,
-  } = useInfo();
-  console.log('waitingcurrentnumber', carinfodata);
+  const { changeCarModalInfo, carmodalinfo, carinfodata } = useInfo();
 
   // useEffect(() => {
   //   axios

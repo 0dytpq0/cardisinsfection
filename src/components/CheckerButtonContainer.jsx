@@ -5,12 +5,13 @@ import axios from 'axios';
 
 import { useInfo } from '../store';
 
+//확인자 정보 조회 클릭시
 function CheckerButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [listData, setListData] = useState('');
   const { changeCheckerInfo, changeCheckerModalInfo } = useInfo();
-
+  //Type이 C인 근무자 전부 get
   useEffect(() => {
     axios.get(`http://localhost:4000/OperatoritemsAllC`).then((response) => {
       let data = response.data.map((_, i) => ({
@@ -25,7 +26,7 @@ function CheckerButtonContainer({ title, children }) {
       setListData(data);
     });
   }, []);
-
+  //데이터 클릭시 핸들러
   const onClickHandler = (e) => {
     let allData = listData;
     let newData = allData.map((item, idx) => {
@@ -40,6 +41,7 @@ function CheckerButtonContainer({ title, children }) {
   const showModal = () => {
     setIsModalOpen(true);
   };
+  //클릭한 데이터 정보 전달
   const handleOk = (e) => {
     setIsModalOpen(false);
     // listData.map((item) => {

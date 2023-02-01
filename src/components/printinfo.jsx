@@ -3,7 +3,7 @@ import '../App.css';
 import { Button, Row, Col, Divider } from 'antd';
 import { useInfo } from '../store';
 import { ArrowRightOutlined } from '@ant-design/icons';
-
+//왼쪽 영수증에 입력되는 부분
 export default function Printinfo({ printRef }) {
   const {
     carinfo,
