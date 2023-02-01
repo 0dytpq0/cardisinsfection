@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useInfo, useWaitingCar } from '../store';
-import { List } from 'antd';
+import { List, message } from 'antd';
 import axios from 'axios';
 import { client } from '../App';
 import moment from 'moment';
-
+//대기차량
 const WaitingCar = () => {
   const {
     changeCarInfoData,
@@ -25,6 +25,7 @@ const WaitingCar = () => {
   const waitingcarHeader = useRef(null);
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
   let arr = [];
+  //mqtt 수신시 자동차 번호를 대기목록에 추가
   useEffect(() => {
     client?.subscribe('CCTV', 0, (error) => {
       if (error) {
@@ -34,17 +35,14 @@ const WaitingCar = () => {
     });
 
     client?.on('message', (topic, message) => {
-      // const payload = { topic, message: message.toString() };
       if (topic.includes('CCTV')) {
         message = message.toString().replaceAll('\\', '/');
         let msg = JSON.parse(message.toString());
-        // let arr = [];
         waitingcar.push(msg.CARNUMBER);
         arr = waitingcar;
         arr = arr.filter((item) => item !== undefined);
         arr = arr.filter((item) => item !== null);
         changeTrashWaitingCar(arr);
-        // waitingcarHeader.current = arr[0];
         if (waitingcar.length === 1) {
           changeWaitingCurrentNumber(arr[0]);
         }
@@ -53,10 +51,14 @@ const WaitingCar = () => {
     });
     client?.on('disconnect', () => client.end());
   }, [trashwaitingcar]);
+  //대기차량 클릭시 차량정보 창에 정보 읿력
   const onClickHandler = (e) => {
     let Number = '';
     let sql = '';
+    //차번호 웹에 찍히는게 데이터베이스에 없음.
+    Number = '001143';
     Number = e.target.innerText;
+    console.log(Number);
     if (Number !== '') {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
     }
@@ -65,9 +67,13 @@ const WaitingCar = () => {
         console.log('error :>> ', error);
       }
       let data = res.data[0];
+      //차량에 대한 정보가 없어서 데이터가 안들어 올 경우에 빈칸으로 기본 값을 준다.
+      if (data === undefined) {
+        Number = '미인식';
+        message.warning('해당 차량에 대한 정보가 없습니다.');
+      }
+      console.log(Number);
       if (Number !== '미인식') {
-        console.log('data', data.ImagePath);
-
         changeCarInfo({
           PrintIndex: `${data?.PrintIndex}`,
           Number: `${data?.Number}`,
@@ -114,9 +120,7 @@ const WaitingCar = () => {
           EPoint: `${data?.EPoint}`,
         });
         changeWaitingCarImg(data.ImagePath);
-        console.log('waitingcarimg', waitingcarimg);
       } else {
-        console.log('Number :>> ', Number);
         changeCarInfoData({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: '',
@@ -164,6 +168,7 @@ const WaitingCar = () => {
       changeDeleteWaitingCar(e.target.innerText);
     });
   };
+  //대기저장 목록 뿌려주는 변수
   const ItemList = trashwaitingcar.map((item, idx) => (
     <li onClick={onClickHandler} key={idx} className='waiting__list__item'>
       {item}
