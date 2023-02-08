@@ -17,6 +17,8 @@ const IpChange = () => {
     mqttport,
     changeMqttUrl,
     changeMqttPort,
+    compcd,
+    changeCompCd,
   } = useMqtt();
 
   const getData = async () => {
@@ -32,6 +34,7 @@ const IpChange = () => {
         changeTcpPort(data.TCPPORT);
         changeMqttUrl(data.MQTTURL);
         changeMqttPort(data.MQTTPORT);
+        changeCompCd(data.COMPCD);
         setData(data);
       });
   };
@@ -44,17 +47,13 @@ const IpChange = () => {
   };
   const handleOkIp = async (e) => {
     setIsModalOpenIp(false);
-    console.log('data====', data);
-    console.log('tcpip', tcpip);
-    console.log('tcpport :>> ', tcpport);
-    console.log('mqtturl', mqtturl);
-    console.log('mqttport :>> ', mqttport);
+
     let bb = {
       TCPIP: tcpip,
       TCPPORT: tcpport,
       MQTTURL: mqtturl,
       MQTTPORT: mqttport,
-      COMPCD: `C0009`,
+      COMPCD: compcd,
       WEBURL: `http://cowplan.co.kr/disinfect.post.php`,
     };
 
@@ -84,6 +83,9 @@ const IpChange = () => {
   const onChangeMqttPort = (e) => {
     changeMqttPort(e.target.value);
   };
+  const onChangeCompCd = (e) => {
+    changeCompCd(e.target.value);
+  };
   return (
     <div>
       <Button onClick={showModalIp}>설정</Button>
@@ -109,6 +111,10 @@ const IpChange = () => {
         <label>
           MQTT PORT
           <Input value={mqttport} onChange={onChangeMqttPort} />
+        </label>
+        <label>
+          COMPCD
+          <Input value={compcd} onChange={onChangeCompCd} />
         </label>
       </Modal>
     </div>

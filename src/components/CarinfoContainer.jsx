@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Input, Col, Row } from 'antd';
 import { ArrowRightOutlined, FilterFilled } from '@ant-design/icons';
-import { useInfo, useWaitingCar } from '../store';
+import { useInfo, useWaitingCar, useListData } from '../store';
 import ButtonContainer from './ButtonContainer';
 import ButtonContainerArea from './ButtonContainerArea';
 import CheckerButtonViewContainer from './CheckerButtonViewContainer';
 import ActorButtonViewContainer from './ActorButtonViewContainer';
-import CarButtonViewContainer from './CarButtonViewContainer';
+import CarButtonContainer from './CarButtonContainer';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -14,7 +14,7 @@ import { client } from '../App';
 
 export default function CarinfoContainer() {
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
-
+  const { listData, changeListData } = useListData();
   const {
     changeWaitingCurrentNumber,
     changeCarInfoData,
@@ -39,7 +39,7 @@ export default function CarinfoContainer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
-  const [listData, setListData] = useState('');
+  // const [listData, setListData] = useState('');
 
   // const waitingcarHeader = useRef(waitingcurrentnumber);
 
@@ -200,29 +200,35 @@ export default function CarinfoContainer() {
 
   const carShowModal = () => {
     setIsModalOpenCar(true);
-    axios.get(`http://localhost:4000/carinfoitemsall`).then((response) => {
-      let data = response.data.map((_, i) => ({
-        Number: `${response.data[i].Number}`,
-        RegNumber: `${response.data[i].RegNumber}`,
-        SPoint: `${response.data[i].SPoint}`,
-        EPoint: `${response.data[i].EPoint}`,
-        GpsNumber: `${response.data[i].GpsNumber}`,
-        Purpose: `${response.data[i].Purpose}`,
-        Owner: `${response.data[i].Owner}`,
-        Address: `${response.data[i].Address}`,
-        Phone: `${response.data[i].Phone}`,
+    axios
+      .get(`http://localhost:4000/carinfoitemsall?CarNo=${carinfodata.Number}`)
+      .then((response) => {
+        let data = response.data.map((_, i) => ({
+          Number: `${response.data[i].Number}`,
+          RegNumber: `${response.data[i].RegNumber}`,
+          SPoint: `${response.data[i].SPoint}`,
+          EPoint: `${response.data[i].EPoint}`,
+          GpsNumber: `${response.data[i].GpsNumber}`,
+          Purpose: `${response.data[i].Purpose}`,
+          Owner: `${response.data[i].Owner}`,
+          Address: `${response.data[i].Address}`,
+          Phone: `${response.data[i].Phone}`,
 
-        Selected: false,
-        idx: i,
-      }));
-      setListData(data);
-    });
+          Selected: false,
+          idx: i,
+        }));
+        changeListData(data);
+      });
   };
 
   const carHandleOk = () => {
     setIsModalOpenCar(false);
-    changeCarInfo(carmodalinfo);
-    changeCarInfoData(carmodalinfo);
+    // changeCarInfo(carmodalinfo);
+    // changeCarInfoData(carmodalinfo);
+    const filteredData = listData.filter((item) => item.Selected === true);
+    console.log('filtereedData :>> ', filteredData);
+    changeCarInfo(filteredData[0]);
+    changeCarInfoData(filteredData[0]);
   };
 
   const carHandleCancel = () => {
@@ -432,13 +438,11 @@ export default function CarinfoContainer() {
         </label>
         <Button onClick={carShowModal}>조회</Button>
         <Modal
-          style={{ height: '300px' }}
-          title=''
           open={isModalOpenCar}
           onOk={carHandleOk}
           onCancel={carHandleCancel}
         >
-          <CarButtonViewContainer />
+          <CarButtonContainer title={'출입자 정보'}></CarButtonContainer>
         </Modal>
 
         <Button onClick={onDeleteButton}>삭제</Button>

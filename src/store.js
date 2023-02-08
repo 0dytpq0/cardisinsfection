@@ -71,6 +71,16 @@ export const useInfo = create(
   }))
 );
 
+export const useListData = create(
+  persist((set) => ({
+    listData: '',
+    changeListData: (newData) =>
+      set((state) => ({
+        listData: newData,
+      })),
+  }))
+);
+
 export const useMqtt = create(
   persist((set) => ({
     client: null,
@@ -122,6 +132,11 @@ export const useMqtt = create(
     changeMqttPort: (newData) =>
       set((state) => ({
         mqttport: newData,
+      })),
+    compcd: null,
+    changeCompCd: (newData) =>
+      set((state) => ({
+        compcd: newData,
       })),
   }))
 );
