@@ -56,8 +56,8 @@ const WaitingCar = () => {
     let Number = '';
     let sql = '';
     //차번호 웹에 찍히는게 데이터베이스에 없음.
-    // Number = '111';
-    Number = e.target.innerText;
+    Number = '001143';
+    // Number = e.target.innerText;
     console.log(Number);
     if (Number !== '') {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
@@ -138,7 +138,7 @@ const WaitingCar = () => {
           Address: '',
           RegNumber: '',
           Phone: '',
-          GpsNumber: '',
+          GpsNum: '',
           Owner: '',
           SPoint: '',
           Purpose: '',
@@ -175,7 +175,7 @@ const WaitingCar = () => {
   ));
 
   return (
-    <div className='waitingcar_container'>
+    <div>
       <div style={{ height: '10vh', overflow: 'hidden' }}>
         <ul className='waiting__list'>{ItemList}</ul>
       </div>

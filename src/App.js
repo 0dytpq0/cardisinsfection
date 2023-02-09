@@ -194,8 +194,8 @@ function App() {
   };
   const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
-    let arr = carinfodata;
-    // arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
+    let arr = printedcar;
+    arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
     if (arr.length > 9) {
       arr.pop();
     }
@@ -383,8 +383,9 @@ function App() {
           <Col style={{ height: '425px' }}>
             <Row gutter={(8, 8)}>
               <Container
-                // minWidth={'400px'}
+                minWidth={'400px'}
                 height={'45vh'}
+                width={'1000px'}
                 span={6}
                 title={'차량정보'}
               >
@@ -394,14 +395,19 @@ function App() {
                 <WaitingCar />
               </WaitingContainer>
               <Container
-                // maxWidth={'200px'}
+                maxWidth={'200px'}
                 height={'45vh'}
                 span={5}
                 title={'프린트완료차량'}
               >
                 <PrintCompleted />
               </Container>
-              <Container height={'45vh'} span={8} title={'알림'}>
+              <Container
+                maxWidth={'40%'}
+                height={'45vh'}
+                span={8}
+                title={'알림'}
+              >
                 <Alarm />
               </Container>
             </Row>
