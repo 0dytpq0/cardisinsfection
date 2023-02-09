@@ -56,7 +56,7 @@ const WaitingCar = () => {
     let Number = '';
     let sql = '';
     //차번호 웹에 찍히는게 데이터베이스에 없음.
-    Number = '001143';
+    // Number = '111';
     Number = e.target.innerText;
     console.log(Number);
     if (Number !== '') {
@@ -72,7 +72,6 @@ const WaitingCar = () => {
         Number = '미인식';
         message.warning('해당 차량에 대한 정보가 없습니다.');
       }
-      console.log(Number);
       if (Number !== '미인식') {
         changeCarInfo({
           PrintIndex: `${data?.PrintIndex}`,
@@ -176,7 +175,7 @@ const WaitingCar = () => {
   ));
 
   return (
-    <div>
+    <div className='waitingcar_container'>
       <div style={{ height: '10vh', overflow: 'hidden' }}>
         <ul className='waiting__list'>{ItemList}</ul>
       </div>

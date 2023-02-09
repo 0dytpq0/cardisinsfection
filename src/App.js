@@ -382,16 +382,26 @@ function App() {
         <Col flex={8}>
           <Col style={{ height: '425px' }}>
             <Row gutter={(8, 8)}>
-              <Container span={6} title={'차량정보'}>
+              <Container
+                // minWidth={'400px'}
+                height={'45vh'}
+                span={6}
+                title={'차량정보'}
+              >
                 <CarinfoContainer></CarinfoContainer>
               </Container>
-              <WaitingContainer span={5} title={'대기저장'}>
+              <WaitingContainer height={'45vh'} span={5} title={'대기저장'}>
                 <WaitingCar />
               </WaitingContainer>
-              <Container span={5} title={'프린트완료차량'}>
+              <Container
+                // maxWidth={'200px'}
+                height={'45vh'}
+                span={5}
+                title={'프린트완료차량'}
+              >
                 <PrintCompleted />
               </Container>
-              <Container span={8} title={'알림'}>
+              <Container height={'45vh'} span={8} title={'알림'}>
                 <Alarm />
               </Container>
             </Row>

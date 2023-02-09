@@ -92,7 +92,7 @@ const PrintCompleted = ({ printed }) => {
     </li>
   ));
   return (
-    <div>
+    <div className='printedcar_container'>
       <ul className='printedcar_list'>{itemList}</ul>
     </div>
   );

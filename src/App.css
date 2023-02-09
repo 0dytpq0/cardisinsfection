@@ -184,6 +184,15 @@ span {
 .alarm_container {
   overflow-y: auto;
   height: 40vh;
+  width: 100%;
+}
+.waitingcar_container {
+  overflow-y: auto;
+  height: 40vh;
+}
+.printedcar_container {
+  overflow-y: auto;
+  height: 30vh;
 }
 .carimg {
   width: 90%;

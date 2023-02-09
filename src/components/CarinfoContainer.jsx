@@ -441,7 +441,9 @@ export default function CarinfoContainer() {
         <Input
           className='input input_regnum'
           placeholder='등록 번호'
-          value={carinfodata?.RegNum === 'undefined' ? '' : carinfodata?.RegNum}
+          value={
+            carinfodata?.RegNumber === 'undefined' ? '' : carinfodata?.RegNumber
+          }
           onChange={onChangeRegNum}
         />
       </label>
@@ -450,7 +452,9 @@ export default function CarinfoContainer() {
         <Input
           className='input input_gpsnum'
           placeholder='GPS 번호'
-          value={carinfodata?.GpsNum === 'undefined' ? '' : carinfodata?.GpsNum}
+          value={
+            carinfodata?.GpsNumber === 'undefined' ? '' : carinfodata?.GpsNumber
+          }
           onChange={onChangeGpsnum}
         />
       </label>
