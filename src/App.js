@@ -268,30 +268,29 @@ function App() {
     if (arr.length > 9) {
       arr.pop();
     }
-    let itemList =
-      printedcar.length > 0
-        ? printedcar.map((item, idx) => (
-            <li
-              data-set={item.printIndex}
-              onClick={onListChange}
-              key={idx}
-              className='printedcar_list_item'
-            >
-              {item.Number}
-            </li>
-          ))
-        : arr.map((item, idx) => (
-            <li
-              data-set={item.printIndex}
-              onClick={onListChange}
-              key={idx}
-              className='printedcar_list_item'
-            >
-              {item.Number}
-            </li>
-          ));
+    // let itemList =
+    //   printedcar.length > 0
+    //     ? printedcar.map((item, idx) => (
+    //         <li
+    //           data-set={item.printIndex}
+    //           onClick={onListChange}
+    //           key={idx}
+    //           className='printedcar_list_item'
+    //         >
+    //           {item.Number}
+    //         </li>
+    //       ))
+    //     : arr.map((item, idx) => (
+    //         <li
+    //           data-set={item.printIndex}
+    //           onClick={onListChange}
+    //           key={idx}
+    //           className='printedcar_list_item'
+    //         >
+    //           {item.Number}
+    //         </li>
+    //       ));
     let rt1 = false;
-    console.log(printedcar);
     changePrintedCar(arr);
     axios
       .post('http://localhost:4000/carinfoitems', {
