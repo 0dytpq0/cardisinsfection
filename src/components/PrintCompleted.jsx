@@ -19,6 +19,7 @@ const PrintCompleted = ({ printed }) => {
   const onListChange = (e) => {
     let PrintIndex = '';
     let sql = '';
+    console.log('e :>> ', e);
     PrintIndex = e.target.dataset.set;
     if (PrintIndex !== '') {
       sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
@@ -74,27 +75,24 @@ const PrintCompleted = ({ printed }) => {
         EPoint: `${data?.EPoint}`,
       });
     });
-    if ((printedcar.length = 9)) {
-      printedcar.unshift();
-    }
+    // if ((printedcar.length = 9)) {
+    //   printedcar.unshift();
+    // }
   };
 
   //화면에 뿌려주는 변수
-  const itemList =
-    printedcar.length > 0
-      ? printedcar.map((item, idx) => (
-          <li
-            data-set={item.PrintIndex}
-            onClick={onListChange}
-            key={idx}
-            className='printedcar_list_item'
-          >
-            {item.Number}
-          </li>
-        ))
-      : null;
+  const itemList = printedcar.map((item, idx) => (
+    <li
+      data-set={item.PrintIndex}
+      onClick={onListChange}
+      key={idx}
+      className='printedcar_list_item'
+    >
+      {item.Number}
+    </li>
+  ));
   return (
-    <div className='printedcar_container'>
+    <div>
       <ul className='printedcar_list'>{itemList}</ul>
     </div>
   );
