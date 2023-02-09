@@ -194,8 +194,8 @@ function App() {
   };
   const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
-    let arr = printedcar;
-    arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
+    let arr = carinfodata;
+    // arr.unshift({ Number: carinfo?.Number, PrintIndex: crTime });
     if (arr.length > 9) {
       arr.pop();
     }
