@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useInfo } from '../store';
 import CarinfoContainer from './CarinfoContainer';
 import axios from 'axios';
-
 //프린트 완료 차량
+
 const PrintCompleted = ({ printed }) => {
   const {
     printedcar,
@@ -14,12 +14,13 @@ const PrintCompleted = ({ printed }) => {
     changeActorInfo,
     changeCheckerInfo,
     changeAreaInfo,
+    changeIsPrint,
   } = useInfo();
   //프린트 완료 차량 리스트 클릭시 정보 가져오는 코드
   const onListChange = (e) => {
+    changeIsPrint(false);
     let PrintIndex = '';
     let sql = '';
-    console.log('e :>> ', e);
     PrintIndex = e.target.dataset.set;
     if (PrintIndex !== '') {
       sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;

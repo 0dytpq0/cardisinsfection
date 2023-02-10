@@ -68,6 +68,11 @@ export const useInfo = create(
       set((state) => ({
         waitingcarimg: newData,
       })),
+    isprint: false,
+    changeIsPrint: (newData) =>
+      set((state) => ({
+        isprint: newData,
+      })),
   }))
 );
 

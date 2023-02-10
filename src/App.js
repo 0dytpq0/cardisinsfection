@@ -13,7 +13,7 @@ import Water2 from './image/Water2.gif';
 import Move3 from './image/Move3.gif';
 import Disinfect4 from './image/Disinfect4.gif';
 import Out5 from './image/Out5.gif';
-import PrintInfo from './components/PrintInfo';
+import PrintInfo from './components/printinfo';
 import AutoSwitch from './components/AutoSwitch';
 import * as mqtt from 'mqtt/dist/mqtt.min';
 import WaitingCar from './components/WaitingCar';
@@ -60,6 +60,8 @@ function App() {
     changeCarInfoData,
     carinfodata,
     changeWaitingCurrentNumber,
+    isprint,
+    changeIsPrint,
   } = useInfo();
   const { trashwaitingcar, changeTrashWaitingCar } = useWaitingCar();
   const [carimg, setCarImg] = useState('');
@@ -197,113 +199,33 @@ function App() {
   const handleCancelFind = () => {
     setIsModalOpenFind(false);
   };
-  const onListChange = (e) => {
-    let PrintIndex = '';
-    let sql = '';
-    console.log('e :>> ', e);
-    PrintIndex = e.target.dataset.set;
-    if (PrintIndex !== '') {
-      sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
-    }
-    axios.get(sql).then((res, error) => {
-      if (error) {
-        console.log('error :>> ', error);
-      }
-      let data = res.data[0];
-      console.log('data :>> ', data);
-      changeCarInfo({
-        PrintIndex: `${data?.PrintIndex}`,
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-        RegistryDate: `${data?.RegistryDate}`,
-      });
-      changeActorInfo({
-        Attached: `${data?.CAttached}`,
-        Name: `${data?.CName}`,
-        Phone: `${data?.CPhone}`,
-        Position: `${data?.CPosition}`,
-        Type: `${data?.Type}`,
-      });
-      changeCheckerInfo({
-        Attached: `${data?.EAttached}`,
-        Name: `${data?.EName}`,
-        Phone: `${data?.EPhone}`,
-        Position: `${data?.EPosition}`,
-        Type: `${data?.Type}`,
-      });
-      changeAreaInfo({
-        Area: `${data?.Area}`,
-        AreaType: `${data?.AreaType}`,
-        DContent: `${data?.DContent}`,
-      });
-      changeCarInfoData({
-        PrintIndex: `${data?.PrintIndex}`,
-        Number: `${data?.Number}`,
-        Address: `${data?.Address}`,
-        RegNumber: `${data?.RegNumber}`,
-        Phone: `${data?.Phone}`,
-        GpsNumber: `${data?.GpsNumber}`,
-        Owner: `${data?.Owner}`,
-        SPoint: `${data?.SPoint}`,
-        Purpose: `${data?.Purpose}`,
-        EPoint: `${data?.EPoint}`,
-      });
-    });
-    // if ((printedcar.length = 9)) {
-    //   printedcar.unshift();
-    // }
-  };
+
   const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
     changePrintedCar(waitingcar[0]);
-    let arr = [{ Number: carinfo.Number, printIndex: crTime }];
+    let arr = printedcar;
+    arr.unshift({ Number: carinfodata?.Number, PrintIndex: crTime });
 
     if (arr.length > 9) {
       arr.pop();
     }
-    // let itemList =
-    //   printedcar.length > 0
-    //     ? printedcar.map((item, idx) => (
-    //         <li
-    //           data-set={item.printIndex}
-    //           onClick={onListChange}
-    //           key={idx}
-    //           className='printedcar_list_item'
-    //         >
-    //           {item.Number}
-    //         </li>
-    //       ))
-    //     : arr.map((item, idx) => (
-    //         <li
-    //           data-set={item.printIndex}
-    //           onClick={onListChange}
-    //           key={idx}
-    //           className='printedcar_list_item'
-    //         >
-    //           {item.Number}
-    //         </li>
-    //       ));
+
     let rt1 = false;
     changePrintedCar(arr);
     axios
       .post('http://localhost:4000/carinfoitems', {
         PrintIndex: crTime,
-        Number: `${carinfo?.Number === undefined ? '' : carinfo?.Number}`,
-        Address: `${carinfo?.Address}`,
-        RegNumber: `${carinfo?.RegNumber}`,
-        Phone: `${carinfo?.Phone}`,
-        GpsNumber: `${carinfo?.GpsNumber}`,
-        Owner: `${carinfo?.Owner}`,
-        SPoint: `${carinfo?.SPoint}`,
-        Purpose: `${carinfo?.Purpose}`,
-        EPoint: `${carinfo?.EPoint}`,
+        Number: `${
+          carinfodata?.Number === undefined ? '' : carinfodata?.Number
+        }`,
+        Address: `${carinfodata?.Address}`,
+        RegNumber: `${carinfodata?.RegNumber}`,
+        Phone: `${carinfodata?.Phone}`,
+        GpsNumber: `${carinfodata?.GpsNumber}`,
+        Owner: `${carinfodata?.Owner}`,
+        SPoint: `${carinfodata?.SPoint}`,
+        Purpose: `${carinfodata?.Purpose}`,
+        EPoint: `${carinfodata?.EPoint}`,
         EAttached: `${actorinfo?.Attached}`,
         EName: `${actorinfo?.Name}`,
         EPhone: `${actorinfo?.Phone}`,
@@ -325,6 +247,7 @@ function App() {
           Modal.success({
             content: `저장 성공!`,
           });
+          console.log(carinfodata);
         } else {
           rt1 = false;
           Modal.error({
@@ -344,15 +267,15 @@ function App() {
       axios
         .post(`http://localhost:4000/websend`, {
           PrintIndex: crTime,
-          Number: `${carinfo?.Number}`,
-          Address: `${carinfo?.Address}`,
-          RegNumber: `${carinfo?.RegNumber}`,
-          Phone: `${carinfo?.Phone}`,
-          GpsNumber: `${carinfo?.GpsNumber}`,
-          Owner: `${carinfo?.Owner}`,
-          SPoint: `${carinfo?.SPoint}`,
-          Purpose: `${carinfo?.Purpose}`,
-          EPoint: `${carinfo?.EPoint}`,
+          Number: `${carinfodata?.Number}`,
+          Address: `${carinfodata?.Address}`,
+          RegNumber: `${carinfodata?.RegNumber}`,
+          Phone: `${carinfodata?.Phone}`,
+          GpsNumber: `${carinfodata?.GpsNumber}`,
+          Owner: `${carinfodata?.Owner}`,
+          SPoint: `${carinfodata?.SPoint}`,
+          Purpose: `${carinfodata?.Purpose}`,
+          EPoint: `${carinfodata?.EPoint}`,
           EAttached: `${actorinfo?.Attached}`,
           EName: `${actorinfo?.Name}`,
           EPhone: `${actorinfo?.Phone}`,
@@ -366,32 +289,35 @@ function App() {
           DContent: `${areainfo?.DContent}`,
           PointName: `${areainfo?.PointName}`,
           Image: `${dbImgUrl}`,
-          RegistryDate: `${carinfo?.RegistryDate}`,
+          RegistryDate: `${carinfodata?.RegistryDate}`,
         })
         .then((res) => {
-          console.log('111111 :>> ', 111111);
           console.log('res', res);
         });
     });
   };
   const printFunc = () => {
-    if (carinfo?.Number === '' || carinfo?.Number === undefined) {
+    if (carinfo?.Number === '' || carinfo.Number === undefined) {
       message.error('차 번호를 입력해주세요');
       return;
     }
 
     onPrintedCar();
-    let arr = [];
-    let arr2 = [];
-    arr = trashwaitingcar;
-    arr.map((item, idx) =>
-      item !== waitingcurrentnumber ? arr2.push(item) : null
-    );
-    changeTrashWaitingCar(arr2);
-    changeCarInfoData({ ...carinfodata, Number: trashwaitingcar[0].Number });
-    changeWaitingCar(trashwaitingcar);
-    changeWaitingCurrentNumber(arr2[0]);
+    console.log(isprint);
+    if (isprint === true) {
+      let arr = [];
+      let arr2 = [];
+      arr = trashwaitingcar;
+      arr.map((item, idx) =>
+        item !== waitingcurrentnumber ? arr2.push(item) : null
+      );
+      console.log(trashwaitingcar);
 
+      changeTrashWaitingCar(arr2);
+      changeCarInfoData({ ...carinfodata, Number: arr2[0].Number });
+      changeWaitingCar(arr2);
+      changeWaitingCurrentNumber(arr2[0]);
+    }
     let printContents = componentRef.current.innerHTML;
     let windowObject = window.open(
       '',
@@ -408,8 +334,6 @@ function App() {
       windowObject.close();
       waitingcar.shift();
     }, 1500);
-
-    console.log('waitingcar', waitingcar);
   };
   const componentRef = useRef(null);
 
@@ -489,7 +413,7 @@ function App() {
                 span={5}
                 title={'프린트완료차량'}
               >
-                <div className='printedcar_container'>{printedList}</div>
+                <PrintCompleted />
               </Container>
               <Container
                 maxWidth={'40%'}

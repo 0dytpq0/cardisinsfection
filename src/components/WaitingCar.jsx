@@ -21,6 +21,7 @@ const WaitingCar = () => {
     changeCheckerInfo,
     changeWaitingCarImg,
     waitingcarimg,
+    changeIsPrint,
   } = useInfo();
   const waitingcarHeader = useRef(null);
   const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
@@ -53,6 +54,7 @@ const WaitingCar = () => {
   }, [trashwaitingcar]);
   //대기차량 클릭시 차량정보 창에 정보 읿력
   const onClickHandler = (e) => {
+    changeIsPrint(true);
     let Number = '';
     let sql = '';
     //차번호 웹에 찍히는게 데이터베이스에 없음.
