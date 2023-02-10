@@ -27,6 +27,7 @@ const ButtonContainerArea = () => {
         setArea(parsedValue?.Area);
         setPointName(parsedValue?.PointName);
         setDContent(parsedValue?.DContent);
+
         ZsetAreaInfo(parsedValue);
       });
   }, []);
