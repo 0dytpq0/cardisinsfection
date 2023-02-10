@@ -93,7 +93,7 @@ const InquireAll = () => {
     console.log('startDate', startDate);
     console.log('endDate', endDate);
     let sql =
-      'http://localhost:4000/ZcarInfoitemsDate?SDate=' +
+      'http://localhost:4000/carinfoitemsDate?SDate=' +
       startDate +
       '&EDate=' +
       endDate +

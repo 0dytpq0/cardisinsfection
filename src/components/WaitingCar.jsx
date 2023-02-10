@@ -62,7 +62,7 @@ const WaitingCar = () => {
     Number = e.target.innerText;
     console.log(Number);
     if (Number !== '') {
-      sql = `http://localhost:4000/ZcarInfoitemsallDate?Number=${Number}`;
+      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {

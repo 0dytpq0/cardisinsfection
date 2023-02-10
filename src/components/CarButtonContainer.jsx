@@ -12,29 +12,29 @@ function CarButtonContainer({ title, children }) {
   const { ZlistData, ZsetListData } = useListData();
   const { ZsetCarModalInfo, ZcarModalInfo, ZcarInfoData } = useInfo();
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:4000/ZcarInfoitemsall?CarNo=${ZcarInfoData.Number}`
-      )
-      .then((response) => {
-        let data = response.data.map((_, i) => ({
-          Number: `${response.data[i].Number}`,
-          RegNumber: `${response.data[i].RegNumber}`,
-          SPoint: `${response.data[i].SPoint}`,
-          EPoint: `${response.data[i].EPoint}`,
-          GpsNumber: `${response.data[i].GpsNumber}`,
-          Purpose: `${response.data[i].Purpose}`,
-          Owner: `${response.data[i].Owner}`,
-          Address: `${response.data[i].Address}`,
-          Phone: `${response.data[i].Phone}`,
+  //   useEffect(() => {
+  //     axios
+  //       .get(
+  //         `http://localhost:4000/ZcarInfoitemsall?CarNo=${ZcarInfoData.Number}`
+  //       )
+  //       .then((response) => {
+  //         let data = response.data.map((_, i) => ({
+  //           Number: `${response.data[i].Number}`,
+  //           RegNumber: `${response.data[i].RegNumber}`,
+  //           SPoint: `${response.data[i].SPoint}`,
+  //           EPoint: `${response.data[i].EPoint}`,
+  //           GpsNumber: `${response.data[i].GpsNumber}`,
+  //           Purpose: `${response.data[i].Purpose}`,
+  //           Owner: `${response.data[i].Owner}`,
+  //           Address: `${response.data[i].Address}`,
+  //           Phone: `${response.data[i].Phone}`,
 
-          Selected: false,
-          idx: i,
-        }));
-        ZsetListData(data);
-      });
-  }, [ZcarInfoData.Number]);
+  //           Selected: false,
+  //           idx: i,
+  //         }));
+  //         ZsetListData(data);
+  //       });
+  //   }, [ZcarInfoData.Number]);
   const onClickHandler = (e) => {
     let allData = ZlistData;
     let newData = allData.map((item, idx) => {

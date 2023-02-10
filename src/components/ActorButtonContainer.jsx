@@ -7,8 +7,8 @@ import { useInfo } from '../store';
 function ActorButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ZlistData, setZlistData] = useState('');
-  const { ZsetActorModalInfo, ZactorInfo, ZactorModalInfo } = useInfo();
+  const [listData, setListData] = useState('');
+  const { ZsetActorModalInfo, ZactorModalInfo } = useInfo();
 
   //Type이 E인 것들 get
   useEffect(() => {
@@ -22,20 +22,20 @@ function ActorButtonContainer({ title, children }) {
         Selected: false,
         idx: i,
       }));
-      setZlistData(data);
+      setListData(data);
     });
   }, []);
   //실시자 정보 조회 리스트 클릭 핸들러
   const onClickHandler = (e) => {
-    let allData = ZlistData;
-    let clickedData = allData.map((item, idx) => {
+    let allData = listData;
+    let newData = allData.map((item, idx) => {
       item.Selected = false;
       if (idx === Number(e.currentTarget.dataset.idx)) {
         item.Selected = true;
       }
       return item;
     });
-    setZlistData(clickedData);
+    setListData(newData);
   };
   const showModal = () => {
     setIsModalOpen(true);
@@ -43,15 +43,13 @@ function ActorButtonContainer({ title, children }) {
   //선택된 리스트 정보 input으로 전송
   const handleOk = (e) => {
     setIsModalOpen(false);
-    ZlistData.map((item) => {
-      if (item.Selected === true) {
-        ZsetActorModalInfo(item);
-      }
-    });
-    const filteredData = ZlistData.filter((item) => item.Selected === true);
-    ZsetActorModalInfo(
-      ZactorInfo.filter((item) => item.Number === filteredData[0].Number)
-    );
+    // listData.map((item) => {
+    //   if (item.Selected === true) {
+    //     ZsetActorModalInfo(item);
+    //   }
+    // });
+    const filteredData = listData.filter((item) => item.Selected === true);
+    ZsetActorModalInfo(filteredData[0]);
     console.log(ZactorModalInfo);
   };
   const handleCancel = () => {
@@ -75,7 +73,7 @@ function ActorButtonContainer({ title, children }) {
               style={{ height: '400px', overflow: 'auto' }}
               className='list'
               itemLayout='horizontal'
-              dataSource={ZlistData}
+              dataSource={listData}
               renderItem={(item) => (
                 <List.Item
                   onClick={onClickHandler}

@@ -24,7 +24,7 @@ const PrintCompleted = ({ printed }) => {
     let sql = '';
     PrintIndex = e.target.dataset.set;
     if (PrintIndex !== '') {
-      sql = `http://localhost:4000/ZcarInfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
+      sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {

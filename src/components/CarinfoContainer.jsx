@@ -170,9 +170,7 @@ export default function CarinfoContainer() {
   const ShowModalCar = () => {
     setIsModalOpenCar(true);
     axios
-      .get(
-        `http://localhost:4000/ZcarInfoitemsall?CarNo=${ZcarInfoData.Number}`
-      )
+      .get(`http://localhost:4000/carinfoitemsall?CarNo=${ZcarInfoData.Number}`)
       .then((response) => {
         let data = response.data.map((_, i) => ({
           Number: `${response.data[i].Number}`,
@@ -197,7 +195,6 @@ export default function CarinfoContainer() {
     // ZsetCarInfo(ZcarModalInfo);
     // ZsetCarInfoData(ZcarModalInfo);
     const filteredData = ZlistData.filter((item) => item.Selected === true);
-    console.log('filtereedData :>> ', filteredData);
     ZsetCarInfo(filteredData[0]);
     ZsetCarInfoData(filteredData[0]);
   };
@@ -250,8 +247,16 @@ export default function CarinfoContainer() {
   const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
     ZsetCheckerInfo(ZcheckerModalInfo);
-    console.log('ZcheckerModalInfo :>> ', ZcheckerModalInfo);
-    let checkerValue = JSON.stringify(ZcheckerModalInfo);
+    //modalinfo에 select여부를 판가름 할 수 있게하는 키값이 들어가기에
+    //따로 지역변수를 만들어서 db에 넣어줬음.
+    let putDataBase = {
+      Attached: ZcheckerModalInfo.Attached,
+      Name: ZcheckerModalInfo.Name,
+      Position: ZcheckerModalInfo.Position,
+      Phone: ZcheckerModalInfo.Phone,
+      Type: ZcheckerModalInfo.Type,
+    };
+    let checkerValue = JSON.stringify(putDataBase);
     checkerValue = checkerValue.replaceAll('"', '`');
     console.log('checkerValue :>> ', checkerValue);
     let rt1 = false;
@@ -319,7 +324,16 @@ export default function CarinfoContainer() {
   const handleOkActor = async () => {
     setIsModalOpenActor(false);
     ZsetActorInfo(ZactorModalInfo);
-    let actorValue = JSON.stringify(ZactorModalInfo);
+    //modalinfo에 select여부를 판가름 할 수 있게하는 키값이 들어가기에
+    //따로 지역변수를 만들어서 db에 넣어줬음.
+    let putDataBase = {
+      Attached: ZactorModalInfo.Attached,
+      Name: ZactorModalInfo.Name,
+      Phone: ZactorModalInfo.Phone,
+      Position: ZactorModalInfo.Position,
+      Type: ZactorModalInfo.Type,
+    };
+    let actorValue = JSON.stringify(putDataBase);
     actorValue = actorValue.replaceAll('"', '`');
     let rt1 = false;
     let rt2 = false;
