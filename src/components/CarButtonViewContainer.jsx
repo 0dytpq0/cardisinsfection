@@ -4,33 +4,33 @@
 // import CarButtonContainer from './CarButtonContainer';
 // //미사용중, 차량 조회시 뜨는 input창
 // const CarButtonViewContainer = () => {
-//   const { carmodalinfo, changeCarModalInfo } = useInfo();
+//   const { ZcarModalInfo, ZsetCarModalInfo } = useInfo();
 //   const onChangeCarNumber = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, Number: e.target.value });
 //   };
 //   const onChangeCarOwner = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, Owner: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, Owner: e.target.value });
 //   };
 //   const onChangeCarPurpose = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, Purpose: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, Purpose: e.target.value });
 //   };
 //   const onChangeCarRegNumber = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, RegNumber: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, RegNumber: e.target.value });
 //   };
 //   const onChangeCarGpsNumber = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, GpsNumber: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, GpsNumber: e.target.value });
 //   };
 //   const onChangeCarAddress = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, Address: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, Address: e.target.value });
 //   };
 //   const onChangeCarPhone = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, Phone: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, Phone: e.target.value });
 //   };
 //   const onChangeCarEPoint = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, EPoint: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, EPoint: e.target.value });
 //   };
 //   const onChangeCarSPoint = (e) => {
-//     changeCarModalInfo({ ...carmodalinfo, SPoint: e.target.value });
+//     ZsetCarModalInfo({ ...ZcarModalInfo, SPoint: e.target.value });
 //   };
 //   return (
 //     <div>
@@ -38,56 +38,56 @@
 //       <Input
 //         onChange={onChangeCarNumber}
 //         className='input'
-//         value={carmodalinfo.Number}
+//         value={ZcarModalInfo.Number}
 //         placeholder='차량 번호'
 //       />
 //       <Input
 //         onChange={onChangeCarPurpose}
 //         className='input'
-//         value={carmodalinfo.Purpose}
+//         value={ZcarModalInfo.Purpose}
 //         placeholder='목적'
 //       />
 //       <Input
 //         onChange={onChangeCarRegNumber}
 //         className='input'
-//         value={carmodalinfo.RegNumber}
+//         value={ZcarModalInfo.RegNumber}
 //         placeholder='등록번호'
 //       />
 //       <Input
 //         onChange={onChangeCarGpsNumber}
 //         className='input'
-//         value={carmodalinfo.GpsNumber}
+//         value={ZcarModalInfo.GpsNumber}
 //         placeholder='GPS번호'
 //       />
 //       <Input
 //         onChange={onChangeCarOwner}
 //         className='input'
-//         value={carmodalinfo.Owner}
+//         value={ZcarModalInfo.Owner}
 //         placeholder='출입자'
 //       />
 
 //       <Input
 //         onChange={onChangeCarAddress}
 //         className='input'
-//         value={carmodalinfo.Address}
+//         value={ZcarModalInfo.Address}
 //         placeholder='주소'
 //       />
 //       <Input
 //         onChange={onChangeCarPhone}
 //         className='input'
-//         value={carmodalinfo.Phone}
+//         value={ZcarModalInfo.Phone}
 //         placeholder='연락처'
 //       />
 //       <Input
 //         onChange={onChangeCarSPoint}
 //         className='input'
-//         value={carmodalinfo.SPoint}
+//         value={ZcarModalInfo.SPoint}
 //         placeholder='출발지'
 //       />
 //       <Input
 //         onChange={onChangeCarEPoint}
 //         className='input'
-//         value={carmodalinfo.EPoint}
+//         value={ZcarModalInfo.EPoint}
 //         placeholder='도착지'
 //       />
 //     </div>

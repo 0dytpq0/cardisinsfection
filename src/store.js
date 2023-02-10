@@ -3,153 +3,123 @@ import { persist } from 'zustand/middleware';
 
 export const useInfo = create(
   persist((set) => ({
-    carinfodata: {},
-    changeCarInfoData: (newData) =>
+    ZcarInfoData: {},
+    ZsetCarInfoData: (newData) =>
       set((state) => ({
-        carinfodata: newData,
+        ZcarInfoData: newData,
       })),
-    carinfo: {},
-    changeCarInfo: (newData) =>
+    ZcarInfo: {},
+    ZsetCarInfo: (newData) =>
       set((state) => ({
-        carinfo: newData,
+        ZcarInfo: newData,
       })),
-    carmodalinfo: {},
-    changeCarModalInfo: (newData) =>
+    ZcarModalInfo: {},
+    ZsetCarModalInfo: (newData) =>
       set((state) => ({
-        carmodalinfo: newData,
+        ZcarModalInfo: newData,
       })),
-    areainfo: {},
-    changeAreaInfo: (newData) =>
+    ZareaInfo: {},
+    ZsetAreaInfo: (newData) =>
       set((state) => ({
-        areainfo: newData,
+        ZareaInfo: newData,
       })),
-    checkerinfo: {},
-    changeCheckerInfo: (newData) =>
+    ZcheckerInfo: {},
+    ZsetCheckerInfo: (newData) =>
       set((state) => ({
-        checkerinfo: newData,
+        ZcheckerInfo: newData,
       })),
-    checkermodalinfo: {},
-    changeCheckerModalInfo: (newData) =>
+    ZcheckerModalInfo: {},
+    ZsetCheckerModalInfo: (newData) =>
       set((state) => ({
-        checkermodalinfo: newData,
+        ZcheckerModalInfo: newData,
       })),
-    actorinfo: {},
-    changeActorInfo: (newData) =>
+    ZactorInfo: {},
+    ZsetActorInfo: (newData) =>
       set((state) => ({
-        actorinfo: newData,
+        ZactorInfo: newData,
       })),
-    actormodalinfo: {},
-    changeActorModalInfo: (newData) =>
+    ZactorModalInfo: {},
+    ZsetActorModalInfo: (newData) =>
       set((state) => ({
-        actormodalinfo: newData,
+        ZactorModalInfo: newData,
       })),
-    waitingcar: [],
-    waitingcurrentnumber: '',
-    changeWaitingCar: (newData) =>
+    ZwaitingCar: [],
+    ZwaitingCurrentNumber: '',
+    ZsetWaitingCar: (newData) =>
       set((state) => ({
-        waitingcar: newData,
+        ZwaitingCar: newData,
       })),
-    deletewaitingcar: '',
-    changeDeleteWaitingCar: (newData) =>
+    ZdeleteWaitingCar: '',
+    ZsetDeleteWaitingCar: (newData) =>
       set((state) => ({
-        deletewaitingcar: newData,
+        ZdeleteWaitingCar: newData,
       })),
-    changeWaitingCurrentNumber: (newData) =>
+    ZsetWaitingCurrentNumber: (newData) =>
       set((state) => ({
-        waitingcurrentnumber: newData,
+        ZwaitingCurrentNumber: newData,
       })),
-    printedcar: [],
-    changePrintedCar: (newData) =>
+    ZprintedCar: [],
+    ZsetPrintedCar: (newData) =>
       set((state) => ({
-        printedcar: newData,
+        ZprintedCar: newData,
       })),
-    waitingcarimg: [],
-    changeWaitingCarImg: (newData) =>
+    ZwaitingCarImg: [],
+    ZsetWaitingCarImg: (newData) =>
       set((state) => ({
-        waitingcarimg: newData,
+        ZwaitingCarImg: newData,
       })),
-    isprint: false,
-    changeIsPrint: (newData) =>
+    ZisPrint: false,
+    ZsetIsPrint: (newData) =>
       set((state) => ({
-        isprint: newData,
+        ZisPrint: newData,
       })),
   }))
 );
 
 export const useListData = create(
   persist((set) => ({
-    listData: '',
-    changeListData: (newData) =>
+    ZlistData: '',
+    ZsetListData: (newData) =>
       set((state) => ({
-        listData: newData,
+        ZlistData: newData,
       })),
   }))
 );
 
 export const useMqtt = create(
   persist((set) => ({
-    client: null,
-    changeClient: (newData) =>
+    ZtcpIp: '',
+    ZsetTcpIp: (newData) =>
       set((state) => ({
-        client: newData,
+        ZtcpIp: newData,
       })),
-    connectstatus: '',
-    changeConnectStatus: (newData) =>
+    ZtcpPort: null,
+    ZsetTcpPort: (newData) =>
       set((state) => ({
-        connectstatus: newData,
+        ZtcpPort: newData,
       })),
-    payload: [],
-    changePayload: (newData) =>
+    ZmqttUrl: '',
+    ZsetMqttUrl: (newData) =>
       set((state) => ({
-        payload: newData,
+        ZmqttUrl: newData,
       })),
-    options: {
-      keepalive: 3000,
-      protocolId: 'MQTT',
-      protocolVersion: 4,
-      clean: true,
-      reconnectPeriod: 1000,
-      connectTimeout: 10 * 60 * 1000,
-      will: {
-        topic: 'WillMsg',
-        payload: 'Connection Closed abnormally..!',
-        qos: 0,
-        retain: false,
-      },
-      rejectUnauthorized: false,
-    },
-    tcpip: '',
-    changeTcpIp: (newData) =>
+    ZmqttPort: null,
+    ZsetMqttPort: (newData) =>
       set((state) => ({
-        tcpip: newData,
+        ZmqttPort: newData,
       })),
-    tcpport: null,
-    changeTcpPort: (newData) =>
+    ZcompCd: null,
+    ZsetCompCd: (newData) =>
       set((state) => ({
-        tcpport: newData,
-      })),
-    mqtturl: '',
-    changeMqttUrl: (newData) =>
-      set((state) => ({
-        mqtturl: newData,
-      })),
-    mqttport: null,
-    changeMqttPort: (newData) =>
-      set((state) => ({
-        mqttport: newData,
-      })),
-    compcd: null,
-    changeCompCd: (newData) =>
-      set((state) => ({
-        compcd: newData,
+        ZcompCd: newData,
       })),
   }))
 );
 
 export const useWaitingCar = create((set) => ({
-  trashwaitingcar: [],
-  changeTrashWaitingCar: (newData) =>
+  ZtrashWaitingCar: [],
+  ZsetTrashWaitingCar: (newData) =>
     set((state) => ({
-      trashwaitingcar: newData,
+      ZtrashWaitingCar: newData,
     })),
 }));

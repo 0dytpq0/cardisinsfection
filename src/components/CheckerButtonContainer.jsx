@@ -9,8 +9,8 @@ import { useInfo } from '../store';
 function CheckerButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [listData, setListData] = useState('');
-  const { changeCheckerInfo, changeCheckerModalInfo } = useInfo();
+  const [ZlistData, setZlistData] = useState('');
+  const { ZsetCheckerInfo, ZsetCheckerModalInfo } = useInfo();
   //Type이 C인 근무자 전부 get
   useEffect(() => {
     axios.get(`http://localhost:4000/OperatoritemsAllC`).then((response) => {
@@ -23,12 +23,12 @@ function CheckerButtonContainer({ title, children }) {
         Selected: false,
         idx: i,
       }));
-      setListData(data);
+      setZlistData(data);
     });
   }, []);
   //데이터 클릭시 핸들러
   const onClickHandler = (e) => {
-    let allData = listData;
+    let allData = ZlistData;
     let newData = allData.map((item, idx) => {
       item.Selected = false;
       if (idx === Number(e.currentTarget.dataset.idx)) {
@@ -36,7 +36,7 @@ function CheckerButtonContainer({ title, children }) {
       }
       return item;
     });
-    setListData(newData);
+    setZlistData(newData);
   };
   const showModal = () => {
     setIsModalOpen(true);
@@ -44,14 +44,14 @@ function CheckerButtonContainer({ title, children }) {
   //클릭한 데이터 정보 전달
   const handleOk = (e) => {
     setIsModalOpen(false);
-    // listData.map((item) => {
+    // ZlistData.map((item) => {
     //   if (item.Selected === true) {
-    //     changeCheckerModalInfo(item);
+    //     ZsetCheckerModalInfo(item);
     //   }
     // });
 
-    const filteredData = listData.filter((item) => item.Selected === true);
-    changeCheckerModalInfo(filteredData[0]);
+    const filteredData = ZlistData.filter((item) => item.Selected === true);
+    ZsetCheckerModalInfo(filteredData[0]);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -74,7 +74,7 @@ function CheckerButtonContainer({ title, children }) {
               style={{ height: '400px', overflow: 'auto' }}
               className='list'
               itemLayout='horizontal'
-              dataSource={listData}
+              dataSource={ZlistData}
               renderItem={(item) => (
                 <List.Item
                   onClick={onClickHandler}

@@ -7,24 +7,24 @@ import moment from 'moment';
 //대기차량
 const WaitingCar = () => {
   const {
-    changeCarInfoData,
-    carinfodata,
-    changeWaitingCar,
-    waitingcar,
-    waitingcurrentnumber,
-    changeWaitingCurrentNumber,
-    deletewaitingcar,
-    changeDeleteWaitingCar,
-    changeCarInfo,
-    changeActorInfo,
-    changeAreaInfo,
-    changeCheckerInfo,
-    changeWaitingCarImg,
-    waitingcarimg,
-    changeIsPrint,
+    ZsetCarInfoData,
+    ZcarInfoData,
+    ZsetWaitingCar,
+    ZwaitingCar,
+    ZwaitingCurrentNumber,
+    ZsetWaitingCurrentNumber,
+    ZdeleteWaitingCar,
+    ZsetDeleteWaitingCar,
+    ZsetCarInfo,
+    ZsetActorInfo,
+    ZsetAreaInfo,
+    ZsetCheckerInfo,
+    ZsetWaitingCarImg,
+    ZwaitingCarImg,
+    ZsetIsPrint,
   } = useInfo();
-  const waitingcarHeader = useRef(null);
-  const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
+  const ZwaitingCarHeader = useRef(null);
+  const { ZsetTrashWaitingCar, ZtrashWaitingCar } = useWaitingCar();
   let arr = [];
   //mqtt 수신시 자동차 번호를 대기목록에 추가
   useEffect(() => {
@@ -39,22 +39,22 @@ const WaitingCar = () => {
       if (topic.includes('CCTV')) {
         message = message.toString().replaceAll('\\', '/');
         let msg = JSON.parse(message.toString());
-        waitingcar.push(msg.CARNUMBER);
-        arr = waitingcar;
+        ZwaitingCar.push(msg.CARNUMBER);
+        arr = ZwaitingCar;
         arr = arr.filter((item) => item !== undefined);
         arr = arr.filter((item) => item !== null);
-        changeTrashWaitingCar(arr);
-        if (waitingcar.length === 1) {
-          changeWaitingCurrentNumber(arr[0]);
+        ZsetTrashWaitingCar(arr);
+        if (ZwaitingCar.length === 1) {
+          ZsetWaitingCurrentNumber(arr[0]);
         }
-        changeWaitingCar(trashwaitingcar);
+        ZsetWaitingCar(ZtrashWaitingCar);
       }
     });
     client?.on('disconnect', () => client.end());
-  }, [trashwaitingcar]);
+  }, [ZtrashWaitingCar]);
   //대기차량 클릭시 차량정보 창에 정보 읿력
-  const onClickHandler = (e) => {
-    changeIsPrint(true);
+  const onClickList = (e) => {
+    ZsetIsPrint(true);
     let Number = '';
     let sql = '';
     //차번호 웹에 찍히는게 데이터베이스에 없음.
@@ -62,7 +62,7 @@ const WaitingCar = () => {
     Number = e.target.innerText;
     console.log(Number);
     if (Number !== '') {
-      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
+      sql = `http://localhost:4000/ZcarInfoitemsallDate?Number=${Number}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {
@@ -75,7 +75,7 @@ const WaitingCar = () => {
         message.warning('해당 차량에 대한 정보가 없습니다.');
       }
       if (Number !== '미인식') {
-        changeCarInfo({
+        ZsetCarInfo({
           PrintIndex: `${data?.PrintIndex}`,
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
@@ -88,27 +88,27 @@ const WaitingCar = () => {
           EPoint: `${data?.EPoint}`,
           RegistryDate: `${data?.RegistryDate}`,
         });
-        changeActorInfo({
+        ZsetActorInfo({
           Attached: `${data?.CAttached}`,
           Name: `${data?.CName}`,
           Phone: `${data?.CPhone}`,
           Position: `${data?.CPosition}`,
           Type: `${data?.Type}`,
         });
-        changeCheckerInfo({
+        ZsetCheckerInfo({
           Attached: `${data?.EAttached}`,
           Name: `${data?.EName}`,
           Phone: `${data?.EPhone}`,
           Position: `${data?.EPosition}`,
           Type: `${data?.Type}`,
         });
-        changeAreaInfo({
+        ZsetAreaInfo({
           Area: `${data?.Area}`,
           AreaType: `${data?.AreaType}`,
           DContent: `${data?.DContent}`,
           PointName: `${data?.PointName}`,
         });
-        changeCarInfoData({
+        ZsetCarInfoData({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
@@ -120,9 +120,9 @@ const WaitingCar = () => {
           Purpose: `${data?.Purpose}`,
           EPoint: `${data?.EPoint}`,
         });
-        changeWaitingCarImg(data.ImagePath);
+        ZsetWaitingCarImg(data.ImagePath);
       } else {
-        changeCarInfoData({
+        ZsetCarInfoData({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: '',
           Address: '',
@@ -134,7 +134,7 @@ const WaitingCar = () => {
           Purpose: '',
           EPoint: '',
         });
-        changeCarInfo({
+        ZsetCarInfo({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: '',
           Address: '',
@@ -146,19 +146,19 @@ const WaitingCar = () => {
           Purpose: '',
           EPoint: '',
         });
-        changeActorInfo({
+        ZsetActorInfo({
           Attached: '',
           Name: '',
           Phone: '',
           Position: '',
         });
-        changeCheckerInfo({
+        ZsetCheckerInfo({
           Attached: '',
           Name: '',
           Phone: '',
           Position: '',
         });
-        changeAreaInfo({
+        ZsetAreaInfo({
           Area: '',
           AreaType: '',
           DContent: '',
@@ -166,12 +166,12 @@ const WaitingCar = () => {
         });
       }
 
-      changeDeleteWaitingCar(e.target.innerText);
+      ZsetDeleteWaitingCar(e.target.innerText);
     });
   };
   //대기저장 목록 뿌려주는 변수
-  const ItemList = trashwaitingcar.map((item, idx) => (
-    <li onClick={onClickHandler} key={idx} className='waiting__list__item'>
+  const ItemList = ZtrashWaitingCar.map((item, idx) => (
+    <li onClick={onClickList} key={idx} className='waiting__list__item'>
       {item}
     </li>
   ));
@@ -182,7 +182,7 @@ const WaitingCar = () => {
         <ul className='waiting__list'>{ItemList}</ul>
       </div>
       <div className='waiting_img'>
-        <img className='carimg' src={waitingcarimg} />
+        <img className='carimg' src={ZwaitingCarImg} />
       </div>
     </div>
   );

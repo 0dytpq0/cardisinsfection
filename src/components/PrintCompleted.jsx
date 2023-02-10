@@ -6,25 +6,25 @@ import axios from 'axios';
 
 const PrintCompleted = ({ printed }) => {
   const {
-    printedcar,
-    changeCarInfo,
-    changePrintedCar,
-    carinfo,
-    changeCarInfoData,
-    changeActorInfo,
-    changeCheckerInfo,
-    changeAreaInfo,
-    changeIsPrint,
+    ZprintedCar,
+    ZsetCarInfo,
+    ZsetPrintedCar,
+    ZcarInfo,
+    ZsetCarInfoData,
+    ZsetActorInfo,
+    ZsetCheckerInfo,
+    ZsetAreaInfo,
+    ZsetIsPrint,
   } = useInfo();
   //프린트 완료 차량 리스트 클릭시 정보 가져오는 코드
   const onListChange = (e) => {
-    //대기저장 삭제하는 isprint false로
-    changeIsPrint(false);
+    //대기저장 삭제하는 ZisPrint false로
+    ZsetIsPrint(false);
     let PrintIndex = '';
     let sql = '';
     PrintIndex = e.target.dataset.set;
     if (PrintIndex !== '') {
-      sql = `http://localhost:4000/carinfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
+      sql = `http://localhost:4000/ZcarInfoitemsallPrintIndex?PrintIndex=${PrintIndex}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {
@@ -32,7 +32,7 @@ const PrintCompleted = ({ printed }) => {
       }
       let data = res.data[0];
       console.log('data :>> ', data);
-      changeCarInfo({
+      ZsetCarInfo({
         PrintIndex: `${data?.PrintIndex}`,
         Number: `${data?.Number}`,
         Address: `${data?.Address}`,
@@ -45,26 +45,26 @@ const PrintCompleted = ({ printed }) => {
         EPoint: `${data?.EPoint}`,
         RegistryDate: `${data?.RegistryDate}`,
       });
-      changeActorInfo({
+      ZsetActorInfo({
         Attached: `${data?.CAttached}`,
         Name: `${data?.CName}`,
         Phone: `${data?.CPhone}`,
         Position: `${data?.CPosition}`,
         Type: `${data?.Type}`,
       });
-      changeCheckerInfo({
+      ZsetCheckerInfo({
         Attached: `${data?.EAttached}`,
         Name: `${data?.EName}`,
         Phone: `${data?.EPhone}`,
         Position: `${data?.EPosition}`,
         Type: `${data?.Type}`,
       });
-      changeAreaInfo({
+      ZsetAreaInfo({
         Area: `${data?.Area}`,
         AreaType: `${data?.AreaType}`,
         DContent: `${data?.DContent}`,
       });
-      changeCarInfoData({
+      ZsetCarInfoData({
         PrintIndex: `${data?.PrintIndex}`,
         Number: `${data?.Number}`,
         Address: `${data?.Address}`,
@@ -80,19 +80,19 @@ const PrintCompleted = ({ printed }) => {
   };
 
   //화면에 뿌려주는 변수
-  const itemList = printedcar.map((item, idx) => (
+  const itemList = ZprintedCar.map((item, idx) => (
     <li
       data-set={item.PrintIndex}
       onClick={onListChange}
       key={idx}
-      className='printedcar_list_item'
+      className='ZprintedCar_list_item'
     >
       {item.Number}
     </li>
   ));
   return (
     <div>
-      <ul className='printedcar_list'>{itemList}</ul>
+      <ul className='ZprintedCar_list'>{itemList}</ul>
     </div>
   );
 };

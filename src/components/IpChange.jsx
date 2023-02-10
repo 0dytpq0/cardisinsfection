@@ -10,18 +10,18 @@ const IpChange = () => {
   const [data, setData] = useState('');
   const [parsedValue, setParsedValue] = useState([]);
   const {
-    tcpip,
-    tcpport,
-    changeTcpIp,
-    changeTcpPort,
-    mqtturl,
-    mqttport,
-    changeMqttUrl,
-    changeMqttPort,
-    compcd,
-    changeCompCd,
+    ZtcpIp,
+    ZtcpPort,
+    ZsetTcpIp,
+    ZsetTcpPort,
+    ZmqttUrl,
+    ZmqttPort,
+    ZsetMqttUrl,
+    ZsetMqttPort,
+    ZcompCd,
+    ZsetCompCd,
   } = useMqtt();
-  //ip,port,compcd 세팅값 불러옴
+  //ip,port,ZcompCd 세팅값 불러옴
   const getData = async () => {
     await axios
       .get(`http://localhost:4000/settingitemsConfig`)
@@ -29,11 +29,11 @@ const IpChange = () => {
         let data = response.data[0].Value;
         data = data.replaceAll('`', '"');
         data = JSON.parse(data);
-        changeTcpIp(data.TCPIP);
-        changeTcpPort(data.TCPPORT);
-        changeMqttUrl(data.MQTTURL);
-        changeMqttPort(data.MQTTPORT);
-        changeCompCd(data.COMPCD);
+        ZsetTcpIp(data.TCPIP);
+        ZsetTcpPort(data.TCPPORT);
+        ZsetMqttUrl(data.MQTTURL);
+        ZsetMqttPort(data.MQTTPORT);
+        ZsetCompCd(data.COMPCD);
         setData(data);
       });
   };
@@ -44,48 +44,48 @@ const IpChange = () => {
   const showModalIp = async () => {
     setIsModalOpenIp(true);
   };
+  const handleCancelIp = () => {
+    setIsModalOpenIp(false);
+  };
   //ok클릭시 핸들러
   const handleOkIp = async (e) => {
     setIsModalOpenIp(false);
-    console.log('handleOkIp');
-    let bb = {
-      TCPIP: tcpip,
-      TCPPORT: tcpport,
-      MQTTURL: mqtturl,
-      MQTTPORT: mqttport,
-      COMPCD: compcd,
+    let settingObj = {
+      TCPIP: ZtcpIp,
+      TCPPORT: ZtcpPort,
+      MQTTURL: ZmqttUrl,
+      MQTTPORT: ZmqttPort,
+      COMPCD: ZcompCd,
       WEBURL: `http://cowplan.co.kr/disinfect.post.php`,
     };
     //setting값에 input 입력값을 넣어줌
-    let ipValue = JSON.stringify(bb);
-    console.log('ipValue');
+    let configValue = JSON.stringify(settingObj);
+    console.log('configValue');
     await axios
       .put('http://localhost:4000/settingitems', {
         Name: 'Config',
-        Value: ipValue,
+        Value: configValue,
       })
       .then((res) => {
         console.log('res.statusText :>> ', res.statusText);
       });
   };
   //input 입력값 핸들러
-  const handleCancelIp = () => {
-    setIsModalOpenIp(false);
-  };
+
   const onChangeTcpIp = (e) => {
-    changeTcpIp(e.target.value);
+    ZsetTcpIp(e.target.value);
   };
   const onChangeTcpPort = (e) => {
-    changeTcpPort(e.target.value);
+    ZsetTcpPort(e.target.value);
   };
   const onChangeMqttUrl = (e) => {
-    changeMqttUrl(e.target.value);
+    ZsetMqttUrl(e.target.value);
   };
   const onChangeMqttPort = (e) => {
-    changeMqttPort(e.target.value);
+    ZsetMqttPort(e.target.value);
   };
   const onChangeCompCd = (e) => {
-    changeCompCd(e.target.value);
+    ZsetCompCd(e.target.value);
   };
   return (
     <div>
@@ -98,24 +98,24 @@ const IpChange = () => {
       >
         <label>
           TCP IP
-          <Input value={tcpip} onChange={onChangeTcpIp} />
+          <Input value={ZtcpIp} onChange={onChangeTcpIp} />
         </label>
         <label>
           TCP PORT
-          <Input value={tcpport} onChange={onChangeTcpPort} />
+          <Input value={ZtcpPort} onChange={onChangeTcpPort} />
         </label>
 
         <label>
           MQTT URL
-          <Input value={mqtturl} onChange={onChangeMqttUrl} />
+          <Input value={ZmqttUrl} onChange={onChangeMqttUrl} />
         </label>
         <label>
           MQTT PORT
-          <Input value={mqttport} onChange={onChangeMqttPort} />
+          <Input value={ZmqttPort} onChange={onChangeMqttPort} />
         </label>
         <label>
           COMPCD
-          <Input value={compcd} onChange={onChangeCompCd} />
+          <Input value={ZcompCd} onChange={onChangeCompCd} />
         </label>
       </Modal>
     </div>

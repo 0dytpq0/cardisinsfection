@@ -5,7 +5,7 @@ import axios from 'axios';
 import ActorButtonContainer from './ActorButtonContainer';
 
 const ActorButtonViewContainer = () => {
-  const { actormodalinfo, changeActorModalInfo } = useInfo();
+  const { ZactorModalInfo, ZsetActorModalInfo } = useInfo();
 
   //기본 세팅 값에서 E타입 근무자들을 불러온다.
   useEffect(() => {
@@ -15,22 +15,22 @@ const ActorButtonViewContainer = () => {
         let data = response.data[0].Value;
         data = data.replaceAll('`', '"');
         let parsedValue = JSON.parse(data);
-        changeActorModalInfo(parsedValue);
+        ZsetActorModalInfo(parsedValue);
       });
   }, []);
 
   //인풋창 정보 입력시 zustand에 저장
   const onChangeActorAttached = (e) => {
-    changeActorModalInfo({ ...actormodalinfo, Attached: e.target.value });
+    ZsetActorModalInfo({ ...ZactorModalInfo, Attached: e.target.value });
   };
   const onChangeActorPosition = (e) => {
-    changeActorModalInfo({ ...actormodalinfo, Position: e.target.value });
+    ZsetActorModalInfo({ ...ZactorModalInfo, Position: e.target.value });
   };
   const onChangeActorName = (e) => {
-    changeActorModalInfo({ ...actormodalinfo, Name: e.target.value });
+    ZsetActorModalInfo({ ...ZactorModalInfo, Name: e.target.value });
   };
   const onChangeActorPhone = (e) => {
-    changeActorModalInfo({ ...actormodalinfo, Phone: e.target.value });
+    ZsetActorModalInfo({ ...ZactorModalInfo, Phone: e.target.value });
   };
 
   return (
@@ -39,25 +39,25 @@ const ActorButtonViewContainer = () => {
       <Input
         onChange={onChangeActorAttached}
         className='input'
-        value={actormodalinfo.Attached}
+        value={ZactorModalInfo.Attached}
         placeholder='소속'
       />
       <Input
         onChange={onChangeActorPosition}
         className='input'
-        value={actormodalinfo.Position}
+        value={ZactorModalInfo.Position}
         placeholder='직급'
       />
       <Input
         onChange={onChangeActorName}
         className='input'
-        value={actormodalinfo.Name}
+        value={ZactorModalInfo.Name}
         placeholder='성명'
       />
       <Input
         onChange={onChangeActorPhone}
         className='input'
-        value={actormodalinfo.Phone}
+        value={ZactorModalInfo.Phone}
         placeholder='연락처'
       />
     </div>

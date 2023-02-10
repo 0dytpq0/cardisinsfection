@@ -6,10 +6,10 @@ import CheckerButtonContainer from './CheckerButtonContainer';
 //확인자 정보 input창
 const CheckerButtonViewContainer = () => {
   const {
-    changeCheckerInfo,
-    checkerinfo,
-    checkermodalinfo,
-    changeCheckerModalInfo,
+    ZsetCheckerInfo,
+    ZcheckerInfo,
+    ZcheckerModalInfo,
+    ZsetCheckerModalInfo,
   } = useInfo();
 
   useEffect(() => {
@@ -20,21 +20,21 @@ const CheckerButtonViewContainer = () => {
         let data = response.data[0].Value;
         data = data.replaceAll('`', '"');
         let parsedValue = JSON.parse(data);
-        changeCheckerInfo(parsedValue);
+        ZsetCheckerInfo(parsedValue);
       });
   }, []);
   //input 입력시 변화
   const onChangeAttached = (e) => {
-    changeCheckerModalInfo({ ...checkermodalinfo, Attached: e.target.value });
+    ZsetCheckerModalInfo({ ...ZcheckerModalInfo, Attached: e.target.value });
   };
   const onChangecheckerPosition = (e) => {
-    changeCheckerModalInfo({ ...checkermodalinfo, Position: e.target.value });
+    ZsetCheckerModalInfo({ ...ZcheckerModalInfo, Position: e.target.value });
   };
   const onChangeCheckerName = (e) => {
-    changeCheckerModalInfo({ ...checkermodalinfo, Name: e.target.value });
+    ZsetCheckerModalInfo({ ...ZcheckerModalInfo, Name: e.target.value });
   };
   const onChangecheckerPhone = (e) => {
-    changeCheckerModalInfo({ ...checkermodalinfo, Phone: e.target.value });
+    ZsetCheckerModalInfo({ ...ZcheckerModalInfo, Phone: e.target.value });
   };
 
   return (
@@ -43,25 +43,25 @@ const CheckerButtonViewContainer = () => {
       <Input
         onChange={onChangeAttached}
         className='input'
-        value={checkermodalinfo.Attached}
+        value={ZcheckerModalInfo.Attached}
         placeholder='소속'
       />{' '}
       <Input
         onChange={onChangecheckerPosition}
         className='input'
-        value={checkermodalinfo.Position}
+        value={ZcheckerModalInfo.Position}
         placeholder='직급'
       />{' '}
       <Input
         onChange={onChangeCheckerName}
         className='input'
-        value={checkermodalinfo.Name}
+        value={ZcheckerModalInfo.Name}
         placeholder='성명'
       />
       <Input
         onChange={onChangecheckerPhone}
         className='input'
-        value={checkermodalinfo.Phone}
+        value={ZcheckerModalInfo.Phone}
         placeholder='연락처'
       />
     </div>

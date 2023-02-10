@@ -40,22 +40,22 @@ function App() {
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
   const [dbImgUrl, setDbImgUrl] = useState('');
   const {
-    changeWaitingCarImg,
-    changePrintedCar,
-    waitingcar,
-    printedcar,
-    waitingcurrentnumber,
-    carinfo,
-    actorinfo,
-    checkerinfo,
-    areainfo,
-    changeWaitingCar,
-    changeCarInfoData,
-    carinfodata,
-    changeWaitingCurrentNumber,
-    isprint,
+    ZsetWaitingCarImg,
+    ZsetPrintedCar,
+    ZwaitingCar,
+    ZprintedCar,
+    ZwaitingCurrentNumber,
+    ZcarInfo,
+    ZactorInfo,
+    ZcheckerInfo,
+    ZareaInfo,
+    ZsetWaitingCar,
+    ZsetCarInfoData,
+    ZcarInfoData,
+    ZsetWaitingCurrentNumber,
+    ZisPrint,
   } = useInfo();
-  const { trashwaitingcar, changeTrashWaitingCar } = useWaitingCar();
+  const { ZtrashWaitingCar, ZsetTrashWaitingCar } = useWaitingCar();
   //mqtt 옵션
   const options = {
     keepalive: 3000,
@@ -146,7 +146,7 @@ function App() {
               .catch((error) => {
                 console.log(error); // Logs an error if there was one
               });
-            changeWaitingCarImg(imgurl);
+            ZsetWaitingCarImg(imgurl);
           }
         }
         //상태정보창의 gif를 CMD에 따라서 변화시킨다.
@@ -187,45 +187,45 @@ function App() {
   };
 
   //출력 함수
-  const onPrintedCar = () => {
+  const onZprintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
-    //printedcar에 초기값을 넣어줘서 arr.unshift 에러가 안나게하였다.
-    changePrintedCar(waitingcar[0]);
-    let arr = printedcar;
-    arr.unshift({ Number: carinfodata?.Number, PrintIndex: crTime });
+    //ZprintedCar에 초기값을 넣어줘서 arr.unshift 에러가 안나게하였다.
+    ZsetPrintedCar(ZwaitingCar[0]);
+    let arr = ZprintedCar;
+    arr.unshift({ Number: ZcarInfoData?.Number, PrintIndex: crTime });
 
     if (arr.length > 8) {
       arr.pop();
     }
 
     let rt1 = false;
-    changePrintedCar(arr);
+    ZsetPrintedCar(arr);
     axios
-      .post('http://localhost:4000/carinfoitems', {
+      .post('http://localhost:4000/ZcarInfoitems', {
         PrintIndex: crTime,
         Number: `${
-          carinfodata?.Number === undefined ? '' : carinfodata?.Number
+          ZcarInfoData?.Number === undefined ? '' : ZcarInfoData?.Number
         }`,
-        Address: `${carinfodata?.Address}`,
-        RegNumber: `${carinfodata?.RegNumber}`,
-        Phone: `${carinfodata?.Phone}`,
-        GpsNumber: `${carinfodata?.GpsNumber}`,
-        Owner: `${carinfodata?.Owner}`,
-        SPoint: `${carinfodata?.SPoint}`,
-        Purpose: `${carinfodata?.Purpose}`,
-        EPoint: `${carinfodata?.EPoint}`,
-        EAttached: `${actorinfo?.Attached}`,
-        EName: `${actorinfo?.Name}`,
-        EPhone: `${actorinfo?.Phone}`,
-        EPosition: `${actorinfo?.Position}`,
-        CAttached: `${checkerinfo?.Attached}`,
-        CName: `${checkerinfo?.Name}`,
-        CPhone: `${checkerinfo?.Phone}`,
-        CPosition: `${checkerinfo?.Position}`,
-        Area: `${areainfo?.Area}`,
-        AreaType: `${areainfo?.AreaType}`,
-        DContent: `${areainfo?.DContent}`,
-        PointName: `${areainfo?.PointName}`,
+        Address: `${ZcarInfoData?.Address}`,
+        RegNumber: `${ZcarInfoData?.RegNumber}`,
+        Phone: `${ZcarInfoData?.Phone}`,
+        GpsNumber: `${ZcarInfoData?.GpsNumber}`,
+        Owner: `${ZcarInfoData?.Owner}`,
+        SPoint: `${ZcarInfoData?.SPoint}`,
+        Purpose: `${ZcarInfoData?.Purpose}`,
+        EPoint: `${ZcarInfoData?.EPoint}`,
+        EAttached: `${ZactorInfo?.Attached}`,
+        EName: `${ZactorInfo?.Name}`,
+        EPhone: `${ZactorInfo?.Phone}`,
+        EPosition: `${ZactorInfo?.Position}`,
+        CAttached: `${ZcheckerInfo?.Attached}`,
+        CName: `${ZcheckerInfo?.Name}`,
+        CPhone: `${ZcheckerInfo?.Phone}`,
+        CPosition: `${ZcheckerInfo?.Position}`,
+        Area: `${ZareaInfo?.Area}`,
+        AreaType: `${ZareaInfo?.AreaType}`,
+        DContent: `${ZareaInfo?.DContent}`,
+        PointName: `${ZareaInfo?.PointName}`,
         ImagePath: `${dbImgUrl}`,
       })
       .then((res) => {
@@ -235,7 +235,7 @@ function App() {
           Modal.success({
             content: `저장 성공!`,
           });
-          console.log(carinfodata);
+          console.log(ZcarInfoData);
         } else {
           rt1 = false;
           Modal.error({
@@ -255,29 +255,29 @@ function App() {
       axios
         .post(`http://localhost:4000/websend`, {
           PrintIndex: crTime,
-          Number: `${carinfodata?.Number}`,
-          Address: `${carinfodata?.Address}`,
-          RegNumber: `${carinfodata?.RegNumber}`,
-          Phone: `${carinfodata?.Phone}`,
-          GpsNumber: `${carinfodata?.GpsNumber}`,
-          Owner: `${carinfodata?.Owner}`,
-          SPoint: `${carinfodata?.SPoint}`,
-          Purpose: `${carinfodata?.Purpose}`,
-          EPoint: `${carinfodata?.EPoint}`,
-          EAttached: `${actorinfo?.Attached}`,
-          EName: `${actorinfo?.Name}`,
-          EPhone: `${actorinfo?.Phone}`,
-          EPosition: `${actorinfo?.Position}`,
-          CAttached: `${checkerinfo?.Attached}`,
-          CName: `${checkerinfo?.Name}`,
-          CPhone: `${checkerinfo?.Phone}`,
-          CPosition: `${checkerinfo?.Position}`,
-          Area: `${areainfo?.Area}`,
-          AreaType: `${areainfo?.AreaType}`,
-          DContent: `${areainfo?.DContent}`,
-          PointName: `${areainfo?.PointName}`,
+          Number: `${ZcarInfoData?.Number}`,
+          Address: `${ZcarInfoData?.Address}`,
+          RegNumber: `${ZcarInfoData?.RegNumber}`,
+          Phone: `${ZcarInfoData?.Phone}`,
+          GpsNumber: `${ZcarInfoData?.GpsNumber}`,
+          Owner: `${ZcarInfoData?.Owner}`,
+          SPoint: `${ZcarInfoData?.SPoint}`,
+          Purpose: `${ZcarInfoData?.Purpose}`,
+          EPoint: `${ZcarInfoData?.EPoint}`,
+          EAttached: `${ZactorInfo?.Attached}`,
+          EName: `${ZactorInfo?.Name}`,
+          EPhone: `${ZactorInfo?.Phone}`,
+          EPosition: `${ZactorInfo?.Position}`,
+          CAttached: `${ZcheckerInfo?.Attached}`,
+          CName: `${ZcheckerInfo?.Name}`,
+          CPhone: `${ZcheckerInfo?.Phone}`,
+          CPosition: `${ZcheckerInfo?.Position}`,
+          Area: `${ZareaInfo?.Area}`,
+          AreaType: `${ZareaInfo?.AreaType}`,
+          DContent: `${ZareaInfo?.DContent}`,
+          PointName: `${ZareaInfo?.PointName}`,
           Image: `${dbImgUrl}`,
-          RegistryDate: `${carinfodata?.RegistryDate}`,
+          RegistryDate: `${ZcarInfoData?.RegistryDate}`,
         })
         .then((res) => {
           console.log('res', res);
@@ -285,28 +285,28 @@ function App() {
     });
   };
   const printFunc = () => {
-    if (carinfo?.Number === '' || carinfo.Number === undefined) {
+    if (ZcarInfo?.Number === '' || ZcarInfo.Number === undefined) {
       message.error('차 번호를 입력해주세요');
       return;
     }
 
-    onPrintedCar();
-    //isprint로 false시에는 대기저장의 자동차 목록을 지우지않고 true시에만 지우게 했다.
+    onZprintedCar();
+    //ZisPrint로 false시에는 대기저장의 자동차 목록을 지우지않고 true시에만 지우게 했다.
     //대기저장을 클릭한다면 true 아니라면 false
     //이 것으로 대기저장에 목록ㅇ리 없을 시에 Number를 못읽어서 출력이 안되던 것도 사라짐
-    if (isprint === true) {
+    if (ZisPrint === true) {
       let arr = [];
       let arr2 = [];
-      arr = trashwaitingcar;
+      arr = ZtrashWaitingCar;
       arr.map((item, idx) =>
-        item !== waitingcurrentnumber ? arr2.push(item) : null
+        item !== ZwaitingCurrentNumber ? arr2.push(item) : null
       );
-      console.log(trashwaitingcar);
+      console.log(ZtrashWaitingCar);
 
-      changeTrashWaitingCar(arr2);
-      changeCarInfoData({ ...carinfodata, Number: arr2[0].Number });
-      changeWaitingCar(arr2);
-      changeWaitingCurrentNumber(arr2[0]);
+      ZsetTrashWaitingCar(arr2);
+      ZsetCarInfoData({ ...ZcarInfoData, Number: arr2[0].Number });
+      ZsetWaitingCar(arr2);
+      ZsetWaitingCurrentNumber(arr2[0]);
     }
     let printContents = componentRef.current.innerHTML;
     let windowObject = window.open(
@@ -322,7 +322,7 @@ function App() {
     setTimeout(() => {
       windowObject.print();
       windowObject.close();
-      waitingcar.shift();
+      ZwaitingCar.shift();
     }, 1500);
   };
   const componentRef = useRef(null);
@@ -392,7 +392,7 @@ function App() {
                 span={6}
                 title={'차량정보'}
               >
-                <CarinfoContainer></CarinfoContainer>
+                <CarinfoContainer />
               </Container>
               <WaitingContainer height={'45vh'} span={5} title={'대기저장'}>
                 <WaitingCar />

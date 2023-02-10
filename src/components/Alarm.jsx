@@ -6,6 +6,7 @@ import { withSuccess } from 'antd/es/modal/confirm';
 
 //mqtt 수신후 웹 우측 상단 알람창에 띄움
 const Alarm = () => {
+  //알림창 메세지 리스트 변수
   const [msgList, setMsgList] = useState([]);
   useEffect(() => {
     client?.on('message', (topic, message) => {
@@ -152,7 +153,7 @@ const Alarm = () => {
       }
     });
   }, [msgList]);
-  let listArr = msgList.map((item, idx) => (
+  let alarmList = msgList.map((item, idx) => (
     <li className='alarm_list_item' key={idx}>
       {item}
     </li>
@@ -160,7 +161,7 @@ const Alarm = () => {
 
   return (
     <div className='alarm_container'>
-      <ul className='alarm_list'>{listArr}</ul>
+      <ul className='alarm_list'>{alarmList}</ul>
     </div>
   );
 };

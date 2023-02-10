@@ -158,7 +158,7 @@ span {
   width: 80px;
   height: 40px;
 }
-.printedcar_list_item {
+.ZprintedCar_list_item {
   margin: 15px 0px;
   padding: 5px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
@@ -166,7 +166,7 @@ span {
   border-radius: 5px 5px 0px 0px;
   cursor: pointer;
 }
-.printedcar_list {
+.ZprintedCar_list {
   list-style: none;
   padding-left: 0px;
   cursor: pointer;
@@ -187,11 +187,11 @@ span {
   height: 40vh;
   width: 100%;
 }
-.waitingcar_container {
+.ZwaitingCar_container {
   overflow-y: auto;
   height: 40vh;
 }
-.printedcar_container {
+.ZprintedCar_container {
   overflow-y: auto;
   height: 30vh;
 }

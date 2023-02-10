@@ -8,33 +8,35 @@ import { useInfo, useListData } from '../store';
 function CarButtonContainer({ title, children }) {
   const { Header } = Layout;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [listData, setListData] = useState('');
-  const { listData, changeListData } = useListData();
-  const { changeCarModalInfo, carmodalinfo, carinfodata } = useInfo();
+  // const [ZlistData, setZlistData] = useState('');
+  const { ZlistData, ZsetListData } = useListData();
+  const { ZsetCarModalInfo, ZcarModalInfo, ZcarInfoData } = useInfo();
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:4000/carinfoitemsall?CarNo=${carinfodata.Number}`)
-  //     .then((response) => {
-  //       let data = response.data.map((_, i) => ({
-  //         Number: `${response.data[i].Number}`,
-  //         RegNumber: `${response.data[i].RegNumber}`,
-  //         SPoint: `${response.data[i].SPoint}`,
-  //         EPoint: `${response.data[i].EPoint}`,
-  //         GpsNumber: `${response.data[i].GpsNumber}`,
-  //         Purpose: `${response.data[i].Purpose}`,
-  //         Owner: `${response.data[i].Owner}`,
-  //         Address: `${response.data[i].Address}`,
-  //         Phone: `${response.data[i].Phone}`,
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:4000/ZcarInfoitemsall?CarNo=${ZcarInfoData.Number}`
+      )
+      .then((response) => {
+        let data = response.data.map((_, i) => ({
+          Number: `${response.data[i].Number}`,
+          RegNumber: `${response.data[i].RegNumber}`,
+          SPoint: `${response.data[i].SPoint}`,
+          EPoint: `${response.data[i].EPoint}`,
+          GpsNumber: `${response.data[i].GpsNumber}`,
+          Purpose: `${response.data[i].Purpose}`,
+          Owner: `${response.data[i].Owner}`,
+          Address: `${response.data[i].Address}`,
+          Phone: `${response.data[i].Phone}`,
 
-  //         Selected: false,
-  //         idx: i,
-  //       }));
-  //       changeListData(data);
-  //     });
-  // }, [carinfodata.Number]);
+          Selected: false,
+          idx: i,
+        }));
+        ZsetListData(data);
+      });
+  }, [ZcarInfoData.Number]);
   const onClickHandler = (e) => {
-    let allData = listData;
+    let allData = ZlistData;
     let newData = allData.map((item, idx) => {
       item.Selected = false;
       if (idx === Number(e.currentTarget.dataset.idx)) {
@@ -42,21 +44,21 @@ function CarButtonContainer({ title, children }) {
       }
       return item;
     });
-    changeListData(newData);
+    ZsetListData(newData);
   };
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = (e) => {
     setIsModalOpen(false);
-    // listData.map((item) => {
+    // ZlistData.map((item) => {
     //   if (item.Selected === true) {
-    //     changeCarModalInfo(item);
+    //     ZsetCarModalInfo(item);
     //   }
     // });
-    const filteredData = listData.filter((item) => item.Selected === true);
-    changeCarModalInfo(filteredData[0]);
-    console.log('carmodalinfo', carmodalinfo);
+    const filteredData = ZlistData.filter((item) => item.Selected === true);
+    ZsetCarModalInfo(filteredData[0]);
+    console.log('ZcarModalInfo', ZcarModalInfo);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -79,7 +81,7 @@ function CarButtonContainer({ title, children }) {
           style={{ height: '400px', overflow: 'auto' }}
           className='list'
           itemLayout='horizontal'
-          dataSource={listData}
+          dataSource={ZlistData}
           renderItem={(item) => (
             <List.Item
               onClick={onClickHandler}

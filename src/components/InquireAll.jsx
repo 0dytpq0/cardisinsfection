@@ -8,9 +8,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 //왼쪽 상단 조회버튼
 const InquireAll = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [carInfoItems, setCarInfoItems] = useState([]);
+  const [ZcarInfoItems, setZcarInfoItems] = useState([]);
   const dateFormat = 'YYYY/MM/DD';
 
   const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
@@ -76,18 +74,13 @@ const InquireAll = () => {
 
   const { RangePicker } = DatePicker;
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
   //엑셀로 변환
   const excelButton = () => {
     const excel = new Excel();
     excel
       .addSheet(startDate + '-' + endDate)
       .addColumns(columns)
-      .addDataSource(carInfoItems, {
+      .addDataSource(ZcarInfoItems, {
         str2Percent: true,
       })
       .saveAs(startDate + '-' + endDate + '-소독데이터.xlsx');
@@ -100,7 +93,7 @@ const InquireAll = () => {
     console.log('startDate', startDate);
     console.log('endDate', endDate);
     let sql =
-      'http://localhost:4000/carinfoitemsDate?SDate=' +
+      'http://localhost:4000/ZcarInfoitemsDate?SDate=' +
       startDate +
       '&EDate=' +
       endDate +
@@ -111,7 +104,7 @@ const InquireAll = () => {
         item = { ...item, key: i };
       });
       console.log('arr', arr);
-      setCarInfoItems(arr);
+      setZcarInfoItems(arr);
     });
   };
 
@@ -120,22 +113,19 @@ const InquireAll = () => {
   }, [startDate, endDate]);
 
   //날짜 수정 핸들러
-  const onHandleCalender = (e) => {
-    console.log('e', e);
+  const onChangeCalender = (e) => {
     if (e !== null) {
       if (e[0] !== null) {
         let Sday = e[0].$D.toString().padStart(2, '0');
         let Syear = e[0].$y;
         let Smonth = (e[0].$M + 1).toString().padStart(2, '0');
         setStartDate(`${Syear}-${Smonth}-${Sday}`);
-        console.log('startDate', startDate);
       }
       if (e[1] !== null) {
         let Eday = e[1].$D.toString().padStart(2, '0');
         let Eyear = e[1].$y;
         let Emonth = (e[1].$M + 1).toString().padStart(2, '0');
         setEndDate(`${Eyear}-${Emonth}-${Eday}`);
-        console.log('EndDate', endDate);
       }
     }
   };
@@ -153,9 +143,9 @@ const InquireAll = () => {
           }}
         ></span>
       </div>
-      <Table scroll={{ y: 400 }} columns={columns} dataSource={carInfoItems} />
+      <Table scroll={{ y: 400 }} columns={columns} dataSource={ZcarInfoItems} />
       <RangePicker
-        onChange={onHandleCalender}
+        onChange={onChangeCalender}
         defaultValue={[
           dayjs('2021-02-01', dateFormat),
           dayjs('2022-12-06', dateFormat),

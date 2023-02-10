@@ -13,28 +13,29 @@ import moment from 'moment';
 import { client } from '../App';
 //메인화면 차량정보 표시
 export default function CarinfoContainer() {
-  const { changeTrashWaitingCar, trashwaitingcar } = useWaitingCar();
-  const { listData, changeListData } = useListData();
+  const { ZsetTrashWaitingCar, ZtrashWaitingCar } = useWaitingCar();
+  const { ZlistData, ZsetListData } = useListData();
   const {
-    changeWaitingCurrentNumber,
-    changeCarInfoData,
-    carinfodata,
-    deletewaitingcar,
-    changeCarInfo,
-    waitingcar,
-    changeWaitingCar,
-    carinfo,
-    carmodalinfo,
-    areainfo,
-    checkermodalinfo,
-    changeCheckerInfo,
-    actormodalinfo,
-    changeActorInfo,
-    changeCarModalInfo,
-    waitingcurrentnumber,
+    ZsetWaitingCurrentNumber,
+    ZsetCarInfoData,
+    ZcarInfoData,
+    ZdeleteWaitingCar,
+    ZsetCarInfo,
+    ZwaitingCar,
+    ZsetWaitingCar,
+    ZcarInfo,
+    ZcarModalInfo,
+    ZareaInfo,
+    ZcheckerModalInfo,
+    ZsetCheckerInfo,
+    ZactorModalInfo,
+    ZsetActorInfo,
+    ZsetCarModalInfo,
+    ZwaitingCurrentNumber,
   } = useInfo((state) => state);
   const [isModalOpenCar, setIsModalOpenCar] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  //
+  const [isModalOpenArea, setIsModalOpenArea] = useState(false);
   const [isModalOpenChecker, setIsModalOpenChecker] = useState(false);
   const [isModalOpenActor, setIsModalOpenActor] = useState(false);
 
@@ -42,19 +43,18 @@ export default function CarinfoContainer() {
     //대기저장차량 첫번째에 따라 차량정보 가져오는 곳
     let Number = '';
     let sql = '';
-    Number = waitingcurrentnumber;
+    Number = ZwaitingCurrentNumber;
     if (Number !== '') {
-      sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;
+      sql = `http://localhost:4000/ZcarInfoitemsallDate?Number=${Number}`;
     }
     axios.get(sql).then((res, error) => {
       if (error) {
         console.log('error :>> ', error);
       }
-      console.log('res.data :>> ', res.data);
       let data = res?.data[0];
       //undefined가 안뜨게 미인식일 시에 값 넣어주는 곳
       if (Number === '미인식') {
-        changeCarInfoData({
+        ZsetCarInfoData({
           PrintIndex: '',
           Number: '',
           Address: '',
@@ -67,7 +67,7 @@ export default function CarinfoContainer() {
           EPoint: '',
         });
 
-        changeCarInfo({
+        ZsetCarInfo({
           PrintIndex: '',
           Number: '',
           Address: '',
@@ -80,7 +80,7 @@ export default function CarinfoContainer() {
           EPoint: '',
         });
       } else {
-        changeCarInfoData({
+        ZsetCarInfoData({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: `${data?.Number}`,
           Address: `${data?.Address}` ?? '',
@@ -93,7 +93,7 @@ export default function CarinfoContainer() {
           EPoint: `${data?.EPoint}`,
         });
 
-        changeCarInfo({
+        ZsetCarInfo({
           PrintIndex: moment().format('YYYYMMDDHHmmss'),
           Number: `${data?.Number}`,
           Address: `${data?.Address}`,
@@ -107,70 +107,72 @@ export default function CarinfoContainer() {
         });
       }
     });
-  }, [waitingcurrentnumber]);
+  }, [ZwaitingCurrentNumber]);
   //차량정보 인풋창 수정
   const onChangeCarNum = (e) => {
-    changeCarInfo({ ...carmodalinfo, Number: e.target.value });
-    changeCarModalInfo({ ...carmodalinfo, Number: e.target.value });
-    changeCarInfoData({ ...carinfodata, Number: e.target.value });
+    ZsetCarInfo({ ...ZcarModalInfo, Number: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, Number: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Number: e.target.value });
   };
   const onChangePurpose = (e) => {
-    changeCarInfo({ ...carmodalinfo, Purpose: e.target.value });
-    changeCarModalInfo({ ...carmodalinfo, Purpose: e.target.value });
-    changeCarInfoData({ ...carinfodata, Purpose: e.target.value });
+    ZsetCarInfo({ ...ZcarModalInfo, Purpose: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, Purpose: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
-    changeCarInfo({ ...carmodalinfo, RegNumber: e.target.value });
-    changeCarModalInfo({ ...carmodalinfo, RegNumber: e.target.value });
-    changeCarInfoData({ ...carinfodata, RegNumber: e.target.value });
+    ZsetCarInfo({ ...ZcarModalInfo, RegNumber: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, RegNumber: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, RegNumber: e.target.value });
   };
   const onChangeGpsnum = (e) => {
-    changeCarInfo({ ...carmodalinfo, GpsNumber: e.target.value });
-    changeCarModalInfo({ ...carmodalinfo, GpsNumber: e.target.value });
-    changeCarInfoData({ ...carinfodata, GpsNumber: e.target.value });
+    ZsetCarInfo({ ...ZcarModalInfo, GpsNumber: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, GpsNumber: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, GpsNumber: e.target.value });
   };
   const onChangeOwner = (e) => {
-    changeCarInfo({ ...carmodalinfo, Owner: e.target.value });
-    changeCarModalInfo({ ...carmodalinfo, Owner: e.target.value });
-    changeCarInfoData({ ...carinfodata, Owner: e.target.value });
+    ZsetCarInfo({ ...ZcarModalInfo, Owner: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, Owner: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Owner: e.target.value });
   };
   const onChangeAddr = (e) => {
-    changeCarInfo({
-      ...carmodalinfo,
+    ZsetCarInfo({
+      ...ZcarModalInfo,
       Address: e.target.value,
     });
-    changeCarModalInfo({ ...carmodalinfo, Address: e.target.value });
-    changeCarInfoData({ ...carinfodata, Address: e.target.value });
+    ZsetCarModalInfo({ ...ZcarModalInfo, Address: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Address: e.target.value });
   };
   const onChangePhone = (e) => {
-    changeCarInfo({ ...carmodalinfo, Phone: e.target.value });
-    changeCarModalInfo({
-      ...carmodalinfo,
+    ZsetCarInfo({ ...ZcarModalInfo, Phone: e.target.value });
+    ZsetCarModalInfo({
+      ...ZcarModalInfo,
       Phone: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, Phone: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Phone: e.target.value });
   };
   const onChangeFrom = (e) => {
-    changeCarInfo({ ...carmodalinfo, SPoint: e.target.value });
-    changeCarModalInfo({
-      ...carmodalinfo,
+    ZsetCarInfo({ ...ZcarModalInfo, SPoint: e.target.value });
+    ZsetCarModalInfo({
+      ...ZcarModalInfo,
       SPoint: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, SPoint: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, SPoint: e.target.value });
   };
   const onChangeTo = (e) => {
-    changeCarInfo({ ...carmodalinfo, EPoint: e.target.value });
-    changeCarModalInfo({
-      ...carmodalinfo,
+    ZsetCarInfo({ ...ZcarModalInfo, EPoint: e.target.value });
+    ZsetCarModalInfo({
+      ...ZcarModalInfo,
       EPoint: e.target.value,
     });
-    changeCarInfoData({ ...carinfodata, EPoint: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, EPoint: e.target.value });
   };
   //차량 정보 내의 조회버튼 클릭시 차량 번호와 유사한 것들을 modal창에 표시
-  const carShowModal = () => {
+  const ShowModalCar = () => {
     setIsModalOpenCar(true);
     axios
-      .get(`http://localhost:4000/carinfoitemsall?CarNo=${carinfodata.Number}`)
+      .get(
+        `http://localhost:4000/ZcarInfoitemsall?CarNo=${ZcarInfoData.Number}`
+      )
       .then((response) => {
         let data = response.data.map((_, i) => ({
           Number: `${response.data[i].Number}`,
@@ -186,32 +188,32 @@ export default function CarinfoContainer() {
           Selected: false,
           idx: i,
         }));
-        changeListData(data);
+        ZsetListData(data);
       });
   };
   //선택한 데이터 입력
-  const carHandleOk = () => {
+  const HandleOkCar = () => {
     setIsModalOpenCar(false);
-    // changeCarInfo(carmodalinfo);
-    // changeCarInfoData(carmodalinfo);
-    const filteredData = listData.filter((item) => item.Selected === true);
+    // ZsetCarInfo(ZcarModalInfo);
+    // ZsetCarInfoData(ZcarModalInfo);
+    const filteredData = ZlistData.filter((item) => item.Selected === true);
     console.log('filtereedData :>> ', filteredData);
-    changeCarInfo(filteredData[0]);
-    changeCarInfoData(filteredData[0]);
+    ZsetCarInfo(filteredData[0]);
+    ZsetCarInfoData(filteredData[0]);
   };
 
-  const carHandleCancel = () => {
+  const HandleCancelCar = () => {
     setIsModalOpenCar(false);
   };
 
   const showModal = () => {
-    setIsModalOpen(true);
+    setIsModalOpenArea(true);
   };
 
   //지역정보 ok클릭시 setting값 저장
   const handleOk = () => {
-    setIsModalOpen(false);
-    let areaValue = JSON.stringify(areainfo);
+    setIsModalOpenArea(false);
+    let areaValue = JSON.stringify(ZareaInfo);
     areaValue = areaValue.replaceAll('"', '`');
 
     // axios.put('http://localhost:4000/operator')
@@ -237,7 +239,7 @@ export default function CarinfoContainer() {
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsModalOpenArea(false);
   };
 
   const showModalchecker = () => {
@@ -247,9 +249,9 @@ export default function CarinfoContainer() {
   //확인자정보 ok클릭시 setting값 저장
   const handleOkchecker = async () => {
     setIsModalOpenChecker(false);
-    changeCheckerInfo(checkermodalinfo);
-    console.log('checkermodalinfo :>> ', checkermodalinfo);
-    let checkerValue = JSON.stringify(checkermodalinfo);
+    ZsetCheckerInfo(ZcheckerModalInfo);
+    console.log('ZcheckerModalInfo :>> ', ZcheckerModalInfo);
+    let checkerValue = JSON.stringify(ZcheckerModalInfo);
     checkerValue = checkerValue.replaceAll('"', '`');
     console.log('checkerValue :>> ', checkerValue);
     let rt1 = false;
@@ -316,8 +318,8 @@ export default function CarinfoContainer() {
   //실시자정보 ok클릭시 setting값 저장
   const handleOkActor = async () => {
     setIsModalOpenActor(false);
-    changeActorInfo(actormodalinfo);
-    let actorValue = JSON.stringify(actormodalinfo);
+    ZsetActorInfo(ZactorModalInfo);
+    let actorValue = JSON.stringify(ZactorModalInfo);
     actorValue = actorValue.replaceAll('"', '`');
     let rt1 = false;
     let rt2 = false;
@@ -377,20 +379,12 @@ export default function CarinfoContainer() {
   };
 
   //대기저장에 클릭한 것 삭제하는 버튼
-  const onDeleteButton = () => {
-    let arr = [];
-    let arr2 = [];
-    arr = trashwaitingcar;
-    arr.map((item, idx) =>
-      item !== deletewaitingcar ? arr2.push(item) : null
-    );
-    changeTrashWaitingCar(arr2);
-    changeCarInfoData({ ...carinfodata, Number: trashwaitingcar[0].Number });
-    changeWaitingCar(trashwaitingcar);
-    changeWaitingCurrentNumber(arr2[0]);
+  const onClickDeleteButton = () => {
+    ZsetCarInfoData({ ...ZcarInfoData, Number: '' });
   };
   //mqtt 송신 버튼
-  const onNButton = () => {
+  const onClickNButton = () => {
+    ZsetCarInfoData({});
     const dateTime = moment().format('YY/MM/DD-HH:mm:ss');
     client.publish(
       'CarCleanDevice',
@@ -408,22 +402,28 @@ export default function CarinfoContainer() {
             className='input input_carnum'
             placeholder='차량 번호'
             value={
-              carinfodata?.Number === 'undefined' ? '' : carinfodata?.Number
+              ZcarInfoData?.Number === 'undefined' ? '' : ZcarInfoData?.Number
             }
             onChange={onChangeCarNum}
           />
         </label>
-        <Button onClick={carShowModal}>조회</Button>
+        <Button size='small' onClick={ShowModalCar}>
+          조회
+        </Button>
         <Modal
           open={isModalOpenCar}
-          onOk={carHandleOk}
-          onCancel={carHandleCancel}
+          onOk={HandleOkCar}
+          onCancel={HandleCancelCar}
         >
           <CarButtonContainer title={'출입자 정보'}></CarButtonContainer>
         </Modal>
 
-        <Button onClick={onDeleteButton}>삭제</Button>
-        <Button onClick={onNButton}>N</Button>
+        <Button size='small' onClick={onClickDeleteButton}>
+          번호삭제
+        </Button>
+        <Button size='small' onClick={onClickNButton}>
+          N
+        </Button>
       </div>
       <label>
         차량 목적
@@ -431,7 +431,7 @@ export default function CarinfoContainer() {
           className='input input_purpose'
           placeholder='차량 목적'
           value={
-            carinfodata?.Purpose === 'undefined' ? '' : carinfodata?.Purpose
+            ZcarInfoData?.Purpose === 'undefined' ? '' : ZcarInfoData?.Purpose
           }
           onChange={onChangePurpose}
         />
@@ -442,7 +442,9 @@ export default function CarinfoContainer() {
           className='input input_regnum'
           placeholder='등록 번호'
           value={
-            carinfodata?.RegNumber === 'undefined' ? '' : carinfodata?.RegNumber
+            ZcarInfoData?.RegNumber === 'undefined'
+              ? ''
+              : ZcarInfoData?.RegNumber
           }
           onChange={onChangeRegNum}
         />
@@ -453,7 +455,9 @@ export default function CarinfoContainer() {
           className='input input_gpsnum'
           placeholder='GPS 번호'
           value={
-            carinfodata?.GpsNumber === 'undefined' ? '' : carinfodata?.GpsNumber
+            ZcarInfoData?.GpsNumber === 'undefined'
+              ? ''
+              : ZcarInfoData?.GpsNumber
           }
           onChange={onChangeGpsnum}
         />
@@ -463,7 +467,7 @@ export default function CarinfoContainer() {
         <Input
           className='input input_owner'
           placeholder='차주 성명'
-          value={carinfodata?.Owner === 'undefined' ? '' : carinfodata?.Owner}
+          value={ZcarInfoData?.Owner === 'undefined' ? '' : ZcarInfoData?.Owner}
           onChange={onChangeOwner}
         />
       </label>
@@ -473,7 +477,7 @@ export default function CarinfoContainer() {
           className='input input_address'
           placeholder='주소'
           value={
-            carinfodata?.Address === 'undefined' ? '' : carinfodata?.Address
+            ZcarInfoData?.Address === 'undefined' ? '' : ZcarInfoData?.Address
           }
           onChange={onChangeAddr}
         />
@@ -483,7 +487,7 @@ export default function CarinfoContainer() {
         <Input
           className='input input_phone'
           placeholder='연락처'
-          value={carinfodata?.Phone === 'undefined' ? '' : carinfodata?.Phone}
+          value={ZcarInfoData?.Phone === 'undefined' ? '' : ZcarInfoData?.Phone}
           onChange={onChangePhone}
         />
       </label>
@@ -495,9 +499,9 @@ export default function CarinfoContainer() {
             <Input
               className='input input_spoint'
               value={
-                carinfodata?.SPoint === 'undefined'
+                ZcarInfoData?.SPoint === 'undefined'
                   ? '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0'
-                  : carinfodata?.SPoint
+                  : ZcarInfoData?.SPoint
               }
               placeholder='출발지'
               onChange={onChangeFrom}
@@ -512,7 +516,7 @@ export default function CarinfoContainer() {
               className='input input_epoint'
               placeholder='목적지'
               value={
-                carinfodata?.EPoint === 'undefined' ? '' : carinfodata?.EPoint
+                ZcarInfoData?.EPoint === 'undefined' ? '' : ZcarInfoData?.EPoint
               }
               onChange={onChangeTo}
             />
@@ -524,7 +528,7 @@ export default function CarinfoContainer() {
           <Button onClick={showModal}>지역 정보</Button>
           <Modal
             title=''
-            open={isModalOpen}
+            open={isModalOpenArea}
             onOk={handleOk}
             onCancel={handleCancel}
           >
