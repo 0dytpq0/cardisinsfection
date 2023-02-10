@@ -5,6 +5,7 @@ import { Button, Col, Row, Layout, Switch, Drawer } from 'antd';
 import { client } from '../App';
 const AutoSwitch = ({ title, children, span }) => {
   const { Header } = Layout;
+  //mqtt송신 관련 변수
   const [open, setOpen] = useState(false);
   const [isClickedBreaker, setIsClickedBreaker] = useState(false);
   const [isClickedCleanWater, setIsClickedCleanWater] = useState(false);
