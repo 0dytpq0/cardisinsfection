@@ -49,6 +49,7 @@ function ActorButtonContainer({ title, children }) {
     //   }
     // });
     const filteredData = listData.filter((item) => item.Selected === true);
+    console.log(filteredData);
     ZsetActorModalInfo(filteredData[0]);
     console.log(ZactorModalInfo);
   };

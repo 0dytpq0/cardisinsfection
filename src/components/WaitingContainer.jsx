@@ -37,12 +37,18 @@ function WaitingContainer({ title, children, span }) {
       <Col span={span} style={{ height: '50vh' }}>
         <Header className='header'>
           {title}
-          <Button size='small' onClick={onClickDeleteButton}>
-            삭제
-          </Button>
-          <Button size='small' onClick={onClickClear}>
-            Clear
-          </Button>
+          <div>
+            <Button
+              style={{ marginRight: '5px' }}
+              size='small'
+              onClick={onClickDeleteButton}
+            >
+              삭제
+            </Button>
+            <Button size='small' onClick={onClickClear}>
+              Clear
+            </Button>
+          </div>
         </Header>
 
         <Col>{children}</Col>

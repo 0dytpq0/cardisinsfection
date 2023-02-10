@@ -109,26 +109,43 @@ export default function Printinfo({ printRef }) {
               </Col>
             </Row>
             <Row>
-              <Col className='font'>소독내용 : {ZareaInfo.DContent}</Col>
+              <Col className='font'>
+                소독내용 :{' '}
+                {ZareaInfo.DContent === 'undefined' ? '' : ZareaInfo.DContent}
+              </Col>
             </Row>
           </div>
           <Divider style={{ border: '1px solid rgba(0,0,0,0.8)' }} />
           <span>소득 실시자</span>
           <div className='innerinfo'>
             <Row>
-              <Col className='font'>소독 지역 : {ZareaInfo.Area}</Col>
+              <Col className='font'>
+                소독 지역 :{' '}
+                {ZareaInfo.Area === 'undefined' ? '' : ZareaInfo.Area}
+              </Col>
             </Row>
             <Row>
-              <Col className='font'>소독 장소명 : {ZareaInfo.PointName}</Col>
+              <Col className='font'>
+                소독 장소명 :{' '}
+                {ZareaInfo.PointName === 'undefined' ? '' : ZareaInfo.PointName}
+              </Col>
             </Row>
             <Row>
-              <Col className='font'>소속 : {ZactorInfo.Attached}</Col>
+              <Col className='font'>
+                소속 :{' '}
+                {ZactorInfo.Attached === 'undefined' ? '' : ZactorInfo.Attached}
+              </Col>
             </Row>
             <Row>
-              <Col className='font'>직급 : {ZactorInfo.Position}</Col>
+              <Col className='font'>
+                직급 :{' '}
+                {ZactorInfo.Position === 'undefined' ? '' : ZactorInfo.Position}
+              </Col>
             </Row>
             <Row>
-              <Col className='font'>성명 : {ZactorInfo.Name}</Col>
+              <Col className='font'>
+                성명 : {ZactorInfo.Name === 'undefined' ? '' : ZactorInfo.Name}
+              </Col>
             </Row>
           </div>
           <Divider style={{ border: '1px solid rgba(0,0,0,0.8)' }} />
@@ -139,9 +156,22 @@ export default function Printinfo({ printRef }) {
           <div className='checkman'>
             소독 실시 확인자
             <Row className='checkman__font'>
-              <Col className='font'>소속 - {ZcheckerInfo.Attached}</Col>
-              <Col className='font'>직급 - {ZcheckerInfo.Position}</Col>
-              <Col className='font auth_name'>성명 - {ZcheckerInfo.Name}</Col>
+              <Col className='font'>
+                소속 -{' '}
+                {ZcheckerInfo.Attached === 'undefined'
+                  ? ''
+                  : ZcheckerInfo.Attached}
+              </Col>
+              <Col className='font'>
+                직급 -{' '}
+                {ZcheckerInfo.Position === 'undefined'
+                  ? ''
+                  : ZcheckerInfo.Position}
+              </Col>
+              <Col className='font auth_name'>
+                성명 -{' '}
+                {ZcheckerInfo.Name === 'undefined' ? '' : ZcheckerInfo.Name}
+              </Col>
               <img
                 className='auth_img'
                 src='http://127.0.0.1:4000/images/auth.png'

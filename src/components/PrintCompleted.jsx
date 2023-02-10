@@ -46,22 +46,23 @@ const PrintCompleted = ({ printed }) => {
         RegistryDate: `${data?.RegistryDate}`,
       });
       ZsetActorInfo({
-        Attached: `${data?.CAttached}`,
-        Name: `${data?.CName}`,
-        Phone: `${data?.CPhone}`,
-        Position: `${data?.CPosition}`,
-        Type: `${data?.Type}`,
-      });
-      ZsetCheckerInfo({
         Attached: `${data?.EAttached}`,
         Name: `${data?.EName}`,
         Phone: `${data?.EPhone}`,
         Position: `${data?.EPosition}`,
         Type: `${data?.Type}`,
       });
+      ZsetCheckerInfo({
+        Attached: `${data?.CAttached}`,
+        Name: `${data?.CName}`,
+        Phone: `${data?.CPhone}`,
+        Position: `${data?.CPosition}`,
+        Type: `${data?.Type}`,
+      });
       ZsetAreaInfo({
         Area: `${data?.Area}`,
         AreaType: `${data?.AreaType}`,
+        PointName: `${data?.PointName}`,
         DContent: `${data?.DContent}`,
       });
       ZsetCarInfoData({

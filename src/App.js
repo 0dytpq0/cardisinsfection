@@ -13,7 +13,7 @@ import Water2 from './image/Water2.gif';
 import Move3 from './image/Move3.gif';
 import Disinfect4 from './image/Disinfect4.gif';
 import Out5 from './image/Out5.gif';
-import PrintInfo from './components/printinfo';
+import PrintInfo from './components/PrintInfo';
 import AutoSwitch from './components/AutoSwitch';
 import * as mqtt from 'mqtt/dist/mqtt.min';
 import WaitingCar from './components/WaitingCar';
@@ -94,10 +94,13 @@ function App() {
   //client가 없으면 재시도, 있으면 커넥트
   useEffect(() => {
     if (!client) {
+      console.log('mqtt 연결 실패');
       mqttConnect('ws://' + window.location.hostname + ':9001', options);
     }
     if (client) {
+      console.log('client null 아님');
       client?.on('connect', () => {
+        console.log('mqtt연결성공');
         setConnectStatus('Connected');
       });
       client?.subscribe('#', 0, (error) => {
@@ -111,18 +114,22 @@ function App() {
         client?.end();
       });
       client?.on('reconnect', () => {
+        console.log('reconnect');
         setConnectStatus('Reconnecting');
       });
       client?.on('message', (topic, message) => {
         const payload = { topic, message: message.toString() };
+        console.log('message받았습니다.');
         //카메라에서 차량이 인식인지 미인식인지에 대한 오디오 출력 밑 이미지 변환
         if (topic.includes('CCTV')) {
+          console.log('CCTV topic 있습니다.');
           message = message?.toString()?.replaceAll('\\', '/');
 
           let msg = JSON.parse(message?.toString());
-
+          console.log('받은 메세지', msg);
           if (msg?.CARNUMBER === '미인식') {
             try {
+              console.log('차 번호 미인식 받은 메세지', msg);
               const audio = new Audio(notrecogsound);
               audio.play();
             } catch (error) {
@@ -130,6 +137,7 @@ function App() {
             }
           } else if (msg?.CMD !== 'CCTVISOK') {
             try {
+              console.log('cmd cctvisok 받은 메세지', msg);
               const audio = new Audio(arrivesound);
               audio.play();
             } catch (error) {
@@ -141,7 +149,6 @@ function App() {
             imageToBase64(`${imgurl}`) // Image URL
               .then((response) => {
                 setDbImgUrl(response);
-                // console.log(response); // "iVBORw0KGgoAAAANSwCAIA..."
               })
               .catch((error) => {
                 console.log(error); // Logs an error if there was one
@@ -151,28 +158,37 @@ function App() {
         }
         //상태정보창의 gif를 CMD에 따라서 변화시킨다.
         if (topic.includes('CarCleanDeviceRequest')) {
+          console.log('topic CarCleanDeviceRequest 받았어요');
           const msg = message.toString();
-          console.log('msg', msg);
           const jsonMsg = JSON.parse(msg);
           if (jsonMsg?.CMD === 'BREAKER') {
+            console.log('cmd breaker 받았어요');
             gifImg = Breaker1;
           }
           if (jsonMsg?.CMD === 'REMOVE_WATER') {
+            console.log('cmd REMOVE_WATER 받았어요');
             gifImg = Water2;
           }
           if (jsonMsg?.CMD === 'CLEAN_DRIVER') {
+            console.log('cmd CLEAN_DRIVER 받았어요');
             gifImg = Move3;
           }
           if (jsonMsg?.CMD === 'AIR_DEODORIZATION') {
+            console.log('cmd AIR_DEODORIZATION 받았어요');
             gifImg = Disinfect4;
           }
           if (jsonMsg?.CMD === 'OUT_GATE') {
+            console.log('cmd OUT_GATE 받았어요');
             gifImg = Out5;
           }
         }
         setPayload(payload);
       });
-      client?.on('disconnect', () => client.end());
+      client?.on(
+        'disconnect',
+        () => client.end(),
+        console.log('연결 끊겼어요')
+      );
     }
   }, []);
 
@@ -187,7 +203,7 @@ function App() {
   };
 
   //출력 함수
-  const onZprintedCar = () => {
+  const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
     //ZprintedCar에 초기값을 넣어줘서 arr.unshift 에러가 안나게하였다.
     ZsetPrintedCar(ZwaitingCar[0]);
@@ -201,7 +217,7 @@ function App() {
     let rt1 = false;
     ZsetPrintedCar(arr);
     axios
-      .post('http://localhost:4000/ZcarInfoitems', {
+      .post('http://localhost:4000/carInfoitems', {
         PrintIndex: crTime,
         Number: `${
           ZcarInfoData?.Number === undefined ? '' : ZcarInfoData?.Number
@@ -235,7 +251,6 @@ function App() {
           Modal.success({
             content: `저장 성공!`,
           });
-          console.log(ZcarInfoData);
         } else {
           rt1 = false;
           Modal.error({
@@ -248,7 +263,6 @@ function App() {
       let data = res.data[0].Value;
       data = data.replaceAll('`', '"');
       let parsedValue = JSON.parse(data);
-      // console.log('dataparsed :>> ', parsedValue.WEPURL);
 
       // let URL = parsedValue.WEPURL.replace('/disinfect.post.php', '');
 
@@ -279,9 +293,7 @@ function App() {
           Image: `${dbImgUrl}`,
           RegistryDate: `${ZcarInfoData?.RegistryDate}`,
         })
-        .then((res) => {
-          console.log('res', res);
-        });
+        .then((res) => {});
     });
   };
   const printFunc = () => {
@@ -290,7 +302,7 @@ function App() {
       return;
     }
 
-    onZprintedCar();
+    onPrintedCar();
     //ZisPrint로 false시에는 대기저장의 자동차 목록을 지우지않고 true시에만 지우게 했다.
     //대기저장을 클릭한다면 true 아니라면 false
     //이 것으로 대기저장에 목록ㅇ리 없을 시에 Number를 못읽어서 출력이 안되던 것도 사라짐
@@ -301,7 +313,6 @@ function App() {
       arr.map((item, idx) =>
         item !== ZwaitingCurrentNumber ? arr2.push(item) : null
       );
-      console.log(ZtrashWaitingCar);
 
       ZsetTrashWaitingCar(arr2);
       ZsetCarInfoData({ ...ZcarInfoData, Number: arr2[0].Number });
@@ -363,13 +374,11 @@ function App() {
             <Button onClick={printFunc}>출력</Button>
             {/* <ReactToPrint
               handleClick={() => {
-                console.log("first");
               }}
               trigger={() => {
                 return (
                   <Button
                     onClick={() => {
-                      console.log("first");
                     }}
                   >
                     출력
