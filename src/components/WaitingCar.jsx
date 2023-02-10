@@ -58,8 +58,8 @@ const WaitingCar = () => {
     let Number = '';
     let sql = '';
     //차번호 웹에 찍히는게 데이터베이스에 없음.
-    Number = '001143';
-    // Number = e.target.innerText;
+    // Number = '001143';
+    Number = e.target.innerText;
     console.log(Number);
     if (Number !== '') {
       sql = `http://localhost:4000/carinfoitemsallDate?Number=${Number}`;

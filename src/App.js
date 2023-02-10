@@ -39,13 +39,7 @@ function App() {
   const [isModalOpenPrint, setIsModalOpenPrint] = useState(false);
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
   const [dbImgUrl, setDbImgUrl] = useState('');
-  const [printedList, setPrintedList] = useState([]);
   const {
-    waitingcarimg,
-    changeCarInfo,
-    changeActorInfo,
-    changeCheckerInfo,
-    changeAreaInfo,
     changeWaitingCarImg,
     changePrintedCar,
     waitingcar,
@@ -55,16 +49,14 @@ function App() {
     actorinfo,
     checkerinfo,
     areainfo,
-    deletewaitingcar,
     changeWaitingCar,
     changeCarInfoData,
     carinfodata,
     changeWaitingCurrentNumber,
     isprint,
-    changeIsPrint,
   } = useInfo();
   const { trashwaitingcar, changeTrashWaitingCar } = useWaitingCar();
-  const [carimg, setCarImg] = useState('');
+  //mqtt 옵션
   const options = {
     keepalive: 3000,
     protocolId: 'MQTT',
@@ -80,7 +72,6 @@ function App() {
     },
     rejectUnauthorized: false,
   };
-  // let carImg = null;
   let imgurl = '';
   var str = 'TIME20221201113500';
   let bytes = []; // char codes
@@ -95,10 +86,12 @@ function App() {
   bytes.unshift(2);
   bytes.push(3);
 
+  //mqtt connect
   const mqttConnect = (host, options) => {
     setConnectStatus('Connecting');
     client = mqtt.connect(host, options);
   };
+  //client가 없으면 재시도, 있으면 커넥트
   useEffect(() => {
     if (!client) {
       mqttConnect('ws://' + window.location.hostname + ':9001', options);
@@ -122,6 +115,7 @@ function App() {
       });
       client?.on('message', (topic, message) => {
         const payload = { topic, message: message.toString() };
+        //카메라에서 차량이 인식인지 미인식인지에 대한 오디오 출력 밑 이미지 변환
         if (topic.includes('CCTV')) {
           message = message?.toString()?.replaceAll('\\', '/');
 
@@ -155,6 +149,7 @@ function App() {
             changeWaitingCarImg(imgurl);
           }
         }
+        //상태정보창의 gif를 CMD에 따라서 변화시킨다.
         if (topic.includes('CarCleanDeviceRequest')) {
           const msg = message.toString();
           console.log('msg', msg);
@@ -181,15 +176,6 @@ function App() {
     }
   }, []);
 
-  const showModalPrint = () => {
-    setIsModalOpenPrint(true);
-  };
-  const handleOkPrint = (e) => {
-    setIsModalOpenPrint(false);
-  };
-  const handleCancelPrint = () => {
-    setIsModalOpenPrint(false);
-  };
   const showModalFind = () => {
     setIsModalOpenFind(true);
   };
@@ -200,13 +186,15 @@ function App() {
     setIsModalOpenFind(false);
   };
 
+  //출력 함수
   const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
+    //printedcar에 초기값을 넣어줘서 arr.unshift 에러가 안나게하였다.
     changePrintedCar(waitingcar[0]);
     let arr = printedcar;
     arr.unshift({ Number: carinfodata?.Number, PrintIndex: crTime });
 
-    if (arr.length > 9) {
+    if (arr.length > 8) {
       arr.pop();
     }
 
@@ -303,7 +291,9 @@ function App() {
     }
 
     onPrintedCar();
-    console.log(isprint);
+    //isprint로 false시에는 대기저장의 자동차 목록을 지우지않고 true시에만 지우게 했다.
+    //대기저장을 클릭한다면 true 아니라면 false
+    //이 것으로 대기저장에 목록ㅇ리 없을 시에 Number를 못읽어서 출력이 안되던 것도 사라짐
     if (isprint === true) {
       let arr = [];
       let arr2 = [];

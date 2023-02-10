@@ -18,6 +18,7 @@ const PrintCompleted = ({ printed }) => {
   } = useInfo();
   //프린트 완료 차량 리스트 클릭시 정보 가져오는 코드
   const onListChange = (e) => {
+    //대기저장 삭제하는 isprint false로
     changeIsPrint(false);
     let PrintIndex = '';
     let sql = '';
@@ -76,9 +77,6 @@ const PrintCompleted = ({ printed }) => {
         EPoint: `${data?.EPoint}`,
       });
     });
-    // if ((printedcar.length = 9)) {
-    //   printedcar.unshift();
-    // }
   };
 
   //화면에 뿌려주는 변수
