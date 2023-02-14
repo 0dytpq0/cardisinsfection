@@ -27,16 +27,14 @@ import Alarm from './components/Alarm';
 import moment from 'moment';
 import imageToBase64 from 'image-to-base64/browser';
 
-import { useMqtt, useInfo, useWaitingCar } from './store';
+import { useMqtt, useInfo, useWaitingCar, useCheckNode } from './store';
 import { WindowsFilled } from '@ant-design/icons';
 export let client = null;
 
 function App() {
   // const {client,changeClient,connectstatus,changeConnectStatus,payload, }
   // const [client, setClient] = useState(null);
-  const [connectstatus, setConnectStatus] = useState('');
   const [payload, setPayload] = useState([]);
-  const [isModalOpenPrint, setIsModalOpenPrint] = useState(false);
   const [isModalOpenFind, setIsModalOpenFind] = useState(false);
   const [dbImgUrl, setDbImgUrl] = useState('');
   const {
@@ -55,6 +53,8 @@ function App() {
     ZsetWaitingCurrentNumber,
     ZisPrint,
   } = useInfo();
+  const { ZsetConnectStatus, ZconnectStatus } = useMqtt();
+  const { ZisNodeOk, ZsetIsNodeOk } = useCheckNode();
   const { ZtrashWaitingCar, ZsetTrashWaitingCar } = useWaitingCar();
   //mqtt 옵션
   const options = {
@@ -88,7 +88,7 @@ function App() {
 
   //mqtt connect
   const mqttConnect = (host, options) => {
-    setConnectStatus('Connecting');
+    ZsetConnectStatus('Connecting');
     client = mqtt.connect(host, options);
   };
   //client가 없으면 재시도, 있으면 커넥트
@@ -101,7 +101,7 @@ function App() {
       console.log('client null 아님');
       client?.on('connect', () => {
         console.log('mqtt연결성공');
-        setConnectStatus('Connected');
+        ZsetConnectStatus('Connected');
       });
       client?.subscribe('#', 0, (error) => {
         if (error) {
@@ -115,7 +115,7 @@ function App() {
       });
       client?.on('reconnect', () => {
         console.log('reconnect');
-        setConnectStatus('Reconnecting');
+        ZsetConnectStatus('Reconnecting');
       });
       client?.on('message', (topic, message) => {
         const payload = { topic, message: message.toString() };
@@ -190,6 +190,12 @@ function App() {
         console.log('연결 끊겼어요')
       );
     }
+    //node와 통신이 되는지 확인
+    axios.get('http://localhost:4000/Time').then((res) => {
+      if (res.data.Time !== undefined) {
+        ZsetIsNodeOk(true);
+      }
+    });
   }, []);
 
   const showModalFind = () => {

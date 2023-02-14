@@ -2,13 +2,42 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { client } from '../App';
 import moment from 'moment';
-import { withSuccess } from 'antd/es/modal/confirm';
+import { useMqtt, useCheckNode } from '../store';
 
 //mqtt 수신후 웹 우측 상단 알람창에 띄움
 const Alarm = () => {
   //알림창 메세지 리스트 변수
+  const { ZisNodeOk, ZsetIsNodeOk } = useCheckNode();
   const [msgList, setMsgList] = useState([]);
+  const { ZsetConnectStatus, ZconnectStatus } = useMqtt();
   useEffect(() => {
+    //mqtt 통신 연결 됬는지 확인
+    if (ZconnectStatus === 'Connecting') {
+      let arr = msgList;
+      arr.unshift(moment().format('HH:mm:ss') + ' MQTT 연결중');
+      setMsgList(arr);
+      console.log('mqtt 연결중');
+    } else if (ZconnectStatus === 'Connected') {
+      let arr = msgList;
+      arr.unshift(moment().format('HH:mm:ss') + ' MQTT 연결성공');
+      setMsgList(arr);
+      console.log('mqtt 연결성공');
+    } else if (ZconnectStatus === 'Reconnecting') {
+      let arr = msgList;
+      arr.unshift(moment().format('HH:mm:ss') + ' MQTT  연결 재시도중');
+      setMsgList(arr);
+      console.log('mqtt 연결 재시도중');
+    }
+    //node 연결 됬는지 확인
+    if (ZisNodeOk === true) {
+      let arr = msgList;
+      arr.unshift(moment().format('HH:mm:ss') + ' Node서버와의 연결 성공.');
+      setMsgList(arr);
+    } else {
+      let arr = msgList;
+      arr.unshift(moment().format('HH:mm:ss') + ' Node서버와의 연결 실패.');
+      setMsgList(arr);
+    }
     client?.on('message', (topic, message) => {
       if (topic.includes('CarCleanDeviceRequest')) {
         console.log('알림창 mqtt 수신');
@@ -152,7 +181,7 @@ const Alarm = () => {
         }
       }
     });
-  }, [msgList]);
+  }, [msgList, ZconnectStatus]);
   let alarmList = msgList.map((item, idx) => (
     <li className='alarm_list_item' key={idx}>
       {item}

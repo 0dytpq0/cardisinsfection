@@ -429,7 +429,10 @@ export default function CarinfoContainer() {
           onOk={HandleOkCar}
           onCancel={HandleCancelCar}
         >
-          <CarButtonContainer title={'출입자 정보'}></CarButtonContainer>
+          <CarButtonContainer
+            dbClick={HandleOkCar}
+            title={'출입자 정보'}
+          ></CarButtonContainer>
         </Modal>
 
         <Button size='small' onClick={onClickDeleteButton}>

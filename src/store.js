@@ -113,9 +113,22 @@ export const useMqtt = create(
       set((state) => ({
         ZcompCd: newData,
       })),
+    ZconnectStatus: 'Connecting',
+    ZsetConnectStatus: (newData) =>
+      set((state) => ({
+        ZconnectStatus: newData,
+      })),
   }))
 );
-
+export const useCheckNode = create(
+  persist((set) => ({
+    ZisNodeOk: false,
+    ZsetIsNodeOk: (newData) =>
+      set((state) => ({
+        ZisNodeOk: newData,
+      })),
+  }))
+);
 export const useWaitingCar = create((set) => ({
   ZtrashWaitingCar: [],
   ZsetTrashWaitingCar: (newData) =>
