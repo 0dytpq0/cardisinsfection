@@ -78,6 +78,7 @@ function ActorButtonContainer({ title, children }) {
               renderItem={(item) => (
                 <List.Item
                   onClick={onClickHandler}
+                  onDoubleClick={handleOk}
                   data-idx={item.idx}
                   id={item.idx}
                   className={item.Selected ? 'active' : null}
