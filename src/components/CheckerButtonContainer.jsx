@@ -77,6 +77,7 @@ function CheckerButtonContainer({ title, children }) {
               dataSource={ZlistData}
               renderItem={(item) => (
                 <List.Item
+                  onDoubleClick={handleOk}
                   onClick={onClickHandler}
                   data-idx={item.idx}
                   id={item.idx}

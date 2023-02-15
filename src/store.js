@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
+import moment from 'moment';
 
 export const useInfo = create(
   persist((set) => ({
@@ -72,6 +73,11 @@ export const useInfo = create(
     ZsetIsPrint: (newData) =>
       set((state) => ({
         ZisPrint: newData,
+      })),
+    ZprintIndex: moment().format('YYYYMMDDHHmmss'),
+    ZsetIsPrintIndex: (newData) =>
+      set((state) => ({
+        ZprintIndex: newData,
       })),
   }))
 );

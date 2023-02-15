@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Button, Input, Col, Row } from 'antd';
 import { ArrowRightOutlined, FilterFilled } from '@ant-design/icons';
 import { useInfo, useWaitingCar, useListData } from '../store';
+import AreaButtonHeader from './AreaButtonHeader';
 import ButtonContainer from './ButtonContainer';
 import ButtonContainerArea from './ButtonContainerArea';
 import CheckerButtonViewContainer from './CheckerButtonViewContainer';
@@ -30,8 +31,9 @@ export default function CarinfoContainer() {
     ZsetCheckerInfo,
     ZactorModalInfo,
     ZsetActorInfo,
-    ZsetCarModalInfo,
     ZwaitingCurrentNumber,
+    ZprintIndex,
+    ZsetIsPrintIndex,
   } = useInfo((state) => state);
   const [isModalOpenCar, setIsModalOpenCar] = useState(false);
   //
@@ -111,27 +113,27 @@ export default function CarinfoContainer() {
   //차량정보 인풋창 수정
   const onChangeCarNum = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, Number: e.target.value });
-    ZsetCarModalInfo({ ...ZcarModalInfo, Number: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, Number: e.target.value });
+  };
+  const onChangePrintIndex = (e) => {
+    ZsetCarInfo({ ...ZcarModalInfo, PrintIndex: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, PrintIndex: e.target.value });
+    ZsetIsPrintIndex(e.target.value);
   };
   const onChangePurpose = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, Purpose: e.target.value });
-    ZsetCarModalInfo({ ...ZcarModalInfo, Purpose: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, Purpose: e.target.value });
   };
   const onChangeRegNum = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, RegNumber: e.target.value });
-    ZsetCarModalInfo({ ...ZcarModalInfo, RegNumber: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, RegNumber: e.target.value });
   };
   const onChangeGpsnum = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, GpsNumber: e.target.value });
-    ZsetCarModalInfo({ ...ZcarModalInfo, GpsNumber: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, GpsNumber: e.target.value });
   };
   const onChangeOwner = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, Owner: e.target.value });
-    ZsetCarModalInfo({ ...ZcarModalInfo, Owner: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, Owner: e.target.value });
   };
   const onChangeAddr = (e) => {
@@ -139,31 +141,21 @@ export default function CarinfoContainer() {
       ...ZcarModalInfo,
       Address: e.target.value,
     });
-    ZsetCarModalInfo({ ...ZcarModalInfo, Address: e.target.value });
     ZsetCarInfoData({ ...ZcarInfoData, Address: e.target.value });
   };
   const onChangePhone = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, Phone: e.target.value });
-    ZsetCarModalInfo({
-      ...ZcarModalInfo,
-      Phone: e.target.value,
-    });
+
     ZsetCarInfoData({ ...ZcarInfoData, Phone: e.target.value });
   };
   const onChangeFrom = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, SPoint: e.target.value });
-    ZsetCarModalInfo({
-      ...ZcarModalInfo,
-      SPoint: e.target.value,
-    });
+
     ZsetCarInfoData({ ...ZcarInfoData, SPoint: e.target.value });
   };
   const onChangeTo = (e) => {
     ZsetCarInfo({ ...ZcarModalInfo, EPoint: e.target.value });
-    ZsetCarModalInfo({
-      ...ZcarModalInfo,
-      EPoint: e.target.value,
-    });
+
     ZsetCarInfoData({ ...ZcarInfoData, EPoint: e.target.value });
   };
   //차량 정보 내의 조회버튼 클릭시 차량 번호와 유사한 것들을 modal창에 표시
@@ -443,6 +435,15 @@ export default function CarinfoContainer() {
         </Button>
       </div>
       <label>
+        일련번호
+        <Input
+          className='input input_purpose'
+          placeholder='일련번호'
+          value={ZprintIndex}
+          onChange={onChangePrintIndex}
+        />
+      </label>
+      <label>
         차량 목적
         <Input
           className='input input_purpose'
@@ -549,9 +550,9 @@ export default function CarinfoContainer() {
             onOk={handleOk}
             onCancel={handleCancel}
           >
-            <ButtonContainer title={'지역정보'}>
+            <AreaButtonHeader title={'지역정보'}>
               <ButtonContainerArea />
-            </ButtonContainer>
+            </AreaButtonHeader>
           </Modal>
         </Col>
         <Col>
@@ -573,7 +574,7 @@ export default function CarinfoContainer() {
             onOk={handleOkActor}
             onCancel={handleCancelActor}
           >
-            <ActorButtonViewContainer />
+            <ActorButtonViewContainer dbClick={HandleOkCar} />
           </Modal>
         </Col>
       </Row>

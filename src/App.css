@@ -11,12 +11,13 @@
 }
 
 .input {
-  margin-top: 10px;
+  margin-top: 6px;
   border: none;
   border-bottom: 1px solid black;
   border-radius: 0px;
 }
 .input_carnum {
+  margin-top: 10px;
   width: 74%;
 }
 .input_regnum {
@@ -56,11 +57,15 @@
   flex-direction: column;
 }
 .font {
-  font-size: 10px;
+  font-size: 5px;
   font-weight: bold;
 }
 span {
   font-size: 12px;
+  font-weight: bold;
+}
+.printinfo_span {
+  font-size: 3px;
   font-weight: bold;
 }
 .checkman {
@@ -145,12 +150,15 @@ span {
 }
 @media print {
   .printinfo {
-    width: 100px;
-    height: 100px;
+    width: 200mm;
+    height: 200mm;
   }
   .printarea {
-    width: 400px;
-    height: 50vh;
+    width: 200mm;
+    height: 200mm;
+  }
+  .page {
+    height: 150mm;
   }
 }
 

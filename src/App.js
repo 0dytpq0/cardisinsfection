@@ -52,6 +52,7 @@ function App() {
     ZcarInfoData,
     ZsetWaitingCurrentNumber,
     ZisPrint,
+    ZsetIsPrintIndex,
   } = useInfo();
   const { ZsetConnectStatus, ZconnectStatus } = useMqtt();
   const { ZisNodeOk, ZsetIsNodeOk } = useCheckNode();
@@ -93,6 +94,7 @@ function App() {
   };
   //client가 없으면 재시도, 있으면 커넥트
   useEffect(() => {
+    ZsetIsPrintIndex(moment().format('YYYYMMDDHHmmss'));
     if (!client) {
       console.log('mqtt 연결 실패');
       mqttConnect('ws://' + window.location.hostname + ':9001', options);

@@ -4,7 +4,7 @@ import { useInfo } from '../store';
 import axios from 'axios';
 import ActorButtonContainer from './ActorButtonContainer';
 
-const ActorButtonViewContainer = () => {
+const ActorButtonViewContainer = ({ dbClick }) => {
   const { ZactorModalInfo, ZsetActorModalInfo } = useInfo();
 
   //기본 세팅 값에서 E타입 근무자들을 불러온다.
@@ -35,7 +35,10 @@ const ActorButtonViewContainer = () => {
 
   return (
     <div>
-      <ActorButtonContainer title={'실시자 정보'}></ActorButtonContainer>
+      <ActorButtonContainer
+        dbClick={dbClick}
+        title={'실시자 정보'}
+      ></ActorButtonContainer>
       <Input
         onChange={onChangeActorAttached}
         className='input'

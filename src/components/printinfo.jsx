@@ -11,8 +11,11 @@ export default function Printinfo({ printRef }) {
     ZactorInfo,
     ZcheckerInfo,
     ZwaitingCar,
+    ZcheckerModalInfo,
     ZcarInfoData,
     ZwaitingCurrentNumber,
+    ZactorModalInfo,
+    ZprintIndex,
   } = useInfo();
   let today = new Date();
   let year = today.getFullYear();
@@ -26,13 +29,12 @@ export default function Printinfo({ printRef }) {
         ref={printRef}
         style={{
           padding: '10px',
-          height: '80vh',
         }}
       >
         <div className='printinfo'>
-          <span>일련번호 - {ZcarInfoData?.PrintIndex} </span>
+          <span className='printinfo_span'>일련번호 - {ZprintIndex} </span>
           <h2 style={{ textAlign: 'center' }}>소 독 필 증</h2>
-          <span>운전자 정보</span>
+          <span className='printinfo_span'>운전자 정보</span>
           <Row className='innerinfo'>
             <Row>
               <Col className='font'>
@@ -89,7 +91,7 @@ export default function Printinfo({ printRef }) {
             </Row>
           </Row>
           <Divider style={{ border: '1px solid rgba(0,0,0,0.8)' }} />
-          <span>소득내역</span>
+          <span className='printinfo_span'>소득내역</span>
           <div className='innerinfo'>
             <Row>
               <Col className='font'>
@@ -116,7 +118,7 @@ export default function Printinfo({ printRef }) {
             </Row>
           </div>
           <Divider style={{ border: '1px solid rgba(0,0,0,0.8)' }} />
-          <span>소득 실시자</span>
+          <span className='printinfo_span'>소득 실시자</span>
           <div className='innerinfo'>
             <Row>
               <Col className='font'>
@@ -133,18 +135,25 @@ export default function Printinfo({ printRef }) {
             <Row>
               <Col className='font'>
                 소속 :{' '}
-                {ZactorInfo.Attached === 'undefined' ? '' : ZactorInfo.Attached}
+                {ZactorModalInfo.Attached === 'undefined'
+                  ? ''
+                  : ZactorModalInfo.Attached}
               </Col>
             </Row>
             <Row>
               <Col className='font'>
                 직급 :{' '}
-                {ZactorInfo.Position === 'undefined' ? '' : ZactorInfo.Position}
+                {ZactorModalInfo.Position === 'undefined'
+                  ? ''
+                  : ZactorModalInfo.Position}
               </Col>
             </Row>
             <Row>
               <Col className='font'>
-                성명 : {ZactorInfo.Name === 'undefined' ? '' : ZactorInfo.Name}
+                성명 :{' '}
+                {ZactorModalInfo.Name === 'undefined'
+                  ? ''
+                  : ZactorModalInfo.Name}
               </Col>
             </Row>
           </div>
@@ -158,19 +167,21 @@ export default function Printinfo({ printRef }) {
             <Row className='checkman__font'>
               <Col className='font'>
                 소속 -{' '}
-                {ZcheckerInfo.Attached === 'undefined'
+                {ZcheckerModalInfo.Attached === 'undefined'
                   ? ''
-                  : ZcheckerInfo.Attached}
+                  : ZcheckerModalInfo.Attached}
               </Col>
               <Col className='font'>
                 직급 -{' '}
-                {ZcheckerInfo.Position === 'undefined'
+                {ZcheckerModalInfo.Position === 'undefined'
                   ? ''
-                  : ZcheckerInfo.Position}
+                  : ZcheckerModalInfo.Position}
               </Col>
               <Col className='font auth_name'>
                 성명 -{' '}
-                {ZcheckerInfo.Name === 'undefined' ? '' : ZcheckerInfo.Name}
+                {ZcheckerModalInfo.Name === 'undefined'
+                  ? ''
+                  : ZcheckerModalInfo.Name}
               </Col>
               <img
                 className='auth_img'
