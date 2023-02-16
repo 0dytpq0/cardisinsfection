@@ -187,6 +187,7 @@ export default function CarinfoContainer() {
     // ZsetCarInfo(ZcarModalInfo);
     // ZsetCarInfoData(ZcarModalInfo);
     const filteredData = ZlistData.filter((item) => item.Selected === true);
+    console.log('filteredData', filteredData);
     ZsetCarInfo(filteredData[0]);
     ZsetCarInfoData(filteredData[0]);
   };

@@ -6,7 +6,14 @@ import axios from 'axios';
 //지역정보 버튼 클릭시 컨테이너
 
 const ButtonContainerArea = () => {
-  const { ZcarInfo, ZsetCarInfo, ZareaInfo, ZsetAreaInfo } = useInfo();
+  const {
+    ZcarInfo,
+    ZcarInfoData,
+    ZsetCarInfoData,
+    ZsetCarInfo,
+    ZareaInfo,
+    ZsetAreaInfo,
+  } = useInfo();
   //지역정보 체크박스
   const [origin, setOrigin] = useState(false);
   const [protect, setProtect] = useState(false);
@@ -65,17 +72,17 @@ const ButtonContainerArea = () => {
   const onChangeArea = (e) => {
     setArea(e.target.value);
     ZsetAreaInfo({ ...ZareaInfo, Area: e.target.value });
-    ZsetCarInfo({ ...ZcarInfo, Area: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, Area: e.target.value });
   };
   const onChangePointName = (e) => {
     setPointName(e.target.value);
     ZsetAreaInfo({ ...ZareaInfo, PointName: e.target.value });
-    ZsetCarInfo({ ...ZcarInfo, PointName: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, PointName: e.target.value });
   };
   const onChangeDContent = (e) => {
     setDContent(e.target.value);
     ZsetAreaInfo({ ...ZareaInfo, DContent: e.target.value });
-    ZsetCarInfo({ ...ZcarInfo, DContent: e.target.value });
+    ZsetCarInfoData({ ...ZcarInfoData, DContent: e.target.value });
   };
   return (
     <div>

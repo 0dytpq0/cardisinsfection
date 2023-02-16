@@ -400,12 +400,18 @@ function App() {
         </Col>
 
         <Col flex={8}>
-          <Col style={{ height: '425px' }}>
-            <Row gutter={(8, 8)}>
+          <Col
+            style={{
+              height: '425px',
+            }}
+          >
+            <Row
+              style={{ display: 'flex', flexWrap: 'nowrap' }}
+              gutter={(8, 8)}
+            >
               <Container
                 minWidth={'400px'}
                 height={'45vh'}
-                width={'1000px'}
                 span={6}
                 title={'차량정보'}
               >
@@ -422,12 +428,7 @@ function App() {
               >
                 <PrintCompleted />
               </Container>
-              <Container
-                maxWidth={'40%'}
-                height={'45vh'}
-                span={8}
-                title={'알림'}
-              >
+              <Container height={'45vh'} span={8} title={'알림'}>
                 <Alarm />
               </Container>
             </Row>
