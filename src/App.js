@@ -108,6 +108,7 @@ function App() {
       client?.subscribe('#', 0, (error) => {
         if (error) {
           console.log('Subscribe to topics error', error);
+
           return;
         }
       });

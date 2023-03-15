@@ -184,6 +184,7 @@ span {
   padding-left: 0px;
 }
 .alarm_list_item {
+  font-size: 13px;
   margin: 5px 0px;
   padding: 5px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
