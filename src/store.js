@@ -50,6 +50,10 @@ export const useInfo = create(
       set((state) => ({
         ZwaitingCar: newData,
       })),
+    ZwaitingCarClear: (newData) =>
+      set((state) => ({
+        ZwaitingCar: [],
+      })),
     ZdeleteWaitingCar: '',
     ZsetDeleteWaitingCar: (newData) =>
       set((state) => ({
@@ -69,6 +73,7 @@ export const useInfo = create(
       set((state) => ({
         ZwaitingCarImg: newData,
       })),
+
     ZisPrint: false,
     ZsetIsPrint: (newData) =>
       set((state) => ({
@@ -124,6 +129,11 @@ export const useMqtt = create(
       set((state) => ({
         ZconnectStatus: newData,
       })),
+    ZimgUrl: '',
+    ZsetImgUrl: (newData) =>
+      set((state) => ({
+        ZimgUrl: newData,
+      })),
   }))
 );
 export const useCheckNode = create(
@@ -140,5 +150,9 @@ export const useWaitingCar = create((set) => ({
   ZsetTrashWaitingCar: (newData) =>
     set((state) => ({
       ZtrashWaitingCar: newData,
+    })),
+  ZtrashWaitingCarClear: (newData) =>
+    set((state) => ({
+      ZtrashWaitingCar: [],
     })),
 }));

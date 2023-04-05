@@ -19,6 +19,7 @@
 .input_carnum {
   margin-top: 10px;
   width: 74%;
+  font-size: 20px;
 }
 .input_regnum {
   width: 84%;
@@ -48,7 +49,8 @@
   border: 2px solid black;
   margin: 20px;
   padding: 10px;
-  padding-bottom: 40px;
+  height: 650px;
+  padding-bottom: 100px;
 }
 
 .innerinfo {
@@ -57,25 +59,23 @@
   flex-direction: column;
 }
 .font {
-  font-size: 5px;
-  font-weight: bold;
+  font-size: 1px;
 }
 span {
   font-size: 12px;
   font-weight: bold;
 }
 .printinfo_span {
-  font-size: 3px;
+  font-size: 1px;
   font-weight: bold;
 }
 .checkman {
   font-weight: bold;
-  text-align: center;
 }
 .checkman__font {
   font-weight: 500;
   font-size: 11px;
-  margin-left: 30px;
+  margin-left: 35px;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -149,19 +149,31 @@ span {
   font-size: 100px;
 }
 @media print {
+  @page {
+    margin: 0;
+    padding: 0;
+  }
   .printinfo {
-    width: 200mm;
-    height: 200mm;
+    width: 200px;
+    height: 140mm;
   }
-  .printarea {
-    width: 200mm;
-    height: 200mm;
-  }
+
   .page {
-    height: 150mm;
+    height: 200px;
+  }
+
+  body {
+    font-size: 8pt;
+    background: white;
+  }
+  h2 {
+    font-size: 11pt;
   }
 }
-
+.printarea {
+  width: 240px;
+  height: 750px;
+}
 .auth_img {
   width: 80px;
   height: 40px;
@@ -207,8 +219,14 @@ span {
 .carimg {
   width: 90%;
 }
+.carimgnone {
+  display: none;
+}
 .waiting_img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+img:empty {
+  display: none;
 }

@@ -18,7 +18,6 @@ import AutoSwitch from './components/AutoSwitch';
 import * as mqtt from 'mqtt/dist/mqtt.min';
 import WaitingCar from './components/WaitingCar';
 import InquireAll from './components/InquireAll';
-import ReactToPrint from 'react-to-print';
 import arrivesound from './mp3/carArrived.mp3';
 import notrecogsound from './mp3/carNotRecog.mp3';
 import ReactDOM from 'react-dom/client';
@@ -26,7 +25,8 @@ import PrintCompleted from './components/PrintCompleted';
 import Alarm from './components/Alarm';
 import moment from 'moment';
 import imageToBase64 from 'image-to-base64/browser';
-
+import ReactToPrint from 'react-to-print';
+import PrintButton from './components/PrintButton';
 import { useMqtt, useInfo, useWaitingCar, useCheckNode } from './store';
 import { WindowsFilled } from '@ant-design/icons';
 export let client = null;
@@ -54,7 +54,7 @@ function App() {
     ZisPrint,
     ZsetIsPrintIndex,
   } = useInfo();
-  const { ZsetConnectStatus, ZconnectStatus } = useMqtt();
+  const { ZsetConnectStatus, ZconnectStatus, ZimgUrl, ZsetImgUrl } = useMqtt();
   const { ZisNodeOk, ZsetIsNodeOk } = useCheckNode();
   const { ZtrashWaitingCar, ZsetTrashWaitingCar } = useWaitingCar();
   //mqtt 옵션
@@ -104,6 +104,7 @@ function App() {
       client?.on('connect', () => {
         console.log('mqtt연결성공');
         ZsetConnectStatus('Connected');
+        client.publish('mqtt-client', 'mqtt-client connected');
       });
       client?.subscribe('#', 0, (error) => {
         if (error) {
@@ -114,10 +115,14 @@ function App() {
       });
       client?.on('error', (err) => {
         console.error('Connection error: ', err);
+        client.publish('mqtt-client', 'mqtt-client disconnected');
+
         client?.end();
       });
       client?.on('reconnect', () => {
         console.log('reconnect');
+        client.publish('mqtt-client', 'mqtt-client reconnected');
+
         ZsetConnectStatus('Reconnecting');
       });
       client?.on('message', (topic, message) => {
@@ -147,16 +152,32 @@ function App() {
               console.log('error', error);
             }
             imgurl = msg?.IMG;
+            console.log('ZimgUrl', ZimgUrl);
+            // imgurl = imgurl?.replace('c:/LPR', ZimgUrl);
+            console.log('imgurl', imgurl);
+            if (imgurl) {
+              imageToBase64(`${imgurl}`) // Image URL
+                .then((response) => {
+                  setDbImgUrl(response);
+                })
+                .catch((error) => {
+                  console.log(error); // Logs an error if there was one
+                });
+              ZsetWaitingCarImg(imgurl);
+              let arr = [];
 
-            imgurl = imgurl?.replace('c:/LPR', 'http://127.0.0.1:4000/images');
-            imageToBase64(`${imgurl}`) // Image URL
-              .then((response) => {
-                setDbImgUrl(response);
-              })
-              .catch((error) => {
-                console.log(error); // Logs an error if there was one
-              });
-            ZsetWaitingCarImg(imgurl);
+              arr = ZwaitingCar;
+              arr.push(msg?.CARNUMBER);
+
+              arr = arr.filter((item) => item !== undefined);
+              arr = arr.filter((item) => item !== null);
+              ZsetTrashWaitingCar(arr);
+              if (ZwaitingCar.length === 1) {
+                ZsetWaitingCurrentNumber(arr[0]);
+              }
+
+              arr = [];
+            }
           }
         }
         //상태정보창의 gif를 CMD에 따라서 변화시킨다.
@@ -199,7 +220,7 @@ function App() {
         ZsetIsNodeOk(true);
       }
     });
-  }, []);
+  }, [ZprintedCar]);
 
   const showModalFind = () => {
     setIsModalOpenFind(true);
@@ -212,10 +233,11 @@ function App() {
   };
 
   //출력 함수
+
   const onPrintedCar = () => {
     let crTime = moment().format('YYYYMMDDHHmmss');
     //ZprintedCar에 초기값을 넣어줘서 arr.unshift 에러가 안나게하였다.
-    ZsetPrintedCar(ZwaitingCar[0]);
+    ZsetPrintedCar(ZtrashWaitingCar[0]);
     let arr = ZprintedCar;
     arr.unshift({ Number: ZcarInfoData?.Number, PrintIndex: crTime });
 
@@ -305,11 +327,13 @@ function App() {
         .then((res) => {});
     });
   };
+  const componentRef = useRef(null);
+
   const printFunc = () => {
-    if (ZcarInfo?.Number === '' || ZcarInfo.Number === undefined) {
-      message.error('차 번호를 입력해주세요');
-      return;
-    }
+    // if (ZcarInfo?.Number === '' || ZcarInfo.Number === undefined) {
+    //   message.error('차 번호를 입력해주세요');
+    //   return;
+    // }
 
     onPrintedCar();
     //ZisPrint로 false시에는 대기저장의 자동차 목록을 지우지않고 true시에만 지우게 했다.
@@ -319,33 +343,34 @@ function App() {
       let arr = [];
       let arr2 = [];
       arr = ZtrashWaitingCar;
-      arr.map((item, idx) =>
-        item !== ZwaitingCurrentNumber ? arr2.push(item) : null
-      );
+      arr2 =
+        arr &&
+        arr.map((item, idx) =>
+          item !== ZwaitingCurrentNumber ? arr2.push(item) : null
+        );
 
       ZsetTrashWaitingCar(arr2);
       ZsetCarInfoData({ ...ZcarInfoData, Number: arr2[0].Number });
-      ZsetWaitingCar(arr2);
       ZsetWaitingCurrentNumber(arr2[0]);
     }
-    let printContents = componentRef.current.innerHTML;
-    let windowObject = window.open(
-      '',
-      'PrintWindow',
-      'width=1000, height=1000, top=200, lefg=200, tollbars=no, scrollbars=no, resizeable=no'
-    );
 
-    windowObject.document.writeln(printContents);
-    windowObject.document.close();
+    // let printContents = componentRef.current.innerHTML;
+    // let windowObject = window.open(
+    //   '',
+    //   'PrintWindow',
+    //   'width=700, height=1000, top=200, lefg=200, tollbars=no, scrollbars=no, resizeable=no,itemSize=50'
+    // );
 
-    windowObject.focus();
-    setTimeout(() => {
-      windowObject.print();
-      windowObject.close();
-      ZwaitingCar.shift();
-    }, 1500);
+    // windowObject.document.writeln(printContents);
+    // windowObject.document.close();
+
+    // windowObject.focus();
+    // setTimeout(() => {
+    //   windowObject.print();
+    //   windowObject.close();
+    //   ZwaitingCar.shift();
+    // }, 1500);
   };
-  const componentRef = useRef(null);
 
   return (
     <>
@@ -380,22 +405,9 @@ function App() {
       >
         <Col style={{ width: '300px' }} flex={2}>
           <Container title={'소독필증'}>
-            <Button onClick={printFunc}>출력</Button>
-            {/* <ReactToPrint
-              handleClick={() => {
-              }}
-              trigger={() => {
-                return (
-                  <Button
-                    onClick={() => {
-                    }}
-                  >
-                    출력
-                  </Button>
-                );
-              }}
-              content={() => componentRef.current}
-            /> */}
+            {/* <Button onClick={printFunc}>출력</Button> */}
+            <PrintButton onPrintedCar={printFunc} />
+
             <PrintInfo className='printarea' printRef={componentRef} />
           </Container>
         </Col>
